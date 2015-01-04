@@ -1,5 +1,6 @@
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, backref
 metadata = MetaData()
 Base = declarative_base()
 
@@ -22,54 +23,73 @@ class Server(Base):
     ip_4 = Column(String(3), nullable=False)
     enabled = Column(Boolean, nullable=False)
 
+    def __repr__(self):
+        return "<Server(id='%i',name='%s',ip='%s.%s',enabled='%s')>" % self.id, self.name, self.ip_3, self.ip_4, self.enabled
 
+class Service(Base):
+    __tablename__ = 'services'
 
-team = Table('teams', metadata,
-             Column('id', Integer, primary_key=True),
-             Column('name', String(25), nullable=False),
-             Column('network', String(15), nullable=False),
-)
+    id = Column(Integer, primary_key=True)
+    serverid = Column(Integer, ForeignKey('servers.id'))
+    name = Column(String(25), nullable=False)
+    port = Column(Integer)
+    typeid = Column(Integer, ForeignKey('servicetypes.id'))
+    enabled = Column(Boolean, nullable=False)
 
-server = Table('servers', metadata,
-              Column('id', Integer, primary_key=True),
-              Column('name', String(25), nullable=False),
-              Column('ip_3', String(3)),
-              Column('ip_4', String(3), nullable=False),
-              Column('enabled', Boolean, nullable=False),
-)
+    server = relationship("Server", backref=backref('services', order_by=id))
+    type = relationship("ServiceType", backref=backref('services', order_by=id))
 
-service = Table('services', metadata,
-              Column('id', Integer, primary_key=True),
-              Column('serverid', Integer, ForeignKey('servers.id')),
-              Column('name', String(25), nullable=False),
-              Column('port', Integer),
-              Column('typeid', Integer, ForeignKey('servicetypes.id')),
-              Column('enabled', Boolean, nullable=False),
-)
+    def __repr__(self):
+        pass
 
-servicetype = Table('servicetypes', metadata,
-              Column('id', Integer, primary_key=True),
-              Column('name', String(25), nullable=False),
-              Column('tester', String(25), nullable=False)
-)
+class ServiceType(Base):
+    __tablename__ = 'servicetypes'
 
-teamserver = Table('teamservers', metadata,
-              Column('id', Integer, primary_key=True),
-              Column('teamid', Integer, ForeignKey('teams.id')),
-              Column('serverid', Integer, ForeignKey('servers.id')),
-)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(25), nullable=False)
+    tester = Column(String(25), nullable=False)
 
-scoreevent = Table('scoreevents', metadata,
-              Column('id', Integer, primary_key=True),
-              Column('teamserverid', Integer, ForeignKey('teamservers.id')),
-              Column('serviceid', Integer, ForeignKey('services.id')),
-              Column('scoretime', DateTime, nullable=False),
-              Column('up', Boolean, nullable=False),       
-)
+class TeamServer(Base):
+    __tablename__ = 'teamservers'
+    
+    id = Column(Integer, primary_key=True)
+    teamid = Column(Integer, ForeignKey('teams.id'))
+    serverid = Column(Integer, ForeignKey('servers.id'))
 
-servicearg = Table('serviceargs', metadata,
-              Column('id', Integer, primary_key=True),
-              Column('serviceid', Integer, ForeignKey('services.id')),
-              Column('key', String(50), nullable=False),
-              Column('value', Text),
-)
+    team = relationship("Team", backref=backref('servers', order_by=serverid))
+    server = relationship("Server", backref=backref('team', order_by=teamid))
+
+    def getIP(self):
+        return team.network.replace("{3}",self.server.ip_3).replace("{4}",self.server.ip_4)
+
+class ScoreEvent(Base):
+    __tablename__ = 'scoreevents'
+
+    id = Column(Integer, primary_key=True)
+    teamserverid = Column(Integer, ForeignKey('teamservers.id'))
+    serviceid = Column(Integer, ForeignKey('services.id'))
+    scoretime = Column(DateTime, nullable=False)
+    up = Column(Boolean, nullable=False)
+
+    teamserver = relationship("TeamServer", backref=backref('scores', order_by=scoretime))
+    service = relationship("Service", backref=backref('scores', order_by=teamserverid))
+
+class ServiceArg(Base):
+    __tablename__ = 'serviceargs'
+
+    id = Column(Integer, primary_key=True)
+    serviceid = Column(Integer, ForeignKey('services.id'))
+    key = Column(String(50), nullable=False)
+    value = Column(Text)
+
+    service = relationship("Service", backref=backref('args', order_by=id))
+
+class PasswordDatabase(Base):
+    __tablename__ = 'passdb'
+
+    id = Column(Integer, primary_key=True)
+    db = Column(String(10), nullable=False)
+    domain = Column(String(15))
+    user = Column(String(255), nullable=False)
+    password = Column(String(255), nullable=False)
+    email = Column(String(255))
