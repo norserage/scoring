@@ -21,11 +21,10 @@ def test(server, service, session):
         sp.wait()
         l = lines.readLines()
 
-        for i in range(2,l.length-1):
+        for i in range(2,l.count-1):
             line = l[i]
             if (line.contains(ip)):
                 se.up = True
-                se.info = ftp.nlst()
                 return
 
         print "bad"

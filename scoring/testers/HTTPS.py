@@ -12,7 +12,7 @@ def test(server, service, session):
         #confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==server.team.id+'conf'))
         #conf = json.loads(confpair.value)
         br = mechanize.Browser()
-        br.open("http://"+server.getIP())
+        br.open("https://"+server.getIP())
         se.up = True
         se.info = br.title()
     except Exception as e:

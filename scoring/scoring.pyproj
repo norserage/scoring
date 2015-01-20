@@ -35,6 +35,15 @@
     <Compile Include="testers\HTTP.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="testers\HTTPS.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="testers\IMAP.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="testers\SMTP.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="utils.py">
       <SubType>Code</SubType>
     </Compile>
