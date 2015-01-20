@@ -70,6 +70,7 @@ class ScoreEvent(Base):
     serviceid = Column(Integer, ForeignKey('services.id'))
     scoretime = Column(DateTime, nullable=False)
     up = Column(Boolean, nullable=False)
+    info = Column(Text)
 
     teamserver = relationship("TeamServer", backref=backref('scores', order_by=scoretime))
     service = relationship("Service", backref=backref('scores', order_by=teamserverid))
