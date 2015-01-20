@@ -28,13 +28,7 @@
     <Compile Include="tables.py">
       <SubType>Code</SubType>
     </Compile>
-<<<<<<< HEAD
-    <Compile Include="testers\DNS.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="testers\FTP.py" />
-    <Compile Include="testers\HTTP.py" />
-=======
+    <Compile Include="testers\DNS.py" />
     <Compile Include="testers\FTP.py">
       <SubType>Code</SubType>
     </Compile>
@@ -44,7 +38,6 @@
     <Compile Include="utils.py">
       <SubType>Code</SubType>
     </Compile>
->>>>>>> c256095a88f5cadf7d6f5f0bbb5e2cbbe493973a
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
