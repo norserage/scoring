@@ -94,3 +94,11 @@ class PasswordDatabase(Base):
     user = Column(String(255), nullable=False)
     password = Column(String(255), nullable=False)
     email = Column(String(255))
+
+class TeamUser(Base):
+    __tablename__ = 'teamusers'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String(25), nullable=False)
+    password = Column(String(60), nullable=False)
+    teamid = Column(Integer, ForeignKey('teams.id'))
