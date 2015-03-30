@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>e7ee300f-96db-4223-948c-ea25c4f06904</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <ProjectTypeGuids>{789894c7-04a9-4a11-a6b5-3f4435165112};{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <StartupFile>runserver.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <LaunchProvider>Web launcher</LaunchProvider>
+    <OutputPath>.</OutputPath>
+    <StaticUriPattern>^/static/.*</StaticUriPattern>
+    <StaticUriRewrite>^/$(MSBuildProjectName)/static/.*</StaticUriRewrite>
+    <PythonWsgiHandler>$(MSBuildProjectName).app</PythonWsgiHandler>
+    <Name>ScoringEngine</Name>
+    <RootNamespace>ScoringEngine</RootNamespace>
+    <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
+    <InterpreterVersion>2.7</InterpreterVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="runserver.py" />
+    <Compile Include="ScoringEngine\db\tables.py" />
+    <Compile Include="ScoringEngine\db\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScoringEngine\utils.py" />
+    <Compile Include="ScoringEngine\views\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ScoringEngine\__init__.py" />
+    <Compile Include="ScoringEngine\views\home.py" />
+    <Compile Include="testers\DNS.py" />
+    <Compile Include="testers\FTP.py" />
+    <Compile Include="testers\HTTP.py" />
+    <Compile Include="testers\HTTPS.py" />
+    <Compile Include="testers\IMAP.py" />
+    <Compile Include="testers\SMTP.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ScoringEngine\" />
+    <Folder Include="ScoringEngine\db\" />
+    <Folder Include="ScoringEngine\views\" />
+    <Folder Include="ScoringEngine\static\" />
+    <Folder Include="ScoringEngine\static\content\" />
+    <Folder Include="ScoringEngine\static\fonts\" />
+    <Folder Include="ScoringEngine\static\scripts\" />
+    <Folder Include="ScoringEngine\templates\" />
+    <Folder Include="testers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="requirements.txt" />
+    <Content Include="ScoringEngine\static\content\bootstrap.css" />
+    <Content Include="ScoringEngine\static\content\bootstrap.min.css" />
+    <Content Include="ScoringEngine\static\content\site.css" />
+    <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="ScoringEngine\static\scripts\bootstrap.js" />
+    <Content Include="ScoringEngine\static\scripts\bootstrap.min.js" />
+    <Content Include="ScoringEngine\static\scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="ScoringEngine\static\scripts\jquery-1.10.2.js" />
+    <Content Include="ScoringEngine\static\scripts\jquery-1.10.2.min.js" />
+    <Content Include="ScoringEngine\static\scripts\jquery-1.10.2.min.map" />
+    <Content Include="ScoringEngine\static\scripts\jquery.validate-vsdoc.js" />
+    <Content Include="ScoringEngine\static\scripts\jquery.validate.js" />
+    <Content Include="ScoringEngine\static\scripts\jquery.validate.min.js" />
+    <Content Include="ScoringEngine\static\scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="ScoringEngine\static\scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="ScoringEngine\static\scripts\modernizr-2.6.2.js" />
+    <Content Include="ScoringEngine\static\scripts\respond.js" />
+    <Content Include="ScoringEngine\static\scripts\respond.min.js" />
+    <Content Include="ScoringEngine\static\scripts\_references.js" />
+    <Content Include="ScoringEngine\templates\about.html" />
+    <Content Include="ScoringEngine\templates\contact.html" />
+    <Content Include="ScoringEngine\templates\index.html" />
+    <Content Include="ScoringEngine\templates\layout.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
+  <!-- Specify pre- and post-build commands in the BeforeBuild and 
+       AfterBuild targets below. -->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
