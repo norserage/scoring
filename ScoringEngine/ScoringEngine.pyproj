@@ -35,7 +35,13 @@
     <Compile Include="ScoringEngine\db\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ScoringEngine\engine\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScoringEngine\utils.py" />
+    <Compile Include="ScoringEngine\views\user.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScoringEngine\views\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -51,6 +57,8 @@
   <ItemGroup>
     <Folder Include="ScoringEngine\" />
     <Folder Include="ScoringEngine\db\" />
+    <Folder Include="ScoringEngine\engine\" />
+    <Folder Include="ScoringEngine\templates\user\" />
     <Folder Include="ScoringEngine\views\" />
     <Folder Include="ScoringEngine\static\" />
     <Folder Include="ScoringEngine\static\content\" />
@@ -84,9 +92,9 @@
     <Content Include="ScoringEngine\static\scripts\respond.min.js" />
     <Content Include="ScoringEngine\static\scripts\_references.js" />
     <Content Include="ScoringEngine\templates\about.html" />
-    <Content Include="ScoringEngine\templates\contact.html" />
     <Content Include="ScoringEngine\templates\index.html" />
     <Content Include="ScoringEngine\templates\layout.html" />
+    <Content Include="ScoringEngine\templates\user\login.html" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
