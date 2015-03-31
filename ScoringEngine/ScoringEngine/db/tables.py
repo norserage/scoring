@@ -99,6 +99,9 @@ class TeamUser(Base):
     __tablename__ = 'teamusers'
 
     id = Column(Integer, primary_key=True)
+    name = Column(String(50))
     username = Column(String(25), nullable=False)
     password = Column(String(60), nullable=False)
     teamid = Column(Integer, ForeignKey('teams.id'))
+    group = Column(Integer, nullable=False)
+    
