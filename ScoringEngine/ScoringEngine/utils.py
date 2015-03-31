@@ -1,4 +1,4 @@
-import tables
+import ScoringEngine.db.tables as tables
 import random
 
 def getRandomUser(session, passwd_db):

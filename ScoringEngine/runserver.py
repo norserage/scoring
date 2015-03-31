@@ -1,6 +1,7 @@
 """
 This script runs the ScoringEngine application using a development server.
 """
+import sys
 sys.path.append("testers/")
 # Note we did not loose the bug
 '''
