@@ -7,3 +7,5 @@ app = Flask(__name__)
 
 import ScoringEngine.views.home
 import ScoringEngine.views.user
+import ScoringEngine.views.admin
+import ScoringEngine.views.portal
