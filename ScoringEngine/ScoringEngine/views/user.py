@@ -4,16 +4,20 @@ from ScoringEngine import app
 from ScoringEngine.db import session
 import ScoringEngine.db.tables as tables
 import ScoringEngine.utils
-import Crypto
+import Crypto.Hash.MD5
 
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'POST':
-        users = session.query(tables.TeamUser).filter(tables.TeamUser.username.like(request.form['username']))
-        p = Crypto.Hash.MD5.new(request.form['password'])
+        users = session.query(tables.User).filter(tables.User.username.like(request.form['username']))
+        p = Crypto.Hash.MD5.new()
         for user in users:
-            if user.password == p:
+            print "testing password"
+            print str(p.new(request.form['password']))
+            print user.password
+            if str(user.password).lower() == str(p).lower():
                 #TODO create user session
+                print "password correct"
                 return redirect("/portal")
         return render_template(
             'user/login.html',

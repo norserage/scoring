@@ -95,13 +95,13 @@ class PasswordDatabase(Base):
     password = Column(String(255), nullable=False)
     email = Column(String(255))
 
-class TeamUser(Base):
-    __tablename__ = 'teamusers'
+class User(Base):
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(50))
+    name = Column(String(45))
     username = Column(String(25), nullable=False)
     password = Column(String(60), nullable=False)
-    teamid = Column(Integer, ForeignKey('teams.id'))
+    team = Column(Integer, nullable=False)
     group = Column(Integer, nullable=False)
     
