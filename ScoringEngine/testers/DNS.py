@@ -4,6 +4,7 @@ import json
 import ScoringEngine.utils
 import subprocess
 import random
+from datetime import datetime
 
 def test(server, service):
     se = tables.ScoreEvent()

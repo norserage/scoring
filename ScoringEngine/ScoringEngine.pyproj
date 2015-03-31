@@ -39,6 +39,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ScoringEngine\utils.py" />
+    <Compile Include="ScoringEngine\views\admin.py" />
+    <Compile Include="ScoringEngine\views\portal.py" />
     <Compile Include="ScoringEngine\views\user.py">
       <SubType>Code</SubType>
     </Compile>
@@ -58,6 +60,8 @@
     <Folder Include="ScoringEngine\" />
     <Folder Include="ScoringEngine\db\" />
     <Folder Include="ScoringEngine\engine\" />
+    <Folder Include="ScoringEngine\templates\admin\" />
+    <Folder Include="ScoringEngine\templates\portal\" />
     <Folder Include="ScoringEngine\templates\user\" />
     <Folder Include="ScoringEngine\views\" />
     <Folder Include="ScoringEngine\static\" />
@@ -94,7 +98,9 @@
     <Content Include="ScoringEngine\templates\about.html" />
     <Content Include="ScoringEngine\templates\index.html" />
     <Content Include="ScoringEngine\templates\layout.html" />
+    <Content Include="ScoringEngine\templates\portal\index.html" />
     <Content Include="ScoringEngine\templates\user\login.html" />
+    <Content Include="ScoringEngine\templates\user\view.html" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.7" />
