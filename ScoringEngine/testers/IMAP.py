@@ -1,10 +1,11 @@
 import imaplib
-import tables
+import ScoringEngine.db.tables as tables
+from ScoringEngine.db import session
+import ScoringEngine.utils as utils
 import json
-import utils
 from datetime import datetime
 
-def test(server, service, session):
+def test(server, service):
     se = tables.ScoreEvent()
     se.serviceid = service.id;
     se.teamserverid = server.id;

@@ -1,10 +1,11 @@
-import tables
+import ScoringEngine.db.tables
+from ScoringEngine.db import session
 import json
-import utils
+import ScoringEngine.utils
 import subprocess
 import random
 
-def test(server, service, session):
+def test(server, service):
     se = tables.ScoreEvent()
     se.serviceid = service.id;
     se.teamserverid = server.id;

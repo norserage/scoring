@@ -1,1 +1,7 @@
-Flask<1
+Flask
+mechanize
+MySQL-python
+pyaml
+PyYAML
+SQLAlchemy
+pycrypto

@@ -1,7 +1,15 @@
 """
 This script runs the ScoringEngine application using a development server.
 """
-
+sys.path.append("testers/")
+# Note we did not loose the bug
+'''
+       / .'
+ .---. \/
+(._.' \()
+ ^"""^"
+bug
+'''
 from os import environ
 from ScoringEngine import app
 from ScoringEngine import engine
