@@ -21,6 +21,6 @@ if __name__ == '__main__':
         PORT = int(environ.get('SERVER_PORT', '5555'))
     except ValueError:
         PORT = 5555
-    engine.start() # Note that this starts a thread
+    #engine.start() # Note that this starts a thread
     app.debug = True
     app.run(HOST, PORT)

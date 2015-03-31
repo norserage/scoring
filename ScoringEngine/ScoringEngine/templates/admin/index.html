@@ -2,6 +2,9 @@
 
 {% block content %}
 
-
-
+{% if enginestatus %}
+    Running
+{% else %}
+    Not Running
+{% endif %}
 {% endblock %}

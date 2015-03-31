@@ -12,6 +12,7 @@ def admin():
         'admin/index.html',
         title='Home Page',
         year=datetime.now().year,
+        enginestatus=ScoringEngine.engine.running,
     )
 
 @app.route('/admin/scoring/<flag>')
