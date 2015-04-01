@@ -28,4 +28,5 @@ def test(server, service):
         se.info = ep.message
         se.up = False
     session.add(se)
+    session.commit()
     

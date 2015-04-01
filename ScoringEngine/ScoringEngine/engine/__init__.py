@@ -6,11 +6,13 @@ import ScoringEngine.db.tables as tables
 running = False
 
 def start():
+    print "start scoring"
     thread = threading.Thread(target=thread_start)
     thread.start()
 
 def thread_start():
     while running:
+        print "loop"
         score()
         threading._sleep(random.randint(120,240))
 

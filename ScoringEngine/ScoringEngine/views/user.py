@@ -11,11 +11,9 @@ def login():
     if request.method == 'POST':
         users = session.query(tables.User).filter(tables.User.username.like(request.form['username']))
         p = Crypto.Hash.MD5.new()
+        p.update(request.form['password'])
         for user in users:
-            print "testing password"
-            print str(p.new(request.form['password']))
-            print user.password
-            if str(user.password).lower() == str(p).lower():
+            if str(user.password).lower() == str(p.hexdigest()).lower():
                 #TODO create user session
                 print "password correct"
                 return redirect("/portal")

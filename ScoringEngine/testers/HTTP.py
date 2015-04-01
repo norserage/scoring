@@ -3,6 +3,7 @@ import ScoringEngine.db.tables as tables
 from ScoringEngine.db import session
 import ScoringEngine.utils as utils
 import json
+from datetime import datetime
 
 def test(server, service):
     se = tables.ScoreEvent()
@@ -17,6 +18,7 @@ def test(server, service):
         se.up = True
         se.info = br.title()
     except Exception as e:
-        se.info = ep.message
+        se.info = e.message
         se.up = False
     session.add(se)
+    session.commit()

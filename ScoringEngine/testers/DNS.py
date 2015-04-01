@@ -35,3 +35,4 @@ def test(server, service):
         se.up = False
         pass
     session.add(se)
+    session.commit()

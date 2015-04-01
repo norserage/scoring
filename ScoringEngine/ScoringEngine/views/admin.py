@@ -17,8 +17,10 @@ def admin():
 
 @app.route('/admin/scoring/<flag>')
 def adminscoringswitch(flag):
-    if flag == True:
+    if flag == "true":
         ScoringEngine.engine.running = True
         ScoringEngine.engine.start()
+        return ""
     else:
         ScoringEngine.engine.running = False
+        return ""
