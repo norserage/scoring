@@ -10,6 +10,7 @@ class Team(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(25), nullable=False)
     network = Column(String(15), nullable=False)
+    enabled = Column(Boolean, nullable=False)
 
     def __repr__(self):
         return "<Team(id='%i', name='%s', network='%s')>" % (id,name,network)
