@@ -23,9 +23,19 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    {% if user %}
+                    <li><a href="{{ url_for('portal') }}">Portal</a></li>
+                    {% if user['group'] == 5 %}
+                    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+                    {% endif %}
+                    {% endif %}
                     <li><a href="{{ url_for('about') }}">About</a></li>
                 </ul>
+                {% if login %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('user', user=user['username']) }}">{{ user['username'] }}</a></li>
+                </ul>
+                {% endif %}
             </div>
         </div>
     </div>

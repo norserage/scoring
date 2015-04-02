@@ -23,4 +23,5 @@ if __name__ == '__main__':
         PORT = 5555
     #engine.start() # Note that this starts a thread
     app.debug = True
+    app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
     app.run(HOST, PORT)

@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import render_template, request, session, redirect
 from ScoringEngine import app
-from ScoringEngine.db import session
+from ScoringEngine.db import session as dbsession
 import ScoringEngine.db.tables as tables
 import ScoringEngine.utils
 
@@ -13,6 +13,8 @@ def admin():
         title='Home Page',
         year=datetime.now().year,
         enginestatus=ScoringEngine.engine.running,
+        user=session['user'],
+        login='user' in session,
     )
 
 @app.route('/admin/scoring/<flag>')

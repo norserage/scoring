@@ -16,6 +16,7 @@ def home():
             title='Home Page',
             year=datetime.now().year,
             user=session['user'],
+            login='user' in session,
         )
     else:
         return redirect("/login")
@@ -29,5 +30,8 @@ def about():
         'about.html',
         title='About',
         year=datetime.now().year,
-        message='Norser@g3 Inject Scoring Engine'
+        message='Norser@g3 Inject Scoring Engine',
+
+            user=session['user'],
+            login='user' in session,
     )
