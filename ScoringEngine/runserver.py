@@ -13,10 +13,10 @@ bug
 '''
 from os import environ
 from ScoringEngine import app
-from ScoringEngine import engine
+#from ScoringEngine import engine
 import ScoringEngine.conf
 from ScoringEngine.conf import conf
-ScoringEngine.conf.loadConf()
+import argparse
 
 if __name__ == '__main__':
 
