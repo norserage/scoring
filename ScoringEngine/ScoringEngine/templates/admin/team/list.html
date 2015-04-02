@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include "admin/menu.html" %}
+<div class="col-md-8">
+<table class="table">
+<thead>
+<tr>
+<th>Name</th>
+<th>Network</th>
+<th>#</th>
+</tr>
+</thead>
+<tbody>
+{% for team in teams %}
+<tr>
+<td>{{ team.name }}</td>
+<td>{{ team.network }}</td>
+<td><a href="{{ url_for('teamid',team=team.id) }}">Edit</a></td>
+</tr>
+{% endfor %}
+</tbody>
+<tfoot>
+<tr>
+<td><a href="{{ url_for('addteam') }}" class="btn btn-default">Add</a></td>
+</tr>
+</tfoot>
+</table>
+</div>
+{% endblock %}

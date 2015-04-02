@@ -17,6 +17,44 @@ def admin():
         login='user' in session,
     )
 
+@app.route('/admin/team')
+def team():
+    teams = dbsession.query(tables.Team).all()
+    """Renders the home page."""
+    return render_template(
+        'admin/team/list.html',
+        title='Home Page',
+        year=datetime.now().year,
+        enginestatus=ScoringEngine.engine.running,
+        user=session['user'],
+        login='user' in session,
+        teams=teams
+    )
+
+@app.route('/admin/team/add',methods=['GET','POST'])
+def addteam():
+    """Renders the home page."""
+    return render_template(
+        'admin/team/add.html',
+        title='Home Page',
+        year=datetime.now().year,
+        enginestatus=ScoringEngine.engine.running,
+        user=session['user'],
+        login='user' in session,
+    )
+
+@app.route('/admin/team/<team>')
+def teamid(team):
+    """Renders the home page."""
+    return render_template(
+        'admin/team/view.html',
+        title='Home Page',
+        year=datetime.now().year,
+        enginestatus=ScoringEngine.engine.running,
+        user=session['user'],
+        login='user' in session,
+    )
+
 @app.route('/admin/scoring/<flag>')
 def adminscoringswitch(flag):
     if flag == "true":
@@ -26,3 +64,4 @@ def adminscoringswitch(flag):
     else:
         ScoringEngine.engine.running = False
         return ""
+
