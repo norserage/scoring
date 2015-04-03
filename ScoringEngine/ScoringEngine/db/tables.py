@@ -13,7 +13,7 @@ class Team(Base):
     enabled = Column(Boolean, nullable=False)
 
     def __repr__(self):
-        return "<Team(id='%i', name='%s', network='%s')>" % (id,name,network)
+        return "<Team(id='%i', name='%s', network='%s')>" % (self.id,self.name,self.network)
 
 class Server(Base):
     __tablename__ = 'servers'
@@ -25,7 +25,7 @@ class Server(Base):
     enabled = Column(Boolean, nullable=False)
 
     def __repr__(self):
-        return "<Server(id='%i',name='%s',ip='%s.%s',enabled='%s')>" % self.id, self.name, self.ip_3, self.ip_4, self.enabled
+        return "<Server(id='%i',name='%s',ip='%s.%s',enabled='%s')>" % (self.id, self.name, self.ip_3, self.ip_4, self.enabled)
 
 class Service(Base):
     __tablename__ = 'services'
@@ -58,10 +58,13 @@ class TeamServer(Base):
     serverid = Column(Integer, ForeignKey('servers.id'))
 
     team = relationship("Team", backref=backref('servers', order_by=serverid))
-    server = relationship("Server", backref=backref('team', order_by=teamid))
+    server = relationship("Server", backref=backref('teams', order_by=teamid))
 
     def getIP(self):
-        return team.network.replace("{3}",self.server.ip_3).replace("{4}",self.server.ip_4)
+        if self.server.ip_3 == None:
+            return self.team.network.replace("{4}",self.server.ip_4)
+        else:
+            return self.team.network.replace("{3}",self.server.ip_3).replace("{4}",self.server.ip_4)
 
 class ScoreEvent(Base):
     __tablename__ = 'scoreevents'

@@ -64,6 +64,7 @@
     <Folder Include="ScoringEngine\engine\" />
     <Folder Include="ScoringEngine\templates\admin\" />
     <Folder Include="ScoringEngine\templates\admin\team\" />
+    <Folder Include="ScoringEngine\templates\errors\" />
     <Folder Include="ScoringEngine\templates\portal\" />
     <Folder Include="ScoringEngine\templates\user\" />
     <Folder Include="ScoringEngine\views\" />
@@ -99,9 +100,14 @@
     <Content Include="ScoringEngine\static\scripts\respond.min.js" />
     <Content Include="ScoringEngine\static\scripts\_references.js" />
     <Content Include="ScoringEngine\templates\about.html" />
+    <Content Include="ScoringEngine\templates\admin\404.html" />
     <Content Include="ScoringEngine\templates\admin\index.html" />
     <Content Include="ScoringEngine\templates\admin\menu.html" />
+    <Content Include="ScoringEngine\templates\admin\team\view.html" />
+    <Content Include="ScoringEngine\templates\admin\team\add.html" />
     <Content Include="ScoringEngine\templates\admin\team\list.html" />
+    <Content Include="ScoringEngine\templates\errors\404.html" />
+    <Content Include="ScoringEngine\templates\errors\403.html" />
     <Content Include="ScoringEngine\templates\index.html" />
     <Content Include="ScoringEngine\templates\layout.html" />
     <Content Include="ScoringEngine\templates\portal\index.html" />

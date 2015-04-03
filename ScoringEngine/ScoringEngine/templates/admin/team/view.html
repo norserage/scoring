@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include "admin/menu.html" %}
+<div class="col-md-9">
+    <h2>{{ team.name }}</h2>
+    <h3>{{ team.network }}</h3>
+    <br />
+    <h4>Servers</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>IP</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for server in team.servers %}
+            <tr>
+                <td>{{ server.server.name }}</td>
+                <td>{{ server.getIP() }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+{% endblock %}
