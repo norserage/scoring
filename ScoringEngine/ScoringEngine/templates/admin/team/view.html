@@ -3,8 +3,15 @@
 {% block content %}
 {% include "admin/menu.html" %}
 <div class="col-md-9">
-    <h2>{{ team.name }}</h2>
-    <h3>{{ team.network }}</h3>
+    <h2>
+        {{ team.name }}
+    </h2>
+    <h3 style="margin-top:10px">{{ team.network }}</h3>
+    {% if team.enabled %}
+    <span class="label label-success">Enabled</span>
+    {% else %}
+    <span class="label label-danger">Disabled</span>
+    {% endif %}
     <br />
     <h4>Servers</h4>
     <table class="table">
@@ -22,6 +29,13 @@
             </tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <a class="btn btn-default" href="{{ url_for('teamaddserver',team=team.name) }}">Add</a>
+                </td>
+            </tr>
+        </tfoot>
     </table>
     
 </div>

@@ -103,6 +103,8 @@
     <Content Include="ScoringEngine\templates\admin\404.html" />
     <Content Include="ScoringEngine\templates\admin\index.html" />
     <Content Include="ScoringEngine\templates\admin\menu.html" />
+    <Content Include="ScoringEngine\templates\admin\team\edit.html" />
+    <Content Include="ScoringEngine\templates\admin\team\addserver.html" />
     <Content Include="ScoringEngine\templates\admin\team\view.html" />
     <Content Include="ScoringEngine\templates\admin\team\add.html" />
     <Content Include="ScoringEngine\templates\admin\team\list.html" />

@@ -1,4 +1,5 @@
 from sqlalchemy import *
+from sqlalchemy.sql import exists
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 metadata = MetaData()

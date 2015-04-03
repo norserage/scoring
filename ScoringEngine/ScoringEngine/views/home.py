@@ -3,23 +3,16 @@ Routes and views for the flask application.
 """
 
 from datetime import datetime
-from flask import render_template, session, redirect
+from flask import render_template, session, redirect, url_for
 from ScoringEngine import app
 
 @app.route('/')
 @app.route('/home')
 def home():
     if 'user' in session:
-        """Renders the home page."""
-        return render_template(
-            'index.html',
-            title='Home Page',
-            year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-        )
+        return redirect(url_for("portal"))
     else:
-        return redirect("/login")
+        return redirect(url_for("login"))
 
 
 

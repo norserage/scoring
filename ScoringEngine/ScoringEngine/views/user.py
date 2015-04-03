@@ -37,5 +37,7 @@ def user(user):
         'user/view.html',
         title='Home Page',
         year=datetime.now().year,
+        user=session['user'],
+        login='user' in session,
     )
 
