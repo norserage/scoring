@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import render_template, request, session, redirect
 from ScoringEngine import app
-from ScoringEngine.db import session as dbsession
+from ScoringEngine.db import Session
 import ScoringEngine.db.tables as tables
 import ScoringEngine.utils
 import Crypto.Hash.MD5
@@ -9,6 +9,7 @@ import Crypto.Hash.MD5
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method == 'POST':
+        dbsession = Session()
         users = dbsession.query(tables.User).filter(tables.User.username.like(request.form['username']))
         p = Crypto.Hash.MD5.new()
         p.update(request.form['password'])

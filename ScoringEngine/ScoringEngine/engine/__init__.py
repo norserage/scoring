@@ -1,6 +1,6 @@
 import threading
 import random
-from ScoringEngine.db import session
+from ScoringEngine.db import Session
 import ScoringEngine.db.tables as tables
 
 running = False
@@ -17,6 +17,7 @@ def thread_start():
         threading._sleep(random.randint(120,240))
 
 def score():
+    session = Session()
     for server in session.query(tables.TeamServer).all():
         print server
         if (server.server.enabled):

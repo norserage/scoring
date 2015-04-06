@@ -40,7 +40,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ScoringEngine\utils.py" />
-    <Compile Include="ScoringEngine\views\admin.py" />
+    <Compile Include="ScoringEngine\views\admin\user.py" />
+    <Compile Include="ScoringEngine\views\admin\team.py" />
+    <Compile Include="ScoringEngine\views\admin\__init__.py" />
     <Compile Include="ScoringEngine\views\portal.py" />
     <Compile Include="ScoringEngine\views\user.py">
       <SubType>Code</SubType>
@@ -64,6 +66,7 @@
     <Folder Include="ScoringEngine\engine\" />
     <Folder Include="ScoringEngine\templates\admin\" />
     <Folder Include="ScoringEngine\templates\admin\team\" />
+    <Folder Include="ScoringEngine\templates\admin\user\" />
     <Folder Include="ScoringEngine\templates\errors\" />
     <Folder Include="ScoringEngine\templates\portal\" />
     <Folder Include="ScoringEngine\templates\user\" />
@@ -73,6 +76,7 @@
     <Folder Include="ScoringEngine\static\fonts\" />
     <Folder Include="ScoringEngine\static\scripts\" />
     <Folder Include="ScoringEngine\templates\" />
+    <Folder Include="ScoringEngine\views\admin\" />
     <Folder Include="testers\" />
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +112,10 @@
     <Content Include="ScoringEngine\templates\admin\team\view.html" />
     <Content Include="ScoringEngine\templates\admin\team\add.html" />
     <Content Include="ScoringEngine\templates\admin\team\list.html" />
+    <Content Include="ScoringEngine\templates\admin\user\add.html" />
+    <Content Include="ScoringEngine\templates\admin\user\edit.html" />
+    <Content Include="ScoringEngine\templates\admin\user\list.html" />
+    <Content Include="ScoringEngine\templates\admin\user\view.html" />
     <Content Include="ScoringEngine\templates\errors\404.html" />
     <Content Include="ScoringEngine\templates\errors\403.html" />
     <Content Include="ScoringEngine\templates\index.html" />

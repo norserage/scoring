@@ -1,5 +1,5 @@
-import ScoringEngine.db.tables
-from ScoringEngine.db import session
+import ScoringEngine.db.tables as tables
+from ScoringEngine.db import Session
 import json
 import ScoringEngine.utils
 import subprocess
@@ -7,6 +7,7 @@ import random
 from datetime import datetime
 
 def test(server, service):
+    session = Session()
     se = tables.ScoreEvent()
     se.serviceid = service.id;
     se.teamserverid = server.id;

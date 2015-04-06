@@ -1,11 +1,12 @@
 import ftplib
 import ScoringEngine.db.tables as tables
-from ScoringEngine.db import session
+from ScoringEngine.db import Session
 import ScoringEngine.utils as utils
 import json
 from datetime import datetime
 
 def test(server, service):
+    session=Session()
     se = tables.ScoreEvent()
     se.serviceid = service.id;
     se.teamserverid = server.id;
