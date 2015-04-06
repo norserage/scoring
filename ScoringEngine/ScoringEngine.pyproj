@@ -81,6 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+    <Content Include="scoring.fcgi">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="ScoringEngine\static\content\bootstrap.css" />
     <Content Include="ScoringEngine\static\content\bootstrap.min.css" />
     <Content Include="ScoringEngine\static\content\site.css" />
