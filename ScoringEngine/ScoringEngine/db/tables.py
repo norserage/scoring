@@ -84,11 +84,14 @@ class ServiceArg(Base):
     __tablename__ = 'serviceargs'
 
     id = Column(Integer, primary_key=True)
+    serverid = Column(Integer, ForeignKey('teamservers.id'))
     serviceid = Column(Integer, ForeignKey('services.id'))
     key = Column(String(50), nullable=False)
     value = Column(Text)
 
+    teamserver = relationship("TeamServer", backref=backref('serviceargs', order_by=id))
     service = relationship("Service", backref=backref('args', order_by=id))
+
 
 class PasswordDatabase(Base):
     __tablename__ = 'passdb'
@@ -109,4 +112,24 @@ class User(Base):
     password = Column(String(60), nullable=False)
     team = Column(Integer, nullable=False)
     group = Column(Integer, nullable=False)
-    
+
+    def getTeam(self):
+        if self.team != -1:
+            from ScoringEngine.db import Session
+            session = Session()
+            team = session.query(Team).filter(Team.id==self.team)
+            if team.count() > 0:
+                return team[0]
+        return "No Team"
+
+    def getGroupName(self):
+        if self.group == 1:
+            return "User"
+        elif self.group == 2:
+            return "2"
+        elif self.group == 3:
+            return "3"
+        elif self.group == 4:
+            return "4"
+        elif self.group == 5:
+            return "Admin"

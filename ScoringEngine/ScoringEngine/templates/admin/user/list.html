@@ -18,8 +18,8 @@
             <tr>
                 <td><a href="{{ url_for('adminuser',user=user.name) }}">{{ user.name }}</a></td>
                 <td>{{ user.username }}</td>
-                <td>{{ user.group }}</td>
-                <td></td>
+                <td>{{ user.getGroupName() }}</td>
+                <td>{{ user.getTeam() }}</td>
                 <td><a href="{{ url_for('edituser',user=user.name) }}">Edit</a></td>
             </tr>
             {% endfor %}
