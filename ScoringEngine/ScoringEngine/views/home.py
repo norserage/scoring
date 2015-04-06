@@ -7,7 +7,6 @@ from flask import render_template, session, redirect, url_for
 from ScoringEngine import app
 
 @app.route('/')
-@app.route('/home')
 def home():
     if 'user' in session:
         return redirect(url_for("portal"))
@@ -24,7 +23,6 @@ def about():
         title='About',
         year=datetime.now().year,
         message='Norser@g3 Inject Scoring Engine',
-
-            user=session['user'],
-            login='user' in session,
+        user=session['user'],
+        login='user' in session,
     )
