@@ -18,7 +18,7 @@
         </div>
         <div class="form-group">
             <label for="team">Team</label>
-            <select class="form-control">
+            <select class="form-control" name="team">
             <option value="-1">No Team</option>
             {% for team in teams %}
                 <option value="{{ team.id }}">{{ team.name }}</option>
@@ -28,7 +28,7 @@
 
         <div class="form-group">
             <label for="group">Group</label>
-            <select class="form-control">
+            <select class="form-control" name="group">
                 <option value="1">User</option>
                 <option value="2">2</option>
                 <option value="3">3</option>

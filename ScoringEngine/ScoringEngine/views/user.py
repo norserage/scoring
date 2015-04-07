@@ -16,7 +16,7 @@ def login():
         for user in users:
             if str(user.password).lower() == str(p.hexdigest()).lower():
                 #TODO create user session
-                session["user"] = {'name':user.name,'group':user.group,'team':user.team,'username':user.username}
+                session["user"] = {'id':user.id,'name':user.name,'group':user.group,'team':user.team,'username':user.username,'groupname':user.getGroupName()}
                 print "password correct"
                 return redirect("/portal")
         return render_template(
@@ -31,14 +31,23 @@ def login():
             year=datetime.now().year,
         )
 
+@app.route('/user/logout')
+def logout():
+    session.pop("user",None)
+    return redirect("/")
+
 @app.route('/user/<user>')
 def user(user):
-    """Renders the home page."""
-    return render_template(
-        'user/view.html',
-        title='Home Page',
-        year=datetime.now().year,
-        user=session['user'],
-        login='user' in session,
-    )
+    dbsession = Session()
+    users = dbsession.query(tables.User).filter(tables.User.username.ilike(user))
+    if users.count() > 0:
+        user = users[0]
+        return render_template(
+            'user/view.html',
+            title='Home Page',
+            year=datetime.now().year,
+            user=session['user'],
+            dbuser=user,
+            login='user' in session,
+        )
 

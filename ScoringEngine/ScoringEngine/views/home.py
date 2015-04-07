@@ -26,3 +26,8 @@ def about():
         user=session['user'],
         login='user' in session,
     )
+
+@app.route('/favicon.ico')
+def favicon():
+    """Renders the about page."""
+    return app.send_static_file("favicon.ico")

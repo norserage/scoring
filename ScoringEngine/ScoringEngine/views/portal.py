@@ -10,7 +10,7 @@ def portal():
     """Renders the home page."""
     return render_template(
         'portal/index.html',
-        title='Home Page',
+        title='Portal',
         year=datetime.now().year,
         user=session['user'],
         login='user' in session,

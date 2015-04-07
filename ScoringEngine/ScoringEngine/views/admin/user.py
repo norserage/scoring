@@ -41,7 +41,7 @@ def adduser():
         if request.method == 'POST':
             p = Crypto.Hash.MD5.new()
             p.update(request.form['password'])
-            u = tables.User
+            u = tables.User()
             u.name = request.form['name']
             u.username = request.form['username']
             u.password = p.hexdigest()

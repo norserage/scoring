@@ -12,7 +12,7 @@ def admin():
     if 'user' in session and session['user']['group'] == 5:
         return render_template(
             'admin/index.html',
-            title='Home Page',
+            title='Admin',
             year=datetime.now().year,
             enginestatus=ScoringEngine.engine.running,
             user=session['user'],
