@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask import render_template, request, session, redirect, url_for, escape
 from ScoringEngine.web import app
-from ScoringEngine.db import Session
+from ScoringEngine.db import Session, engine
 import ScoringEngine.db.tables as tables
 import ScoringEngine.utils
 import ScoringEngine.engine
@@ -17,6 +17,7 @@ def admin():
             enginestatus=ScoringEngine.engine.running,
             user=session['user'],
             login='user' in session,
+            driver=str(engine.driver),
         )
     else:
         return render_template(

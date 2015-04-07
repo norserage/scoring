@@ -3,16 +3,17 @@
 {% block content %}
 {% include "admin/menu.html" %}
 <div class="col-md-9">
-    <h2>
-        {{ team.name }}
-    </h2>
-    <h3 style="margin-top:10px">{{ team.network }}</h3>
-    {% if team.enabled %}
-    <span class="label label-success">Enabled</span>
-    {% else %}
-    <span class="label label-danger">Disabled</span>
-    {% endif %}
-    <br />
+    <div class="page-header">
+        <h1 style="float:left;margin-top:0px;">{{ team.name }} <small>{{ team.network }}</small></h1>
+        <div style="float:right">
+            {% if team.enabled %}
+            <span class="label label-success">Enabled</span>
+            {% else %}
+            <span class="label label-danger">Disabled</span>
+            {% endif %}
+        </div>
+        <div style="clear:both;"></div>
+    </div>
     <h4>Servers</h4>
     <table class="table">
         <thead>

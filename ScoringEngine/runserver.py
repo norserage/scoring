@@ -42,13 +42,15 @@ def arguments():
     elif args.env:
         env = args.env
 
+    ScoringEngine.conf.loadConf(config, env)
+
     if args.gen_db:
         import ScoringEngine.db
         import ScoringEngine.db.tables
         ScoringEngine.db.tables.Base.metadata.create_all(ScoringEngine.db.engine)
         return False
 
-    ScoringEngine.conf.loadConf(config, env)
+    
     return True
 
 if __name__ == '__main__':
