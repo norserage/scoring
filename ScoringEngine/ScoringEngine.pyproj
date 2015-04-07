@@ -50,6 +50,9 @@
     <Compile Include="ScoringEngine\views\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ScoringEngine\web.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScoringEngine\__init__.py" />
     <Compile Include="ScoringEngine\views\home.py" />
     <Compile Include="testers\DNS.py" />

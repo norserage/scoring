@@ -3,6 +3,7 @@ import yaml
 conf = {}
 
 def loadConf(config="conf.yaml",env=None):
+    global conf
     f = open(config,"r")
     c = yaml.load(f)
     f.close()

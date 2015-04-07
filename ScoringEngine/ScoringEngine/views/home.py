@@ -4,7 +4,7 @@ Routes and views for the flask application.
 
 from datetime import datetime
 from flask import render_template, session, redirect, url_for
-from ScoringEngine import app
+from ScoringEngine.web import app
 
 @app.route('/')
 def home():

@@ -11,14 +11,13 @@ sys.path.append("testers/")
  ^"""^"
 bug
 '''
-from os import environ
-from ScoringEngine import app
-#from ScoringEngine import engine
+
+import ScoringEngine
 import ScoringEngine.conf
-from ScoringEngine.conf import conf
 import argparse
 
 def arguments():
+    global ScoringEngine
     parser = argparse.ArgumentParser(description='Lepus ISE v2.5')
     parser.add_argument('-e','--env', help='Environment', required=False)
     parser.add_argument('-c','--config', help='Specify the config file', required=False)
@@ -54,6 +53,9 @@ def arguments():
 
 if __name__ == '__main__':
     if arguments():
+        from ScoringEngine.conf import conf
+        from os import environ
+        from ScoringEngine.web import app
         HOST = environ.get('SERVER_HOST', conf['listen'])
         try:
             PORT = int(environ.get('SERVER_PORT', str(conf['port'])))

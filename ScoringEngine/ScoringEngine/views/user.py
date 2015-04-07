@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask import render_template, request, session, redirect
-from ScoringEngine import app
+from ScoringEngine.web import app
 from ScoringEngine.db import Session
 import ScoringEngine.db.tables as tables
 import ScoringEngine.utils
