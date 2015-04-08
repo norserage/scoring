@@ -109,16 +109,21 @@ def adminuser(user):
 def edituser(user):
     if 'user' in session and session['user']['group'] == 5:
         dbsession = Session()
-        teams = dbsession.query(tables.Team).filter(tables.Team.name.ilike(team))
-        if teams.count() > 0:
-            team = teams[0]
+        users = dbsession.query(tables.User).filter(tables.User.name.ilike(user))
+        if users.count() > 0:
+            dbuser = users[0]
             if request.method == 'POST':
-                team.name = request.form['name']
-                team.network = request.form['network']
-                team.enabled = 'enabled' in request.form
+                dbuser.name = request.form["name"]
+                dbuser.username = request.form["username"]
+                dbuser.team = request.form["team"]
+                dbuser.group = request.form["group"]
+                if str(request.form["password"]).strip() != "":
+                    m = Crypto.Hash.MD5.new()
+                    m.update(request.form["password"])
+                    dbuser.password = m.hexdigest()
                 #team.save()
                 dbsession.commit()
-                return redirect(url_for('team',team=team.name))
+                return redirect(url_for('adminuser',user=dbuser.name))
             else:
                 return render_template(
                     'admin/user/edit.html',
@@ -126,16 +131,16 @@ def edituser(user):
                     year=datetime.now().year,
                     user=session['user'],
                     login='user' in session,
-                    team=team
+                    dbuser=dbuser
                 )
         else:
             return render_template(
                 'admin/404.html',
-                title='404 Team Not Found',
+                title='404 User Not Found',
                 year=datetime.now().year,
                 user=session['user'],
                 login='user' in session,
-                message="We could not find the team that you were looking for."
+                message="We could not find the user that you were looking for."
             )
     else:
         return render_template(

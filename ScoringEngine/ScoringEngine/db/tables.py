@@ -119,7 +119,7 @@ class User(Base):
             session = Session()
             team = session.query(Team).filter(Team.id==self.team)
             if team.count() > 0:
-                return team[0]
+                return team[0].name
         return "No Team"
 
     def getGroupName(self):
@@ -128,8 +128,8 @@ class User(Base):
         elif self.group == 2:
             return "2"
         elif self.group == 3:
-            return "3"
+            return "Judge"
         elif self.group == 4:
-            return "4"
+            return "Manager"
         elif self.group == 5:
             return "Admin"
