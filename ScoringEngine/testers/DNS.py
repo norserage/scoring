@@ -20,13 +20,13 @@ def test(server, service):
         dnsentry = ser['dns']
         ip = ser['ip']
         sp = subprocess.Popen(["nslookup",dnsentry,server.getIP()],stdout=subprocess.PIPE)
-        lines = sp.sdtout
+        lines = sp.stdout
         sp.wait()
         l = lines.readLines()
 
         for i in range(2,l.count-1):
             line = l[i]
-            if (line.contains(ip)):
+            if line.contains(ip):
                 se.up = True
                 return
 
