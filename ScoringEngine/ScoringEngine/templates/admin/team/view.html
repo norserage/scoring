@@ -20,6 +20,7 @@
             <tr>
                 <th>Name</th>
                 <th>IP</th>
+                <th>Enabled</th>
             </tr>
         </thead>
         <tbody>
@@ -27,6 +28,13 @@
             <tr>
                 <td>{{ server.server.name }}</td>
                 <td>{{ server.getIP() }}</td>
+                <td>
+                    {% if server.server.enabled %}
+                    <span class="label label-success">Enabled</span>
+                    {% else %}
+                    <span class="label label-danger">Disabled</span>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>

@@ -5,23 +5,27 @@
 <div class="col-md-9">
     <form method="post">
         <div class="form-group">
-            <label for="name">Team Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Team Name" name="name" value="{{ team.name }}">
+            <label for="name">Server Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Server Name" name="name" value="{{ server.name }}">
         </div>
         <div class="form-group">
-            <label for="network">Network</label>
-            <input type="text" class="form-control" id="network" placeholder="10.255.{3}.{4}" name="network" value="{{ team.network }}">
+            <label for="ip3">IP_3</label>
+            <input type="text" class="form-control" id="ip3" placeholder="10.255.{3}.{4}" name="ip3" value="{% if server.ip_3 != None %}{{ server.ip_3 }}{% endif %}">
+        </div>
+        <div class="form-group">
+            <label for="ip4">IP_4</label>
+            <input type="text" class="form-control" id="ip4" placeholder="10.255.{3}.{4}" name="ip4" value="{{ server.ip_4 }}">
         </div>
         <div class="checkbox">
             <label>
-                {% if team.enabled %}
+                {% if server.enabled %}
                 <input type="checkbox" name="enabled" checked>Enabled
                 {% else %}
                 <input type="checkbox" name="enabled">Enabled
                 {% endif %}
             </label>
         </div>
-        <button type="submit" class="btn btn-default">Edit</button>
+        <button type="submit" class="btn btn-default">Save</button>
     </form>
 </div>
 {% endblock %}

@@ -29,8 +29,8 @@
             {% for cell in row %}
                 {% if cell == "up" %}
                 <td class="success">{{ cell }}</td>
-                {% elif cell == "" %}
-                <td class="active">{{ cell }}</td>
+                {% elif cell == "" or cell == None %}
+                <td class="active">N/A</td>
                 {% elif cell == "down" %}
                 <td class="danger">{{ cell }}</td>
                 {% else %}

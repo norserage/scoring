@@ -24,11 +24,14 @@ def portal():
                 if teamservers.count() > 0:
                     teamserver = teamservers[0]
                     score = dbsession.query(tables.ScoreEvent).filter(tables.and_(tables.ScoreEvent.serviceid == service.id, tables.ScoreEvent.teamserverid == teamserver.id)).order_by(tables.ScoreEvent.scoretime.desc()).limit(1)
-                    s = score[0]
-                    if s.up:
-                        row.append("up")
+                    if score.count() > 0:
+                        s = score[0]
+                        if s.up:
+                            row.append("up")
+                        else:
+                            row.append("down")
                     else:
-                        row.append("down")
+                        row.append("")
                 else:
                     row.append(None)
         data.append(row)

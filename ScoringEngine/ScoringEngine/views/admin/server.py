@@ -105,33 +105,37 @@ def server(server):
 def editserver(server):
     if 'user' in session and session['user']['group'] == 5:
         dbsession = Session()
-        teams = dbsession.query(tables.Team).filter(tables.Team.name.ilike(team))
-        if teams.count() > 0:
-            team = teams[0]
+        servers = dbsession.query(tables.Server).filter(tables.Server.id == server)
+        if servers.count() > 0:
+            server = servers[0]
             if request.method == 'POST':
-                team.name = request.form['name']
-                team.network = request.form['network']
-                team.enabled = 'enabled' in request.form
+                server.name = request.form['name']
+                if request.form['ip3'].strip() == "":
+                    server.ip_3 = None
+                else:
+                    server.ip_3 = request.form['ip3']
+                server.ip_4 = request.form['ip4']
+                server.enabled = 'enabled' in request.form
                 #team.save()
                 dbsession.commit()
-                return redirect(url_for('team',team=team.name))
+                return redirect(url_for('server',server=server.id))
             else:
                 return render_template(
-                    'admin/team/edit.html',
+                    'admin/server/edit.html',
                     title='Edit Team',
                     year=datetime.now().year,
                     user=session['user'],
                     login='user' in session,
-                    team=team
+                    server=server
                 )
         else:
             return render_template(
                 'admin/404.html',
-                title='404 Team Not Found',
+                title='404 Server Not Found',
                 year=datetime.now().year,
                 user=session['user'],
                 login='user' in session,
-                message="We could not find the team that you were looking for."
+                message="We could not find the server that you were looking for."
             )
     else:
         return render_template(
