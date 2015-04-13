@@ -16,7 +16,7 @@ def servers():
         """Renders the home page."""
         return render_template(
             'admin/server/list.html',
-            title='Home Page',
+            title='Servers',
             year=datetime.now().year,
             enginestatus=ScoringEngine.engine.running,
             user=session['user'],
@@ -38,17 +38,21 @@ def addserver():
     if 'user' in session and session['user']['group'] == 5:
         if request.method == 'POST':
             dbsession = Session()
-            t = tables.Team()
-            t.name = request.form['name']
-            t.network = request.form['network']
-            t.enabled = 'enabled' in request.form
-            dbsession.add(t)
+            s = tables.Server()
+            s.name = request.form['name']
+            if request.form['ip3'].strip() == "":
+                s.ip_3 = None
+            else:
+                s.ip_3 = request.form['ip3']
+            s.ip_4 = request.form['ip4']
+            s.enabled = 'enabled' in request.form
+            dbsession.add(s)
             dbsession.commit()
-            return redirect(url_for('teams'))
+            return redirect(url_for('servers'))
         else:
             return render_template(
-                'admin/team/add.html',
-                title='Add Team',
+                'admin/server/add.html',
+                title='Add Server',
                 year=datetime.now().year,
                 user=session['user'],
                 login='user' in session,
@@ -143,35 +147,38 @@ def editserver(server):
 def serveraddservice(server):
     if 'user' in session and session['user']['group'] == 5:
         dbsession = Session()
-        teams = dbsession.query(tables.Team).filter(tables.Team.name.ilike(team))
-        if teams.count() > 0:
-            team = teams[0]
+        servers = dbsession.query(tables.Server).filter(tables.Server.id == server)
+        if servers.count() > 0:
+            server = servers[0]
             if request.method == 'POST':
-                s = tables.TeamServer()
-                s.serverid = request.form['server']
-                s.teamid = team.id
+                s = tables.Service()
+                s.serverid = server.id
+                s.name = request.form['name']
+                s.typeid = request.form['type']
+                s.port = request.form['port']
+                s.enabled = 'enabled' in request.form
                 dbsession.add(s)
                 dbsession.commit()
-                return redirect(url_for('team',team=team.name))
+                return redirect(url_for('server',server=server.id))
             else:
-                servers = dbsession.query(tables.Server).filter(~tables.Server.teams.any(tables.TeamServer.teamid==team.id))
+                types = dbsession.query(tables.ServiceType).order_by(tables.ServiceType.name.asc()).all()
                 return render_template(
-                    'admin/team/addserver.html',
+                    'admin/server/addservice.html',
                     title='Add Server',
                     year=datetime.now().year,
                     user=session['user'],
                     login='user' in session,
-                    team=team,
-                    servers=servers
+                    types=types,
+                    server=server
                 )
         else:
             return render_template(
                 'admin/404.html',
-                title='404 Team Not Found',
+                title='404 Server Not Found',
                 year=datetime.now().year,
                 user=session['user'],
                 login='user' in session,
-                message="We could not find the team that you were looking for."
+                message="We could not find the server that you were looking for."
             )
     else:
         return render_template(

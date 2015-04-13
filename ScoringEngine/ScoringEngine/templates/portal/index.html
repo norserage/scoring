@@ -27,15 +27,15 @@
     {% for row in data %}
         <tr>
             {% for cell in row %}
-            {% if cell == "up" %}
-            <td class="success">{{ cell }}</td>
-            {% elif cell == "" %}
-            <td class="active">{{ cell }}</td>
-            {% elif cell == "down" %}
-            <td class="danger">{{ cell }}</td>
-            {% else %}
-            <th>{{ cell }}</th>
-            {% endif %}
+                {% if cell == "up" %}
+                <td class="success">{{ cell }}</td>
+                {% elif cell == "" %}
+                <td class="active">{{ cell }}</td>
+                {% elif cell == "down" %}
+                <td class="danger">{{ cell }}</td>
+                {% else %}
+                <th>{{ cell }}</th>
+                {% endif %}
             {% endfor %}
         </tr>
     {% endfor %}
