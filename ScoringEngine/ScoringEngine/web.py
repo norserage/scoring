@@ -11,4 +11,5 @@ import ScoringEngine.views.admin
 import ScoringEngine.views.admin.team
 import ScoringEngine.views.admin.user
 import ScoringEngine.views.admin.server
+import ScoringEngine.views.admin.service
 import ScoringEngine.views.portal
