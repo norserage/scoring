@@ -20,7 +20,7 @@ def test(server, service):
         to_email = utils.getRandomEmail(session, conf['passdb'])
         smtp.sendmail(user['email'],to_email,"This is the test email")
         se.up = True
-        se.info = ftp.nlst()
+        #se.info = smtp.ehlo_msg
     except Exception as ep:
         se.info = ep.message
         se.up = False

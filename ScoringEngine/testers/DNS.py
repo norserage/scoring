@@ -25,8 +25,7 @@ def test(server, service):
         sp.wait()
         l = lines.readLines()
 
-        for i in range(2,l.count-1):
-            line = l[i]
+        for line in l[2:]:
             if line.contains(ip):
                 se.up = True
                 return
