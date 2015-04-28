@@ -120,7 +120,7 @@
     <Content Include="ScoringEngine\templates\admin\index.html" />
     <Content Include="ScoringEngine\templates\admin\menu.html" />
     <Content Include="ScoringEngine\templates\admin\server\add.html" />
-    <Content Include="ScoringEngine\templates\admin\server\addserver.html" />
+    <Content Include="ScoringEngine\templates\admin\server\addservice.html" />
     <Content Include="ScoringEngine\templates\admin\server\edit.html" />
     <Content Include="ScoringEngine\templates\admin\server\list.html" />
     <Content Include="ScoringEngine\templates\admin\server\view.html" />

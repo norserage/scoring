@@ -16,7 +16,8 @@ def test(server, service):
         confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==server.team.id+'conf'))
         conf = json.loads(confpair.value)
         servers = conf['servers']
-        ser = servers[random.randint(0,servers.length)]
+        ser = random.choice(servers)
+        #ser = servers[random.randint(0,servers.length)]
         dnsentry = ser['dns']
         ip = ser['ip']
         sp = subprocess.Popen(["nslookup",dnsentry,server.getIP()],stdout=subprocess.PIPE)
