@@ -193,3 +193,47 @@ def serveraddservice(server):
             login='user' in session,
             message="You do not have permission to use this resource"
         )
+
+@app.route('/admin/server/<server>/editservice/<service>',methods=['GET','POST'])
+def servereditservice(server,service):
+    if 'user' in session and session['user']['group'] == 5:
+        dbsession = Session()
+        services = dbsession.query(tables.Service).filter(tables.Service.id == service)
+        if services.count() > 0:
+            service = services[0]
+            if request.method == 'POST':
+                service.name = request.form['name']
+                service.typeid = request.form['type']
+                service.port = request.form['port']
+                service.enabled = 'enabled' in request.form
+                dbsession.commit()
+                return redirect(url_for('server',server=server))
+            else:
+                types = dbsession.query(tables.ServiceType).order_by(tables.ServiceType.name.asc()).all()
+                return render_template(
+                    'admin/server/editservice.html',
+                    title='Edit Server',
+                    year=datetime.now().year,
+                    user=session['user'],
+                    login='user' in session,
+                    types=types,
+                    service=service
+                )
+        else:
+            return render_template(
+                'admin/404.html',
+                title='404 Server Not Found',
+                year=datetime.now().year,
+                user=session['user'],
+                login='user' in session,
+                message="We could not find the server that you were looking for."
+            )
+    else:
+        return render_template(
+            'errors/403.html',
+            title='403 Access Denied',
+            year=datetime.now().year,
+            user=session['user'],
+            login='user' in session,
+            message="You do not have permission to use this resource"
+        )

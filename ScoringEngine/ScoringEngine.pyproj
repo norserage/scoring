@@ -44,6 +44,7 @@
     </Compile>
     <Compile Include="ScoringEngine\utils.py" />
     <Compile Include="ScoringEngine\views\admin\server.py" />
+    <Compile Include="ScoringEngine\views\admin\service.py" />
     <Compile Include="ScoringEngine\views\admin\user.py" />
     <Compile Include="ScoringEngine\views\admin\team.py" />
     <Compile Include="ScoringEngine\views\admin\__init__.py" />
@@ -74,6 +75,7 @@
     <Folder Include="ScoringEngine\report\" />
     <Folder Include="ScoringEngine\templates\admin\" />
     <Folder Include="ScoringEngine\templates\admin\server\" />
+    <Folder Include="ScoringEngine\templates\admin\service\" />
     <Folder Include="ScoringEngine\templates\admin\team\" />
     <Folder Include="ScoringEngine\templates\admin\user\" />
     <Folder Include="ScoringEngine\templates\errors\" />
@@ -120,10 +122,15 @@
     <Content Include="ScoringEngine\templates\admin\index.html" />
     <Content Include="ScoringEngine\templates\admin\menu.html" />
     <Content Include="ScoringEngine\templates\admin\server\add.html" />
+    <Content Include="ScoringEngine\templates\admin\server\editservice.html" />
     <Content Include="ScoringEngine\templates\admin\server\addservice.html" />
     <Content Include="ScoringEngine\templates\admin\server\edit.html" />
     <Content Include="ScoringEngine\templates\admin\server\list.html" />
     <Content Include="ScoringEngine\templates\admin\server\view.html" />
+    <Content Include="ScoringEngine\templates\admin\service\add.html" />
+    <Content Include="ScoringEngine\templates\admin\service\addservice.html" />
+    <Content Include="ScoringEngine\templates\admin\service\edit.html" />
+    <Content Include="ScoringEngine\templates\admin\service\list.html" />
     <Content Include="ScoringEngine\templates\admin\team\edit.html" />
     <Content Include="ScoringEngine\templates\admin\team\addserver.html" />
     <Content Include="ScoringEngine\templates\admin\team\view.html" />
@@ -139,6 +146,7 @@
     <Content Include="ScoringEngine\templates\index.html" />
     <Content Include="ScoringEngine\templates\layout.html" />
     <Content Include="ScoringEngine\templates\portal\index.html" />
+    <Content Include="ScoringEngine\templates\user\changepass.html" />
     <Content Include="ScoringEngine\templates\user\login.html" />
     <Content Include="ScoringEngine\templates\user\view.html" />
   </ItemGroup>
