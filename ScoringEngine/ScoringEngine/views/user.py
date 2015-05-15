@@ -23,6 +23,7 @@ def login():
             'user/login.html',
             title='Home Page',
             year=datetime.now().year,
+            error="User/Password Incorrect"
         )
     else:
         return render_template(
