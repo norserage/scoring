@@ -16,5 +16,6 @@ import ScoringEngine.views.portal
 
 def setupApp():
     global app
+    from ScoringEngine.conf import conf
     app.debug = conf['debug']
     app.secret_key = conf['secret']
