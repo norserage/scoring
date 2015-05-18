@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include "admin/menu.html" %}
+<h2>Edit {{ service.name }} on {{ service.server.name }}</h2>
+<div class="col-md-9">
+    <form method="post">
+        <div class="form-group">
+            <label for="name">Service Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Service Name" name="name" value="{{ service.name }}">
+        </div>
+        <div class="form-group">
+            <label for="port">Port</label>
+            <input type="number" class="form-control" id="port" placeholder="Port" name="port" value="{{ service.port }}">
+        </div>
+        <div class="form-group">
+            <label for="type">Type</label>
+            <select class="form-control" name="type" id="type">
+            {% for type in types %}
+                {% if type.id == service.typeid %}
+                    <option value="{{ type.id }}" selected>{{ type.name }}</option>
+                {% else %}
+                    <option value="{{ type.id }}">{{ type.name }}</option>
+                {% endif %}
+            {% endfor %}
+            </select>
+        </div>
+        <div class="checkbox">
+            <label>
+                {% if service.enabled %}
+                    <input type="checkbox" name="enabled" checked>Enabled
+                {% else %}
+                    <input type="checkbox" name="enabled">Enabled
+                {% endif %}
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default">Edit</button>
+    </form>
+</div>
+{% endblock %}

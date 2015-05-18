@@ -1,0 +1,10 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>{{ dbuser.name }}</h2>
+<h3>{{ dbuser.username }}</h3>
+<h4>{{ dbuser.getTeam() }}</h4>
+<h4>{{ dbuser.getGroupName() }}</h4>
+
+{% endblock %}

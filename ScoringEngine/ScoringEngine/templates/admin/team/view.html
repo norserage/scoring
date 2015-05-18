@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include "admin/menu.html" %}
+<div class="col-md-9">
+    <div class="page-header">
+        <h1 style="float:left;margin-top:0px;">{{ team.name }} <small>{{ team.network }}</small></h1>
+        <div style="float:right">
+            {% if team.enabled %}
+            <span class="label label-success">Enabled</span>
+            {% else %}
+            <span class="label label-danger">Disabled</span>
+            {% endif %}
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+    <h4>Servers</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>IP</th>
+                <th>Enabled</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for server in team.servers %}
+            <tr>
+                <td>{{ server.server.name }}</td>
+                <td>{{ server.getIP() }}</td>
+                <td>
+                    {% if server.server.enabled %}
+                    <span class="label label-success">Enabled</span>
+                    {% else %}
+                    <span class="label label-danger">Disabled</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <a class="btn btn-default" href="{{ url_for('teamaddserver',team=team.name) }}">Add</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    
+</div>
+{% endblock %}

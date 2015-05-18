@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include "admin/menu.html" %}
+<div class="col-md-9">
+    <div class="page-header">
+        <h1>Service Types</h1>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Tester</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in services %}
+            <tr>
+                <td>{{ service.name }}</td>
+                <td>{{ service.tester }}</td>
+                <td><a href="{{ url_for('editservice',service=service.id) }}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><a href="{{ url_for('addservice') }}" class="btn btn-default">Add</a></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}

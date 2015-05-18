@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include "admin/menu.html" %}
+<div class="col-md-9">
+    <div class="page-header">
+        <h1>Users</h1>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Group</th>
+                <th>Team</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td><a href="{{ url_for('adminuser',user=user.name) }}">{{ user.name }}</a></td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.getGroupName() }}</td>
+                <td>{{ user.getTeam() }}</td>
+                <td><a href="{{ url_for('edituser',user=user.name) }}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><a href="{{ url_for('adduser') }}" class="btn btn-default">Add</a></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}
