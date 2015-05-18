@@ -6,4 +6,4 @@ from ScoringEngine.web import app
 
 if __name__ == '__main__':
 	ScoringEngine.conf.loadConf(config, env)
-    WSGIServer(app, bindAddress='/tmp/scoring.sock').run()
+	WSGIServer(app, bindAddress='/tmp/scoring.sock').run()
