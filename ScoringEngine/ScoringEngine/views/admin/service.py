@@ -67,28 +67,22 @@ def addservice():
 def editservice(service):
     if 'user' in session and session['user']['group'] == 5:
         dbsession = Session()
-        servers = dbsession.query(tables.Server).filter(tables.Server.id == server)
-        if servers.count() > 0:
-            server = servers[0]
+        services = dbsession.query(tables.ServiceType).filter(tables.ServiceType.id == service)
+        if services.count() > 0:
+            service = services[0]
             if request.method == 'POST':
-                server.name = request.form['name']
-                if request.form['ip3'].strip() == "":
-                    server.ip_3 = None
-                else:
-                    server.ip_3 = request.form['ip3']
-                server.ip_4 = request.form['ip4']
-                server.enabled = 'enabled' in request.form
-                #team.save()
+                service.name = request.form['name']
+                service.tester = request.form['tester']
                 dbsession.commit()
-                return redirect(url_for('server',server=server.id))
+                return redirect(url_for('services'))
             else:
                 return render_template(
-                    'admin/server/edit.html',
+                    'admin/service/edit.html',
                     title='Edit Team',
                     year=datetime.now().year,
                     user=session['user'],
                     login='user' in session,
-                    server=server
+                    service=service
                 )
         else:
             return render_template(
@@ -97,7 +91,7 @@ def editservice(service):
                 year=datetime.now().year,
                 user=session['user'],
                 login='user' in session,
-                message="We could not find the server that you were looking for."
+                message="We could not find the service that you were looking for."
             )
     else:
         return render_template(
