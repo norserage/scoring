@@ -3,7 +3,7 @@ This script runs the ScoringEngine application using a development server.
 """
 import sys
 sys.path.append("testers/")
-# Note we did not loose the bug
+# We did not loose the bug!!!!!!!!!!
 '''
        / .'
  .---. \/
@@ -48,6 +48,7 @@ def arguments():
         import ScoringEngine.db
         import ScoringEngine.db.tables
         ScoringEngine.db.tables.Base.metadata.create_all(ScoringEngine.db.engine)
+        ScoringEngine.db.createUser("Administrator", "admin", "admin", -1, 5)
         return False
 
     
