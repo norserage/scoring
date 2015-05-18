@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
-    <Content Include="scoring.fcgi">
+    <Content Include="scoring.fcgi.py">
       <SubType>Code</SubType>
     </Content>
     <Content Include="ScoringEngine\static\content\bootstrap.css" />
