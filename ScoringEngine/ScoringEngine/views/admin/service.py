@@ -38,21 +38,16 @@ def addservice():
     if 'user' in session and session['user']['group'] == 5:
         if request.method == 'POST':
             dbsession = Session()
-            s = tables.Server()
-            s.name = request.form['name']
-            if request.form['ip3'].strip() == "":
-                s.ip_3 = None
-            else:
-                s.ip_3 = request.form['ip3']
-            s.ip_4 = request.form['ip4']
-            s.enabled = 'enabled' in request.form
-            dbsession.add(s)
+            st = tables.ServiceType()
+            st.name = request.form['name']
+            st.tester = request.form['tester']
+            dbsession.add(st)
             dbsession.commit()
-            return redirect(url_for('servers'))
+            return redirect(url_for('services'))
         else:
             return render_template(
-                'admin/server/add.html',
-                title='Add Server',
+                'admin/service/add.html',
+                title='Add Service Type',
                 year=datetime.now().year,
                 user=session['user'],
                 login='user' in session,

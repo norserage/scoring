@@ -128,7 +128,6 @@
     <Content Include="ScoringEngine\templates\admin\server\list.html" />
     <Content Include="ScoringEngine\templates\admin\server\view.html" />
     <Content Include="ScoringEngine\templates\admin\service\add.html" />
-    <Content Include="ScoringEngine\templates\admin\service\addservice.html" />
     <Content Include="ScoringEngine\templates\admin\service\edit.html" />
     <Content Include="ScoringEngine\templates\admin\service\list.html" />
     <Content Include="ScoringEngine\templates\admin\team\edit.html" />

@@ -23,6 +23,8 @@ def arguments():
     parser.add_argument('-c','--config', help='Specify the config file', required=False)
     parser.add_argument('--gen-config', help='Generates a new default config file', required=False, action='store_true')
     parser.add_argument('--gen-db', help='Imports the schema into a database', required=False, action='store_true')
+    parser.add_argument('--erase-db', help='Clears all data in the database', required=False, action='store_true')
+    parser.add_argument('--clear-scoredata', help='Clears all score data', required=False, action='store_true')
     parser.add_argument('-v','--version', help='Generates a new default config file', required=False, action='store_true')
     
     args = parser.parse_args()
@@ -51,6 +53,16 @@ def arguments():
         ScoringEngine.db.createUser("Administrator", "admin", "admin", -1, 5)
         return False
 
+    if args.erase_db:
+        import ScoringEngine.db
+        from sqlalchemy import delete, and_, text
+        from sqlalchemy import table, literal_column
+        
+        return False
+        
+    if args.clear_scoredata:
+
+        return False
     
     return True
 
