@@ -1,4 +1,5 @@
 import yaml
+import pprint
 
 conf = {}
 
@@ -7,10 +8,12 @@ def loadConf(config="conf.yaml",env=None):
     f = open(config,"r")
     c = yaml.load(f)
     f.close()
+    pprint.pprint(c)
     if env != None:
         conf = c[env]
     else:
         conf = c[c['env']]
+    pprint.pprint(conf)
 
 
 def newConf(config="conf.yaml"):
