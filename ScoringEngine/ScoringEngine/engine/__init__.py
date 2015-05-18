@@ -21,7 +21,7 @@ def score():
     for server in session.query(tables.TeamServer).all():
         print server
         if (server.server.enabled):
-            for service in session.query(tables.Service).filter(tables.Service.serverid==server.server.id):
+            for service in session.query(tables.Service).filter(tables.and_(tables.Service.serverid==server.server.id,tables.Service.enabled==True)):
                 print service.type.tester
                 m=__import__(service.type.tester)
                 func = getattr(m, "test")
