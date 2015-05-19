@@ -15,5 +15,4 @@ import ScoringEngine
 import os
 
 if __name__ == '__main__':
-    os.fork()
     ScoringEngine.fcgimain()
