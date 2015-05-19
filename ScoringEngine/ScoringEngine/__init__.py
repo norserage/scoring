@@ -79,4 +79,4 @@ def fcgimain():
         from flup.server.fcgi import WSGIServer
         pathSetup()
         setupApp()
-        WSGIServer(app, bindAddress=conf['fcgi']['socket']).run()
+        WSGIServer(app).run()
