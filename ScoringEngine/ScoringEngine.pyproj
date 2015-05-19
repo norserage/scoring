@@ -30,7 +30,6 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="daemon.py" />
     <Compile Include="runserver.py" />
     <Compile Include="ScoringEngine\conf\__init__.py" />
     <Compile Include="ScoringEngine\db\tables.py" />
