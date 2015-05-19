@@ -1,6 +1,5 @@
 Flask
 mechanize
-MySQL-python
 pyaml
 PyYAML
 SQLAlchemy
