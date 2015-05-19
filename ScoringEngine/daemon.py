@@ -16,4 +16,4 @@ import os
 
 if __name__ == '__main__':
     os.fork()
-    ScoringEngine.main()
+    ScoringEngine.fcgimain()
