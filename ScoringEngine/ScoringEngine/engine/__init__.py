@@ -14,7 +14,9 @@ def thread_start():
     while running:
         print "loop"
         score()
-        threading._sleep(random.randint(120,240))
+        i = random.randint(120,240)
+        print "sleeping for %i" % (i)
+        threading._sleep(i)
 
 def score():
     session = Session()

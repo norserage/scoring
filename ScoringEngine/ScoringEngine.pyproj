@@ -98,6 +98,7 @@
     <Content Include="ScoringEngine\static\content\bootstrap.css" />
     <Content Include="ScoringEngine\static\content\bootstrap.min.css" />
     <Content Include="ScoringEngine\static\content\site.css" />
+    <Content Include="ScoringEngine\static\favicon.ico" />
     <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.ttf" />

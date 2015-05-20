@@ -32,6 +32,7 @@ def login():
             year=datetime.now().year,
         )
 
+@app.route("/logout")
 @app.route('/user/logout')
 def logout():
     session.pop("user",None)
@@ -84,7 +85,17 @@ def changeuserpassword(user):
                     m = Crypto.Hash.MD5.new()
                     m.update(request.form["password"])
                     user.password = m.hexdigest()
-                return redirect(url_for("user",user=user.username))
+                    return redirect(url_for("user",user=user.username))
+                else:
+                    return render_template(
+                        'user/changepass.html',
+                        title='Home Page',
+                        year=datetime.now().year,
+                        user=session['user'],
+                        dbuser=user,
+                        login='user' in session,
+                        error="Passwords do not match."
+                    )
             else:
                 return render_template(
                     'user/changepass.html',

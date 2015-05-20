@@ -44,6 +44,9 @@
 
 <form class="form-signin" method="post">
     <h2 class="form-signin-heading">Please enter the new password:</h2>
+    {% if error %}
+    <div class="alert alert-danger" role="alert">{{ error }}</div>
+    {% endif %}
     <label for="inputEmail" class="sr-only">Password</label>
     <input type="password" id="inputPassword" class="form-control" placeholder="Password" required autofocus name="password">
     <label for="inputPassword2" class="sr-only">Password</label>

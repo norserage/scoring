@@ -1,7 +1,9 @@
-import ScoringEngine.conf
-import argparse
+VERSION = 2.6
+VERSIONSTR = "Lepus ISE v%d DEV" % (VERSION)
 
 def arguments():
+    import ScoringEngine.conf
+    import argparse
     global ScoringEngine
     parser = argparse.ArgumentParser(description='Lepus ISE v2.5')
     parser.add_argument('-e','--env', help='Environment', required=False)
@@ -21,7 +23,7 @@ def arguments():
         config = args.config
 
     if args.version:
-        print "Lepus ISE v2.5"
+        print VERSIONSTR
         return False
     elif args.gen_config:
         ScoringEngine.conf.newConf(config)
