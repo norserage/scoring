@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import render_template, request, session, redirect
+from flask import render_template, request, session, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.db import Session
 import ScoringEngine.db.tables as tables
@@ -83,8 +83,8 @@ def changeuserpassword(user):
                 if request.form['password'] == request.form['password2']:
                     m = Crypto.Hash.MD5.new()
                     m.update(request.form["password"])
-                    dbuser.password = m.hexdigest()
-                return redirect(url_for("user",user=user.name))
+                    user.password = m.hexdigest()
+                return redirect(url_for("user",user=user.username))
             else:
                 return render_template(
                     'user/changepass.html',
