@@ -39,6 +39,9 @@
     <Compile Include="ScoringEngine\engine\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ScoringEngine\logger.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScoringEngine\report\__init__.py">
       <SubType>Code</SubType>
     </Compile>

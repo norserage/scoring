@@ -1,10 +1,11 @@
 VERSION = 2.6
 VERSIONSTR = "Lepus ISE v%d DEV" % (VERSION)
+'''
 
+'''
 def arguments():
     import ScoringEngine.conf
     import argparse
-    global ScoringEngine
     parser = argparse.ArgumentParser(description='Lepus ISE v2.5')
     parser.add_argument('-e','--env', help='Environment', required=False)
     parser.add_argument('-c','--config', help='Specify the config file', required=False)
