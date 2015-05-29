@@ -1,4 +1,4 @@
-import datetime
+import time
 from enum import Enum
 
 class LogSeverity(Enum):
@@ -11,23 +11,22 @@ class LogSeverity(Enum):
     alert = 7
     emrg = 8
 
+LogSeverityText={
+    LogSeverity.debug: "DEBUG",
+
+    }
+
 class LogWriter():
     
     def __init__(self, level):
         self.level = level
 
     def log(self, severity, module, message):
-        if severity >= self.level:
-            write("{date} {level} {"
-
-    def log(self, severity, message):
-        self.log(severity, "", message)
+        if severity.value >= self.level.value:
+            self.write("{level} {module}: {message}".format(level=severity.name.upper(), module=module, message=message))
 
     def logDebug(self, module, message):
-        log(LogSeverity.debug, module, message)
-
-    def logDebug(self, message):
-        logDebug("", message)
+        self.log(LogSeverity.debug, module, message)
 
     def write(self, text):
         pass
@@ -36,7 +35,7 @@ class MultiWriter(LogWriter):
     writers = []
 
     def __init__(self):
-        return super(MultiWriter, self).__init__(LogSeverity.debug)
+        self.level = LogSeverity.debug
 
     def addWriter(self, writer):
         self.writers.append(writer)
@@ -54,5 +53,5 @@ class FileWriter(LogWriter):
         pass
 
 
-logger = MultiWriter()
-logger.addWriter(ConsoleWriter(LogSeverity.debug))
+#logger = MultiWriter()
+#logger.addWriter(ConsoleWriter(LogSeverity.debug))
