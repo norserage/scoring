@@ -13,44 +13,58 @@ class LogSeverity(Enum):
 
 LogSeverityText={
     LogSeverity.debug: "DEBUG",
-
+    LogSeverity.info: "INFO",
+    LogSeverity.notice: "NOTICE",
+    LogSeverity.warning: "WARNING",
+    LogSeverity.err: "ERROR",
+    LogSeverity.crit: "CRITICAL",
+    LogSeverity.alert: "ALERT",
+    LogSeverity.emrg: "EMRG"
     }
 
-class LogWriter():
+class LogWriter(object):
     
     def __init__(self, level):
         self.level = level
 
     def log(self, severity, module, message):
-        if severity.value >= self.level.value:
-            self.write("{level} {module}: {message}".format(level=severity.name.upper(), module=module, message=message))
+        pass
 
     def logDebug(self, module, message):
         self.log(LogSeverity.debug, module, message)
 
-    def write(self, text):
-        pass
 
 class MultiWriter(LogWriter):
     writers = []
 
     def __init__(self):
-        self.level = LogSeverity.debug
+        pass
 
     def addWriter(self, writer):
         self.writers.append(writer)
-    
-    def write(self, text):
+
+    def log(self, severity, module, message):
         for writer in self.writers:
-            writer.write(text)
+            writer.log(severity, module, message)
 
 class ConsoleWriter(LogWriter):
-    def write(self, text):
-        print text
+
+    def log(self, severity, module, message):
+        if severity.value >= self.level.value:
+            print "{date} {severity} {module}: {msg}".format(date=time.strftime("%c"), severity=LogSeverityText[severity], module=module, msg=message)
 
 class FileWriter(LogWriter):
-    def write(self, text):
-        pass
+
+    def __init__(self, level, file):
+        self.filename = file
+        super(FileWriter, self).__init__(level)
+
+    def log(self, severity, module, message):
+        if severity.value >= self.level.value:
+            f = open(self.filename, "a")
+            f.write("{date} {severity} {module}: {msg}\n".format(date=time.strftime("%c"), severity=LogSeverityText[severity], module=module, msg=message))
+            f.close()
+
 
 
 #logger = MultiWriter()
