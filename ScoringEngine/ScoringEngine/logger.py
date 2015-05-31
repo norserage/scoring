@@ -1,3 +1,4 @@
+from distutils.log import Log
 import time
 from enum import Enum
 
@@ -33,6 +34,23 @@ class LogWriter(object):
     def logDebug(self, module, message):
         self.log(LogSeverity.debug, module, message)
 
+    def logInfo(self, module, message):
+        self.log(LogSeverity.info, module, message)
+
+    def logNotice(self, module, message):
+        self.log(LogSeverity.notice, module, message)
+
+    def logWarning(self, module, message):
+        self.log(LogSeverity.warning, module, message)
+
+    def logError(self, module, message):
+        self.log(LogSeverity.err, module, message)
+
+    def logCritical(self, module, message):
+        self.log(LogSeverity.crit, module, message)
+
+    def logAlert(self, module, message):
+        self.log(LogSeverity.alert, module, message)
 
 class MultiWriter(LogWriter):
     writers = []
