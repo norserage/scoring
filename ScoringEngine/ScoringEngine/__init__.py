@@ -1,5 +1,5 @@
-VERSION = 2.6
-VERSIONSTR = "Lepus ISE v%d DEV" % (VERSION)
+VERSION = '2.6'
+VERSIONSTR = "Lepus ISE v%s DEV" % (VERSION)
 '''
 
 '''
