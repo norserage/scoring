@@ -133,3 +133,12 @@ class User(Base):
             return "Manager"
         elif self.group == 5:
             return "Admin"
+
+class Log(Base):
+    __tablename__ = 'log'
+
+    id = Column(Integer, primary_key=True)
+    time = Column(DateTime, nullable=False)
+    severity = Column(Integer, nullable=False)
+    module = Column(String(60), nullable=False)
+    message = Column(Text, nullable=False)
