@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import render_template, request, session, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.db import Session
+from ScoringEngine.logger import logger
 import ScoringEngine.db.tables as tables
 import ScoringEngine.utils
 import Crypto.Hash.MD5
@@ -13,12 +14,16 @@ def login():
         users = dbsession.query(tables.User).filter(tables.User.username.like(request.form['username']))
         p = Crypto.Hash.MD5.new()
         p.update(request.form['password'])
+        if users.count() == 0:
+            logger.logDebug("User", request.form['username'] + " is not a valid user.")
         for user in users:
             if str(user.password).lower() == str(p.hexdigest()).lower():
                 #TODO create user session
                 session["user"] = {'id':user.id,'name':user.name,'group':user.group,'team':user.team,'username':user.username,'groupname':user.getGroupName()}
-                print "password correct"
+                logger.logDebug("User", "Login for " + user.username)
                 return redirect("/portal")
+            else:
+                logger.logDebug("User", "Incorrect Password for " + user.username)
         return render_template(
             'user/login.html',
             title='Home Page',

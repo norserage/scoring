@@ -52,6 +52,7 @@ class LogWriter(object):
     def logAlert(self, module, message):
         self.log(LogSeverity.alert, module, message)
 
+
 class MultiWriter(LogWriter):
     writers = []
 
@@ -85,5 +86,5 @@ class FileWriter(LogWriter):
 
 
 
-#logger = MultiWriter()
-#logger.addWriter(ConsoleWriter(LogSeverity.debug))
+logger = MultiWriter()
+logger.addWriter(ConsoleWriter(LogSeverity.debug))

@@ -125,13 +125,15 @@ def edituser(user):
                 dbsession.commit()
                 return redirect(url_for('adminuser',user=dbuser.name))
             else:
+                teams = dbsession.query(tables.Team).all()
                 return render_template(
                     'admin/user/edit.html',
                     title='Edit Team',
                     year=datetime.now().year,
                     user=session['user'],
                     login='user' in session,
-                    dbuser=dbuser
+                    dbuser=dbuser,
+                    teams=teams
                 )
         else:
             return render_template(
