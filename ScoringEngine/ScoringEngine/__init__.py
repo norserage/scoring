@@ -6,7 +6,7 @@ VERSIONSTR = "Lepus ISE v%d DEV" % (VERSION)
 def arguments():
     import ScoringEngine.conf
     import argparse
-    parser = argparse.ArgumentParser(description='Lepus ISE v2.5')
+    parser = argparse.ArgumentParser(description=VERSIONSTR)
     parser.add_argument('-e','--env', help='Environment', required=False)
     parser.add_argument('-c','--config', help='Specify the config file', required=False)
     parser.add_argument('--gen-config', help='Generates a new default config file', required=False, action='store_true')
@@ -57,8 +57,10 @@ def arguments():
 def pathSetup():
     from ScoringEngine.conf import conf
     import sys
-    for l in conf['tester locations']:
-        sys.path.append(l)
+    if 'tester locations' in conf:
+        if conf['tester locatinos'].count() > 0:
+            for l in conf['tester locations']:
+                sys.path.append(l)
 
 def main():
     if arguments():
