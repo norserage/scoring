@@ -11,6 +11,7 @@ def arguments():
     parser.add_argument('-c','--config', help='Specify the config file', required=False)
     parser.add_argument('--gen-config', help='Generates a new default config file', required=False, action='store_true')
     parser.add_argument('--gen-db', help='Imports the schema into a database', required=False, action='store_true')
+    parser.add_argument('--print-config', help='Clears all data in the database', required=False, action='store_true')
     parser.add_argument('--erase-db', help='Clears all data in the database', required=False, action='store_true')
     parser.add_argument('--clear-scoredata', help='Clears all score data', required=False, action='store_true')
     parser.add_argument('-v','--version', help='Generates a new default config file', required=False, action='store_true')

@@ -110,6 +110,8 @@ else:
     if 'console' in conf['logger']:
         logger.addWriter(ConsoleWriter(LogSeverity[conf['logger']['console']]))
     if 'file' in conf['logger']:
+        if 'file_path' not in conf['logger']:
+            conf['logger']['file_path'] = "scoring.log" # Default log file path
         logger.addWriter(FileWriter(LogSeverity[conf['logger']['file']], conf['logger']['file_path']))
     if 'db' in conf['logger']:
         try:
