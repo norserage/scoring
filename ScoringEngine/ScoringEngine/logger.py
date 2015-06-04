@@ -75,30 +75,36 @@ class MultiWriter(LogWriter):
                 writer.log(severity, module, message)
 
 class ConsoleWriter(LogWriter):
+    def __init__(self, level, format="{date} {severity} {module}: {msg}"):
+        self.format = format
+        super(ConsoleWriter, self).__init__(level)
+
     def writeEntry(self, severity, module, message):
         if severity.value >= self.level.value:
-            print "[{date}] {severity} {module}: {msg}".format(date=time.strftime("%c"), severity=LogSeverityText[severity], module=module, msg=message)
+            print self.format.format(date=time.strftime("%c"), severity=LogSeverityText[severity], module=module, msg=message)
 
 class FileWriter(LogWriter):
-    def __init__(self, level, file):
+    def __init__(self, level, file, format="{date} {severity} {module}: {msg}"):
         self.filename = file
+        self.format = format
         super(FileWriter, self).__init__(level)
 
     def writeEntry(self, severity, module, message):
         if severity.value >= self.level.value:
             f = open(self.filename, "a")
-            f.write("{date} {severity} {module}: {msg}\n".format(date=time.strftime("%c"), severity=LogSeverityText[severity], module=module, msg=message))
+            f.write((self.format + "\n").format(date=time.strftime("%c"), severity=LogSeverityText[severity], module=module, msg=message))
             f.close()
 
 class MultiFileWriter(LogWriter):
-    def __init__(self, level, path):
+    def __init__(self, level, path, format="{date} {severity} {module}: {msg}"):
         self.path = path
+        self.format = format
         super(FileWriter, self).__init__(level)
 
     def writeEntry(self, severity, module, message):
         if severity.value >= self.level.value:
             f = open(self.path + "." + severity.name.lower(), "a")
-            f.write("{date} {severity} {module}: {msg}\n".format(date=time.strftime("%c"), severity=LogSeverityText[severity], module=module, msg=message))
+            f.write((self.format + "\n").format(date=time.strftime("%c"), severity=LogSeverityText[severity], module=module, msg=message))
             f.close()
 
 
@@ -108,11 +114,17 @@ if 'logger' not in conf:
     logger.addWriter(ConsoleWriter(LogSeverity.debug))
 else:
     if 'console' in conf['logger']:
-        logger.addWriter(ConsoleWriter(LogSeverity[conf['logger']['console']]))
+        if 'console_format' in conf['logger']:
+            logger.addWriter(ConsoleWriter(LogSeverity[conf['logger']['console']], conf['logger']['console_format']))
+        else:
+            logger.addWriter(ConsoleWriter(LogSeverity[conf['logger']['console']]))
     if 'file' in conf['logger']:
         if 'file_path' not in conf['logger']:
             conf['logger']['file_path'] = "scoring.log" # Default log file path
-        logger.addWriter(FileWriter(LogSeverity[conf['logger']['file']], conf['logger']['file_path']))
+        if 'file_format' in conf['logger']:
+            logger.addWriter(FileWriter(LogSeverity[conf['logger']['file']], conf['logger']['file_path'], conf['logger']['file_format']))
+        else:
+            logger.addWriter(FileWriter(LogSeverity[conf['logger']['file']], conf['logger']['file_path']))
     if 'db' in conf['logger']:
         try:
             from ScoringEngine.db import tables, Session
