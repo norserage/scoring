@@ -142,3 +142,20 @@ class Log(Base):
     severity = Column(Integer, nullable=False)
     module = Column(String(60), nullable=False)
     message = Column(Text, nullable=False)
+
+class InjectCategory(Base):
+    __tablename__ = 'injectcategory'
+
+    id = Column(Integer, primary_key=True)
+    parentid = Column(Integer)
+    name = Column(String(255), nullable=False)
+
+
+class Inject(Base):
+    __tablename__ = 'injects'
+
+    id = Column(Integer, primary_key=True)
+    categoryid = Column(Integer, ForeignKey('injectcategory.id'))
+    subjet = Column(String(255), nullable=False)
+    body = Column(Text, nullable=False)
+
