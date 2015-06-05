@@ -119,7 +119,7 @@
         <entry file="file://$PROJECT_DIR$/ScoringEngine/db/tables.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.90228015" vertical-offset="2079" max-vertical-offset="3000">
-              <caret line="194" column="39" selection-start-line="194" selection-start-column="39" selection-end-line="194" selection-end-column="39" />
+              <caret line="194" column="100" selection-start-line="194" selection-start-column="100" selection-end-line="194" selection-end-column="100" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
               </folding>
@@ -1138,7 +1138,7 @@
     <entry file="file://$PROJECT_DIR$/ScoringEngine/db/tables.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.90228015" vertical-offset="2079" max-vertical-offset="3000">
-          <caret line="194" column="39" selection-start-line="194" selection-start-column="39" selection-end-line="194" selection-end-column="39" />
+          <caret line="194" column="100" selection-start-line="194" selection-start-column="100" selection-end-line="194" selection-end-column="100" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
           </folding>

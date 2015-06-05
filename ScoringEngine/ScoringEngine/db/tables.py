@@ -192,4 +192,4 @@ class TeamInjectSubmissionAttachment(Base):
     teaminjectid = Column(Inject, ForeignKey("teaminjectsubmissions.id"))
     filename = Column(String(255), nullable=False)
     size = Column(Integer, nullable=False)
-    data = Column(BLOB, nullable=False)
+    #data = Column(BLOB, nullable=False) Blobs suck in pgsql so we will store as file on file system
