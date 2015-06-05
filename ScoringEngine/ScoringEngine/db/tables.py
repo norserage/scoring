@@ -144,7 +144,7 @@ class Log(Base):
     message = Column(Text, nullable=False)
 
 class InjectCategory(Base):
-    __tablename__ = 'injectcategory'
+    __tablename__ = 'injectcategories'
 
     id = Column(Integer, primary_key=True)
     parentid = Column(Integer)
@@ -155,7 +155,41 @@ class Inject(Base):
     __tablename__ = 'injects'
 
     id = Column(Integer, primary_key=True)
-    categoryid = Column(Integer, ForeignKey('injectcategory.id'))
+    categoryid = Column(Integer, ForeignKey('injectcategories.id'))
     subjet = Column(String(255), nullable=False)
     body = Column(Text, nullable=False)
 
+    category = relationship("InjectCategory", backref=backref('injects', order_by=id))
+
+class AssignedInject(Base):
+    __tablename__ = 'assignedinjects'
+
+    id = Column(Integer, primary_key=True)
+    injectid = Column(Integer, ForeignKey('injects.id'))
+    subject = Column(String(255), nullable=true)
+    body = Column(Text, nullable=True)
+    when = Column(DateTime, nullable=False)
+    duration = Column(Integer, nullable=False)
+    allowlate = Column(Boolean, nullable=False)
+
+    inject = relationship("Inject")
+
+class TeamInjectSubmision(Base):
+    __tablename__ = 'teaminjectsubmissions'
+
+    id = Column(Integer, primary_key=True)
+    assignedinjectid = Column(Integer, ForeignKey("assignedinjects.id"))
+    teamid = Column(Integer, ForeignKey("teams.id"))
+    when = Column(DateTime, nullable=False)
+    body = Column(Text, nullable=False)
+
+    teamserver = relationship("TeamServer", backref=backref('serviceargs', order_by=id))
+
+class TeamInjectSubmissionAttachment(Base):
+    __tablename__ = 'teaminjectsubmissionattachments'
+
+    id = Column(Integer, primary_key=True)
+    teaminjectid = Column(Inject, ForeignKey("teaminjectsubmissions.id"))
+    filename = Column(String(255), nullable=False)
+    size = Column(Integer, nullable=False)
+    data = Column(BLOB, nullable=False)
