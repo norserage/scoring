@@ -158,6 +158,8 @@ class Inject(Base):
     categoryid = Column(Integer, ForeignKey('injectcategories.id'))
     subjet = Column(String(255), nullable=False)
     body = Column(Text, nullable=False)
+    durration = Column(Integer, nullable=False)
+
 
     category = relationship("InjectCategory", backref=backref('injects', order_by=id))
 
@@ -166,15 +168,15 @@ class AssignedInject(Base):
 
     id = Column(Integer, primary_key=True)
     injectid = Column(Integer, ForeignKey('injects.id'))
-    subject = Column(String(255), nullable=true)
-    body = Column(Text, nullable=True)
+    subject = Column(String(255), nullable=False)
+    body = Column(Text, nullable=False)
     when = Column(DateTime, nullable=False)
     duration = Column(Integer, nullable=False)
     allowlate = Column(Boolean, nullable=False)
 
     inject = relationship("Inject")
 
-class TeamInjectSubmision(Base):
+class TeamInjectSubmission(Base):
     __tablename__ = 'teaminjectsubmissions'
 
     id = Column(Integer, primary_key=True)
@@ -185,6 +187,15 @@ class TeamInjectSubmision(Base):
 
     teamserver = relationship("TeamServer", backref=backref('serviceargs', order_by=id))
 
+class TeamInjectSubmissionNote(Base):
+    __tablename__ = 'teaminjectsubmissionnotes'
+
+    id = Column(Integer, primary_key=True)
+    teaminjectid = Column(Integer, ForeignKey("teaminjectsubmissions.id"))
+    userid = Column(Integer, ForeignKey("users.id"))
+    visible = Column(Boolean, nullable=False)
+
+
 class TeamInjectSubmissionAttachment(Base):
     __tablename__ = 'teaminjectsubmissionattachments'
 
@@ -192,4 +203,4 @@ class TeamInjectSubmissionAttachment(Base):
     teaminjectid = Column(Inject, ForeignKey("teaminjectsubmissions.id"))
     filename = Column(String(255), nullable=False)
     size = Column(Integer, nullable=False)
-    #data = Column(BLOB, nullable=False) Blobs suck in pgsql so we will store as file on file system
+    #data = Column(BLOB, nullable=False) Blobs suck in pgsql so we will store as file on file system or in a nosql document store
