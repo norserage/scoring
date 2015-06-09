@@ -159,6 +159,7 @@ class Inject(Base):
     subjet = Column(String(255), nullable=False)
     body = Column(Text, nullable=False)
     durration = Column(Integer, nullable=False)
+    points = Column(Integer, nullable=False)
 
 
     category = relationship("InjectCategory", backref=backref('injects', order_by=id))
@@ -173,6 +174,7 @@ class AssignedInject(Base):
     when = Column(DateTime, nullable=False)
     duration = Column(Integer, nullable=False)
     allowlate = Column(Boolean, nullable=False)
+    points = Column(Integer, nullable=False)
 
     inject = relationship("Inject")
 
@@ -184,8 +186,9 @@ class TeamInjectSubmission(Base):
     teamid = Column(Integer, ForeignKey("teams.id"))
     when = Column(DateTime, nullable=False)
     body = Column(Text, nullable=False)
+    points = Column(Integer, nullable=False)
 
-    teamserver = relationship("TeamServer", backref=backref('serviceargs', order_by=id))
+    inject = relationship("AssignedInject", backref=backref('submissions', order_by=id))
 
 class TeamInjectSubmissionNote(Base):
     __tablename__ = 'teaminjectsubmissionnotes'
