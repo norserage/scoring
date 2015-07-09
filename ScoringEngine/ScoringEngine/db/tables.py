@@ -5,6 +5,14 @@ from sqlalchemy.orm import relationship, backref
 metadata = MetaData()
 Base = declarative_base()
 
+class Event(Base):
+    __tablename__ = 'events'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
+    start = Column(DateTime)
+    end = Column(DateTime)
+    
 class Team(Base):
     __tablename__ = 'teams'
 
@@ -23,10 +31,16 @@ class Server(Base):
     name = Column(String(25), nullable=False)
     ip_3 = Column(String(3))
     ip_4 = Column(String(3), nullable=False)
-    enabled = Column(Boolean, nullable=False)
 
     def __repr__(self):
-        return "<Server(id='%i',name='%s',ip='%s.%s',enabled='%s')>" % (self.id, self.name, self.ip_3, self.ip_4, self.enabled)
+        return "<Server(id='%i',name='%s',ip='%s.%s')>" % (self.id, self.name, self.ip_3, self.ip_4, self.enabled)
+
+class EventServer(Base):
+    __tablename__ = 'eventservers'
+
+    id = Column(Integer, primary_key=True)
+    eventid = Column(Integer, ForeignKey('events.id'))
+    serverid = Column(Integer, ForeignKey('server.id'))
 
 class Service(Base):
     __tablename__ = 'services'
@@ -36,13 +50,20 @@ class Service(Base):
     name = Column(String(25), nullable=False)
     port = Column(Integer)
     typeid = Column(Integer, ForeignKey('servicetypes.id'))
-    enabled = Column(Boolean, nullable=False)
 
     server = relationship("Server", backref=backref('services', order_by=id))
     type = relationship("ServiceType", backref=backref('services', order_by=id))
 
     def __repr__(self):
         pass
+
+class EventService(Base):
+    __tablename__ = 'eventservices'
+
+    id = Column(Integer, primary_key=True)
+    eventid = Column(Integer, ForeignKey('events.id'))
+    serviceid = Column(Integer, ForeignKey('services.id'))
+
 
 class ServiceType(Base):
     __tablename__ = 'servicetypes'
@@ -71,6 +92,7 @@ class ScoreEvent(Base):
     __tablename__ = 'scoreevents'
 
     id = Column(Integer, primary_key=True)
+    eventid = Column(Integer, ForeignKey('events.id'))
     teamserverid = Column(Integer, ForeignKey('teamservers.id'))
     serviceid = Column(Integer, ForeignKey('services.id'))
     scoretime = Column(DateTime, nullable=False)
@@ -168,6 +190,7 @@ class AssignedInject(Base):
     __tablename__ = 'assignedinjects'
 
     id = Column(Integer, primary_key=True)
+    eventid = Column(Integer, ForeignKey('events.id'))
     injectid = Column(Integer, ForeignKey('injects.id'))
     subject = Column(String(255), nullable=False)
     body = Column(Text, nullable=False)

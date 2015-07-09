@@ -4,6 +4,7 @@ from ScoringEngine.db import Session
 import ScoringEngine.db.tables as tables
 
 running = False
+event = None
 
 def start():
     print "start scoring"
