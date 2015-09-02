@@ -1,4 +1,4 @@
-from sqlalchemy import *
+﻿from sqlalchemy import *
 from sqlalchemy.sql import exists
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
@@ -148,7 +148,7 @@ class User(Base):
         if self.group == 1:
             return "User"
         elif self.group == 2:
-            return "2"
+            return "Room Judge"
         elif self.group == 3:
             return "Judge"
         elif self.group == 4:

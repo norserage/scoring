@@ -46,6 +46,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ScoringEngine\utils.py" />
+    <Compile Include="ScoringEngine\views\admin\event.py" />
     <Compile Include="ScoringEngine\views\admin\server.py" />
     <Compile Include="ScoringEngine\views\admin\service.py" />
     <Compile Include="ScoringEngine\views\admin\user.py" />
