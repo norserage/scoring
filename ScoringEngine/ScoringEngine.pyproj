@@ -32,6 +32,9 @@
   <ItemGroup>
     <Compile Include="runserver.py" />
     <Compile Include="ScoringEngine\conf\__init__.py" />
+    <Compile Include="ScoringEngine\db\customTypes.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScoringEngine\db\tables.py" />
     <Compile Include="ScoringEngine\db\__init__.py">
       <SubType>Code</SubType>
@@ -52,6 +55,8 @@
     <Compile Include="ScoringEngine\views\admin\user.py" />
     <Compile Include="ScoringEngine\views\admin\team.py" />
     <Compile Include="ScoringEngine\views\admin\__init__.py" />
+    <Compile Include="ScoringEngine\views\inject.py" />
+    <Compile Include="ScoringEngine\views\injectmanager\__init__.py" />
     <Compile Include="ScoringEngine\views\portal.py" />
     <Compile Include="ScoringEngine\views\user.py">
       <SubType>Code</SubType>
@@ -92,6 +97,7 @@
     <Folder Include="ScoringEngine\static\scripts\" />
     <Folder Include="ScoringEngine\templates\" />
     <Folder Include="ScoringEngine\views\admin\" />
+    <Folder Include="ScoringEngine\views\injectmanager\" />
     <Folder Include="testers\" />
   </ItemGroup>
   <ItemGroup>

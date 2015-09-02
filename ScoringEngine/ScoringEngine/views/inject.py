@@ -1,4 +1,4 @@
-from datetime import datetime
+﻿from datetime import datetime
 from flask import render_template, session, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.db import Session, tables
@@ -33,3 +33,5 @@ def listinjects(id):
             inject=inject
         )
 
+import uuid
+uuid.UU

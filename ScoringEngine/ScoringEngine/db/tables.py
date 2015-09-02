@@ -1,4 +1,5 @@
 ﻿from sqlalchemy import *
+from ScoringEngine.db.customTypes import *
 from sqlalchemy.sql import exists
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
@@ -10,6 +11,7 @@ class Event(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
+    current = Column(Boolean)
     start = Column(DateTime)
     end = Column(DateTime)
     
@@ -189,7 +191,7 @@ class Inject(Base):
 class AssignedInject(Base):
     __tablename__ = 'assignedinjects'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(GUID, primary_key=True)
     eventid = Column(Integer, ForeignKey('events.id'))
     injectid = Column(Integer, ForeignKey('injects.id'))
     subject = Column(String(255), nullable=False)
