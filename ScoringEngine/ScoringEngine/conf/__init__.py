@@ -21,6 +21,7 @@ def newConf(config="conf.yaml"):
         'env':"production",
         'production':{
             'database':"postgresql://scoring:scoring@10.151.130.5/scoring",
+            'filedb':'scoring.db',
             'listen':'0.0.0.0',
             'port':8080,
             'secret':",LHGUL}~Ge;3D>mSHg\gb>+VrQ7=BoYe",
@@ -38,6 +39,7 @@ def newConf(config="conf.yaml"):
         },
         'dev':{
             'database':"postgresql://scoring:scoring@10.151.130.5/scoring",
+            'filedb':'scoring.db',
             'listen':'localhost',
             'port':5555,
             'secret':"6y;]kL,J7d|W)(\+]0to)0Y,J{Z|-,J+",
@@ -54,7 +56,8 @@ def newConf(config="conf.yaml"):
             }
         },
         'local':{
-            'database':"sqlite:///scoring.db",
+            'database':"sqlite:///scoring.sqlite3",
+            'filedb':'scoring.db',
             'listen':'localhost',
             'port':5555,
             'secret':"Kyw^k$!kico}YKbJF5n=T#hO9y._NBw6",

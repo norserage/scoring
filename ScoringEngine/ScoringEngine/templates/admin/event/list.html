@@ -21,13 +21,13 @@
                 <td><a href="{{ url_for('event',id=event.id) }}">{{ event.name }}</a></td>
                 <td>{{ event.start }}</td>
                 <td>{{ event.stop }}</td>
-                <td><a href="{{ url_for('editserver',server=server.id) }}">Edit</a></td>
+                <td><a href="{{ url_for('editserver',event=even.id) }}" class="button">Edit</a></td>
             </tr>
             {% endfor %}
         </tbody>
         <tfoot>
             <tr>
-                <td><a href="{{ url_for('addserver') }}" class="btn btn-default">Add</a></td>
+                <td><a href="{{ url_for('addevent') }}" class="btn btn-default">Add</a></td>
             </tr>
         </tfoot>
     </table>
