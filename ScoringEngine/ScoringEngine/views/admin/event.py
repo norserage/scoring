@@ -94,11 +94,11 @@ def event(event):
             message="You do not have permission to use this resource"
         )
 
-@app.route('/admin/event/<server>/edit',methods=['GET','POST'])
-def editevent(server):
+@app.route('/admin/event/<event>/edit',methods=['GET','POST'])
+def editevent(event):
     if 'user' in session and session['user']['group'] == 5:
         dbsession = Session()
-        servers = dbsession.query(tables.Server).filter(tables.Server.id == server)
+        servers = dbsession.query(tables.Server).filter(tables.Server.id == event)
         if servers.count() > 0:
             server = servers[0]
             if request.method == 'POST':

@@ -9,7 +9,7 @@ Base = declarative_base()
 class Event(Base):
     __tablename__ = 'events'
 
-    id = Column(GUID, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(50), nullable=False)
     current = Column(Boolean, index=True, unique=False)
     start = Column(DateTime, index=True, unique=False)
@@ -18,7 +18,7 @@ class Event(Base):
 class Team(Base):
     __tablename__ = 'teams'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(25), nullable=False)
     network = Column(String(15), nullable=False)
     enabled = Column(Boolean, nullable=False)
@@ -29,7 +29,7 @@ class Team(Base):
 class Server(Base):
     __tablename__ = 'servers'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(25), nullable=False)
     enabled = Column(Boolean, nullable=False)
     ip_3 = Column(String(3))
@@ -41,7 +41,7 @@ class Server(Base):
 class Service(Base):
     __tablename__ = 'services'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     serverid = Column(Integer, ForeignKey('servers.id'))
     enabled = Column(Boolean, nullable=False)
     name = Column(String(25), nullable=False)
@@ -58,14 +58,14 @@ class Service(Base):
 class ServiceType(Base):
     __tablename__ = 'servicetypes'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(25), nullable=False)
     tester = Column(String(25), nullable=False)
 
 class TeamServer(Base):
     __tablename__ = 'teamservers'
     
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     teamid = Column(Integer, ForeignKey('teams.id'))
     serverid = Column(Integer, ForeignKey('servers.id'))
 
@@ -81,8 +81,8 @@ class TeamServer(Base):
 class ScoreEvent(Base):
     __tablename__ = 'scoreevents'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
-    eventid = Column(GUID, ForeignKey('events.id'), index=True, unique=False)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    eventid = Column(Integer, ForeignKey('events.id'), index=True, unique=False)
     teamserverid = Column(Integer, ForeignKey('teamservers.id'), index=True, unique=False)
     serviceid = Column(Integer, ForeignKey('services.id'), index=True, unique=False)
     scoretime = Column(DateTime, nullable=False)
@@ -95,7 +95,7 @@ class ScoreEvent(Base):
 class ServiceArg(Base):
     __tablename__ = 'serviceargs'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     serverid = Column(Integer, ForeignKey('teamservers.id'))
     serviceid = Column(Integer, ForeignKey('services.id'))
     key = Column(String(50), nullable=False)
@@ -108,7 +108,7 @@ class ServiceArg(Base):
 class PasswordDatabase(Base):
     __tablename__ = 'passdb'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     db = Column(String(10), nullable=False)
     domain = Column(String(15))
     user = Column(String(255), nullable=False)
@@ -118,7 +118,7 @@ class PasswordDatabase(Base):
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(45))
     username = Column(String(25), nullable=False)
     password = Column(String(60), nullable=False)
@@ -149,7 +149,7 @@ class User(Base):
 class Log(Base):
     __tablename__ = 'log'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     time = Column(DateTime, nullable=False)
     severity = Column(Integer, nullable=False)
     module = Column(String(60), nullable=False)
@@ -158,7 +158,7 @@ class Log(Base):
 class InjectCategory(Base):
     __tablename__ = 'injectcategories'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     parentid = Column(Integer)
     name = Column(String(255), nullable=False)
 
@@ -166,7 +166,7 @@ class InjectCategory(Base):
 class Inject(Base):
     __tablename__ = 'injects'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     categoryid = Column(Integer, ForeignKey('injectcategories.id'))
     subjet = Column(String(255), nullable=False)
     body = Column(Text, nullable=False)
@@ -179,8 +179,8 @@ class Inject(Base):
 class AssignedInject(Base):
     __tablename__ = 'assignedinjects'
 
-    id = Column(GUID, primary_key=True, index=True, unique=True)
-    eventid = Column(GUID, ForeignKey('events.id'))
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    eventid = Column(Integer, ForeignKey('events.id'))
     injectid = Column(Integer, ForeignKey('injects.id'))
     subject = Column(String(255), nullable=False)
     body = Column(Text, nullable=False)
@@ -194,8 +194,8 @@ class AssignedInject(Base):
 class TeamInjectSubmission(Base):
     __tablename__ = 'teaminjectsubmissions'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
-    assignedinjectid = Column(GUID, ForeignKey("assignedinjects.id"))
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    assignedinjectid = Column(Integer, ForeignKey("assignedinjects.id"))
     teamid = Column(Integer, ForeignKey("teams.id"))
     when = Column(DateTime, nullable=False)
     body = Column(Text, nullable=False)
@@ -206,7 +206,7 @@ class TeamInjectSubmission(Base):
 class TeamInjectSubmissionNote(Base):
     __tablename__ = 'teaminjectsubmissionnotes'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     teaminjectid = Column(Integer, ForeignKey("teaminjectsubmissions.id"))
     userid = Column(Integer, ForeignKey("users.id"))
     visible = Column(Boolean, nullable=False)
@@ -215,7 +215,7 @@ class TeamInjectSubmissionNote(Base):
 class TeamInjectSubmissionAttachment(Base):
     __tablename__ = 'teaminjectsubmissionattachments'
 
-    id = Column(Integer, primary_key=True, index=True, unique=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     teaminjectid = Column(Integer, ForeignKey("teaminjectsubmissions.id"))
     filename = Column(String(255), nullable=False)
     size = Column(Integer, nullable=False)
