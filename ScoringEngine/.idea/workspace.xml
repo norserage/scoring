@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/ScoringEngine/db/tables.py" line="220" mnemonic="0" />
+    <bookmark url="file://$PROJECT_DIR$/ScoringEngine/db/tables.py" line="221" mnemonic="0" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="60be94cd-b54c-46a4-85b0-9f0931786d29" name="Default" comment="" />
@@ -128,8 +128,8 @@
       <file leaf-file-name="tables.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ScoringEngine/db/tables.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38636363" vertical-offset="362" max-vertical-offset="3996">
-              <caret line="43" column="56" selection-start-line="43" selection-start-column="56" selection-end-line="43" selection-end-column="56" />
+            <state vertical-scroll-proportion="0.26363635" vertical-offset="488" max-vertical-offset="4014">
+              <caret line="44" column="56" selection-start-line="44" selection-start-column="56" selection-end-line="44" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -1142,8 +1142,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ScoringEngine/db/tables.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38636363" vertical-offset="362" max-vertical-offset="3996">
-          <caret line="43" column="56" selection-start-line="43" selection-start-column="56" selection-end-line="43" selection-end-column="56" />
+        <state vertical-scroll-proportion="0.26363635" vertical-offset="488" max-vertical-offset="4014">
+          <caret line="44" column="56" selection-start-line="44" selection-start-column="56" selection-end-line="44" selection-end-column="56" />
           <folding />
         </state>
       </provider>

@@ -43,6 +43,7 @@ class Service(Base):
 
     id = Column(Integer, primary_key=True, index=True, unique=True)
     serverid = Column(Integer, ForeignKey('servers.id'))
+    enabled = Column(Boolean, nullable=False)
     name = Column(String(25), nullable=False)
     port = Column(Integer)
     typeid = Column(Integer, ForeignKey('servicetypes.id'))
