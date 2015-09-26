@@ -12,6 +12,7 @@ import ScoringEngine.views.admin.team
 import ScoringEngine.views.admin.user
 import ScoringEngine.views.admin.server
 import ScoringEngine.views.admin.service
+import ScoringEngine.views.admin.event
 import ScoringEngine.views.portal
 import ScoringEngine.views.inject
 

@@ -11,9 +11,9 @@ class Event(Base):
 
     id = Column(GUID, primary_key=True, index=True, unique=True)
     name = Column(String(50), nullable=False)
-    current = Column(Boolean)
-    start = Column(DateTime)
-    end = Column(DateTime)
+    current = Column(Boolean, index=True, unique=False)
+    start = Column(DateTime, index=True, unique=False)
+    end = Column(DateTime, index=True, unique=False)
     
 class Team(Base):
     __tablename__ = 'teams'
@@ -24,7 +24,7 @@ class Team(Base):
     enabled = Column(Boolean, nullable=False)
 
     def __repr__(self):
-        return "<Team(id='%i', name='%s', network='%s')>" % (self.id,self.name,self.network)
+        return "<Team(id='%i', name='%s', network='%s')>" % (self.id, self.name, self.network)
 
 class Server(Base):
     __tablename__ = 'servers'
