@@ -31,18 +31,12 @@ class Server(Base):
 
     id = Column(Integer, primary_key=True, index=True, unique=True)
     name = Column(String(25), nullable=False)
+    enabled = Column(Boolean, nullable=False)
     ip_3 = Column(String(3))
     ip_4 = Column(String(3), nullable=False)
 
     def __repr__(self):
         return "<Server(id='%i',name='%s',ip='%s.%s')>" % (self.id, self.name, self.ip_3, self.ip_4, self.enabled)
-
-class EventServer(Base):
-    __tablename__ = 'eventservers'
-
-    id = Column(Integer, primary_key=True, index=True, unique=True)
-    eventid = Column(GUID, ForeignKey('events.id'))
-    serverid = Column(Integer, ForeignKey('servers.id'))
 
 class Service(Base):
     __tablename__ = 'services'
@@ -58,13 +52,6 @@ class Service(Base):
 
     def __repr__(self):
         pass
-
-class EventService(Base):
-    __tablename__ = 'eventservices'
-
-    id = Column(Integer, primary_key=True, index=True, unique=True)
-    eventid = Column(GUID, ForeignKey('events.id'))
-    serviceid = Column(Integer, ForeignKey('services.id'))
 
 
 class ServiceType(Base):

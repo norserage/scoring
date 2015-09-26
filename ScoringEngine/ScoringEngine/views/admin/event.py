@@ -12,7 +12,7 @@ from pprint import pprint as pp
 def events():
     if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
-        servers = dbsession.query(tables.Event).all()
+        events = dbsession.query(tables.Event).all()
         return render_template(
             'admin/event/list.html',
             title='Events',
@@ -20,7 +20,7 @@ def events():
             enginestatus=ScoringEngine.engine.running,
             user=session['user'],
             login='user' in session,
-            servers=servers
+            events=events
         )
     else:
         return render_template(
@@ -32,8 +32,8 @@ def events():
             message="You do not have permission to use this resource"
         )
 
-@app.route('/admin/server/add',methods=['GET','POST'])
-def addserver():
+@app.route('/admin/event/add',methods=['GET','POST'])
+def addevent():
     if 'user' in session and session['user']['group'] == 5:
         if request.method == 'POST':
             dbsession = Session()
@@ -66,20 +66,20 @@ def addserver():
             message="You do not have permission to use this resource"
         )
 
-@app.route('/admin/server/<server>')
-def server(server):
+@app.route('/admin/event/<event>')
+def event(event):
     if 'user' in session and session['user']['group'] == 5:
         dbsession = Session()
-        servers = dbsession.query(tables.Server).filter(tables.Server.id == server)
-        if servers.count() > 0:
-            server = servers[0]
+        events = dbsession.query(tables.Event).filter(tables.Event.id==event)
+        if events.count() > 0:
+            event = events[0]
             return render_template(
                 'admin/server/view.html',
-                title=server.name,
+                title=event.name,
                 year=datetime.now().year,
                 user=session['user'],
                 login='user' in session,
-                server=server,
+                event=event,
             )
         else:
             return render_template(
@@ -101,7 +101,7 @@ def server(server):
         )
 
 @app.route('/admin/server/<server>/edit',methods=['GET','POST'])
-def editserver(server):
+def editevent(server):
     if 'user' in session and session['user']['group'] == 5:
         dbsession = Session()
         servers = dbsession.query(tables.Server).filter(tables.Server.id == server)

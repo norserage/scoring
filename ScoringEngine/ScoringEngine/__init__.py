@@ -59,7 +59,7 @@ def pathSetup():
     from ScoringEngine.conf import conf
     import sys
     if 'tester locations' in conf:
-        if conf['tester locatinos'].count() > 0:
+        if len(conf['tester locations']) > 0:
             for l in conf['tester locations']:
                 sys.path.append(l)
 

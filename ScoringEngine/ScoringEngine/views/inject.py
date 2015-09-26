@@ -18,7 +18,7 @@ def listinjects():
     )
 
 @app.route('/inject/{id}')
-def listinjects(id):
+def inject(id):
     session = Session()
     #select * from assignedinjects where when < now()
     injects = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == id)
@@ -32,6 +32,3 @@ def listinjects(id):
             login='user' in session,
             inject=inject
         )
-
-import uuid
-uuid.UU
