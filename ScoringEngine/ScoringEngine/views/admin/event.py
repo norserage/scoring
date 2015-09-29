@@ -68,7 +68,7 @@ def event(event):
         if events.count() > 0:
             event = events[0]
             return render_template(
-                'admin/server/view.html',
+                'admin/event/view.html',
                 title=event.name,
                 year=datetime.now().year,
                 user=session['user'],
