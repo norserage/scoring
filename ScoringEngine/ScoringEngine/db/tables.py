@@ -1,42 +1,52 @@
-from sqlalchemy import *
+﻿from sqlalchemy import *
+from ScoringEngine.db.customTypes import *
 from sqlalchemy.sql import exists
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 metadata = MetaData()
 Base = declarative_base()
 
+class Event(Base):
+    __tablename__ = 'events'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    name = Column(String(50), nullable=False)
+    current = Column(Boolean, index=True, unique=False)
+    start = Column(DateTime, index=True, unique=False)
+    end = Column(DateTime, index=True, unique=False)
+    
 class Team(Base):
     __tablename__ = 'teams'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(25), nullable=False)
     network = Column(String(15), nullable=False)
     enabled = Column(Boolean, nullable=False)
 
     def __repr__(self):
-        return "<Team(id='%i', name='%s', network='%s')>" % (self.id,self.name,self.network)
+        return "<Team(id='%i', name='%s', network='%s')>" % (self.id, self.name, self.network)
 
 class Server(Base):
     __tablename__ = 'servers'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(25), nullable=False)
+    enabled = Column(Boolean, nullable=False)
     ip_3 = Column(String(3))
     ip_4 = Column(String(3), nullable=False)
-    enabled = Column(Boolean, nullable=False)
 
     def __repr__(self):
-        return "<Server(id='%i',name='%s',ip='%s.%s',enabled='%s')>" % (self.id, self.name, self.ip_3, self.ip_4, self.enabled)
+        return "<Server(id='%i',name='%s',ip='%s.%s')>" % (self.id, self.name, self.ip_3, self.ip_4, self.enabled)
 
 class Service(Base):
     __tablename__ = 'services'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     serverid = Column(Integer, ForeignKey('servers.id'))
+    enabled = Column(Boolean, nullable=False)
     name = Column(String(25), nullable=False)
     port = Column(Integer)
     typeid = Column(Integer, ForeignKey('servicetypes.id'))
-    enabled = Column(Boolean, nullable=False)
 
     server = relationship("Server", backref=backref('services', order_by=id))
     type = relationship("ServiceType", backref=backref('services', order_by=id))
@@ -44,17 +54,18 @@ class Service(Base):
     def __repr__(self):
         pass
 
+
 class ServiceType(Base):
     __tablename__ = 'servicetypes'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(25), nullable=False)
     tester = Column(String(25), nullable=False)
 
 class TeamServer(Base):
     __tablename__ = 'teamservers'
     
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     teamid = Column(Integer, ForeignKey('teams.id'))
     serverid = Column(Integer, ForeignKey('servers.id'))
 
@@ -70,9 +81,10 @@ class TeamServer(Base):
 class ScoreEvent(Base):
     __tablename__ = 'scoreevents'
 
-    id = Column(Integer, primary_key=True)
-    teamserverid = Column(Integer, ForeignKey('teamservers.id'))
-    serviceid = Column(Integer, ForeignKey('services.id'))
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    eventid = Column(Integer, ForeignKey('events.id'), index=True, unique=False)
+    teamserverid = Column(Integer, ForeignKey('teamservers.id'), index=True, unique=False)
+    serviceid = Column(Integer, ForeignKey('services.id'), index=True, unique=False)
     scoretime = Column(DateTime, nullable=False)
     up = Column(Boolean, nullable=False)
     info = Column(Text)
@@ -83,7 +95,7 @@ class ScoreEvent(Base):
 class ServiceArg(Base):
     __tablename__ = 'serviceargs'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     serverid = Column(Integer, ForeignKey('teamservers.id'))
     serviceid = Column(Integer, ForeignKey('services.id'))
     key = Column(String(50), nullable=False)
@@ -96,7 +108,7 @@ class ServiceArg(Base):
 class PasswordDatabase(Base):
     __tablename__ = 'passdb'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     db = Column(String(10), nullable=False)
     domain = Column(String(15))
     user = Column(String(255), nullable=False)
@@ -106,7 +118,7 @@ class PasswordDatabase(Base):
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(45))
     username = Column(String(25), nullable=False)
     password = Column(String(60), nullable=False)
@@ -126,10 +138,85 @@ class User(Base):
         if self.group == 1:
             return "User"
         elif self.group == 2:
-            return "2"
+            return "Room Judge"
         elif self.group == 3:
             return "Judge"
         elif self.group == 4:
             return "Manager"
         elif self.group == 5:
             return "Admin"
+
+class Log(Base):
+    __tablename__ = 'log'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    time = Column(DateTime, nullable=False)
+    severity = Column(Integer, nullable=False)
+    module = Column(String(60), nullable=False)
+    message = Column(Text, nullable=False)
+
+class InjectCategory(Base):
+    __tablename__ = 'injectcategories'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    parentid = Column(Integer)
+    name = Column(String(255), nullable=False)
+
+
+class Inject(Base):
+    __tablename__ = 'injects'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    categoryid = Column(Integer, ForeignKey('injectcategories.id'))
+    subjet = Column(String(255), nullable=False)
+    body = Column(Text, nullable=False)
+    durration = Column(Integer, nullable=False)
+    points = Column(Integer, nullable=False)
+
+
+    category = relationship("InjectCategory", backref=backref('injects', order_by=id))
+
+class AssignedInject(Base):
+    __tablename__ = 'assignedinjects'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    eventid = Column(Integer, ForeignKey('events.id'))
+    injectid = Column(Integer, ForeignKey('injects.id'))
+    subject = Column(String(255), nullable=False)
+    body = Column(Text, nullable=False)
+    when = Column(DateTime, nullable=False)
+    duration = Column(Integer, nullable=False)
+    allowlate = Column(Boolean, nullable=False)
+    points = Column(Integer, nullable=False)
+
+    inject = relationship("Inject")
+
+class TeamInjectSubmission(Base):
+    __tablename__ = 'teaminjectsubmissions'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    assignedinjectid = Column(Integer, ForeignKey("assignedinjects.id"))
+    teamid = Column(Integer, ForeignKey("teams.id"))
+    when = Column(DateTime, nullable=False)
+    body = Column(Text, nullable=False)
+    points = Column(Integer, nullable=False)
+
+    inject = relationship("AssignedInject", backref=backref('submissions', order_by=id))
+
+class TeamInjectSubmissionNote(Base):
+    __tablename__ = 'teaminjectsubmissionnotes'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    teaminjectid = Column(Integer, ForeignKey("teaminjectsubmissions.id"))
+    userid = Column(Integer, ForeignKey("users.id"))
+    visible = Column(Boolean, nullable=False)
+
+
+class TeamInjectSubmissionAttachment(Base):
+    __tablename__ = 'teaminjectsubmissionattachments'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    teaminjectid = Column(Integer, ForeignKey("teaminjectsubmissions.id"))
+    filename = Column(String(255), nullable=False)
+    size = Column(Integer, nullable=False)
+    #data = Column(BLOB, nullable=False) Blobs suck in pgsql so we will store as file on file system or in a nosql document store

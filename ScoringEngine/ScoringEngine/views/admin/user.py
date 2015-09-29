@@ -11,7 +11,7 @@ from pprint import pprint as pp
 
 @app.route('/admin/user')
 def users():
-    if 'user' in session and session['user']['group'] == 5:
+    if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
         users = dbsession.query(tables.User).all()
         """Renders the home page."""
@@ -125,13 +125,15 @@ def edituser(user):
                 dbsession.commit()
                 return redirect(url_for('adminuser',user=dbuser.name))
             else:
+                teams = dbsession.query(tables.Team).all()
                 return render_template(
                     'admin/user/edit.html',
                     title='Edit Team',
                     year=datetime.now().year,
                     user=session['user'],
                     login='user' in session,
-                    dbuser=dbuser
+                    dbuser=dbuser,
+                    teams=teams
                 )
         else:
             return render_template(

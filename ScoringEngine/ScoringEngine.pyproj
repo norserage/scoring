@@ -32,6 +32,9 @@
   <ItemGroup>
     <Compile Include="runserver.py" />
     <Compile Include="ScoringEngine\conf\__init__.py" />
+    <Compile Include="ScoringEngine\db\customTypes.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScoringEngine\db\tables.py" />
     <Compile Include="ScoringEngine\db\__init__.py">
       <SubType>Code</SubType>
@@ -39,15 +42,21 @@
     <Compile Include="ScoringEngine\engine\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ScoringEngine\logger.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScoringEngine\report\__init__.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ScoringEngine\utils.py" />
+    <Compile Include="ScoringEngine\views\admin\event.py" />
     <Compile Include="ScoringEngine\views\admin\server.py" />
     <Compile Include="ScoringEngine\views\admin\service.py" />
     <Compile Include="ScoringEngine\views\admin\user.py" />
     <Compile Include="ScoringEngine\views\admin\team.py" />
     <Compile Include="ScoringEngine\views\admin\__init__.py" />
+    <Compile Include="ScoringEngine\views\inject.py" />
+    <Compile Include="ScoringEngine\views\injectmanager\__init__.py" />
     <Compile Include="ScoringEngine\views\portal.py" />
     <Compile Include="ScoringEngine\views\user.py">
       <SubType>Code</SubType>
@@ -62,6 +71,7 @@
     <Compile Include="ScoringEngine\views\home.py" />
     <Compile Include="testers\DNS.py" />
     <Compile Include="testers\FTP.py" />
+    <Compile Include="testers\PING.py" />
     <Compile Include="testers\HTTP.py" />
     <Compile Include="testers\HTTPS.py" />
     <Compile Include="testers\IMAP.py" />
@@ -74,6 +84,7 @@
     <Folder Include="ScoringEngine\engine\" />
     <Folder Include="ScoringEngine\report\" />
     <Folder Include="ScoringEngine\templates\admin\" />
+    <Folder Include="ScoringEngine\templates\admin\event\" />
     <Folder Include="ScoringEngine\templates\admin\server\" />
     <Folder Include="ScoringEngine\templates\admin\service\" />
     <Folder Include="ScoringEngine\templates\admin\team\" />
@@ -88,6 +99,7 @@
     <Folder Include="ScoringEngine\static\scripts\" />
     <Folder Include="ScoringEngine\templates\" />
     <Folder Include="ScoringEngine\views\admin\" />
+    <Folder Include="ScoringEngine\views\injectmanager\" />
     <Folder Include="testers\" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +110,7 @@
     <Content Include="ScoringEngine\static\content\bootstrap.css" />
     <Content Include="ScoringEngine\static\content\bootstrap.min.css" />
     <Content Include="ScoringEngine\static\content\site.css" />
+    <Content Include="ScoringEngine\static\favicon.ico" />
     <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="ScoringEngine\static\fonts\glyphicons-halflings-regular.ttf" />
@@ -119,6 +132,9 @@
     <Content Include="ScoringEngine\static\scripts\_references.js" />
     <Content Include="ScoringEngine\templates\about.html" />
     <Content Include="ScoringEngine\templates\admin\404.html" />
+    <Content Include="ScoringEngine\templates\admin\event\add.html" />
+    <Content Include="ScoringEngine\templates\admin\event\list.html" />
+    <Content Include="ScoringEngine\templates\admin\event\view.html" />
     <Content Include="ScoringEngine\templates\admin\index.html" />
     <Content Include="ScoringEngine\templates\admin\menu.html" />
     <Content Include="ScoringEngine\templates\admin\server\add.html" />

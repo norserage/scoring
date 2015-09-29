@@ -8,20 +8,19 @@ import ScoringEngine.engine
 from pprint import pprint as pp
 
 
-@app.route('/admin/server')
-def servers():
-    if 'user' in session and session['user']['group'] == 5:
+@app.route('/admin/event')
+def events():
+    if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
-        servers = dbsession.query(tables.Server).all()
-        """Renders the home page."""
+        events = dbsession.query(tables.Event).all()
         return render_template(
-            'admin/server/list.html',
-            title='Servers',
+            'admin/event/list.html',
+            title='Events',
             year=datetime.now().year,
             enginestatus=ScoringEngine.engine.running,
             user=session['user'],
             login='user' in session,
-            servers=servers
+            events=events
         )
     else:
         return render_template(
@@ -33,26 +32,20 @@ def servers():
             message="You do not have permission to use this resource"
         )
 
-@app.route('/admin/server/add',methods=['GET','POST'])
-def addserver():
+@app.route('/admin/event/add',methods=['GET','POST'])
+def addevent():
     if 'user' in session and session['user']['group'] == 5:
         if request.method == 'POST':
             dbsession = Session()
-            s = tables.Server()
-            s.name = request.form['name']
-            if request.form['ip3'].strip() == "":
-                s.ip_3 = None
-            else:
-                s.ip_3 = request.form['ip3']
-            s.ip_4 = request.form['ip4']
-            s.enabled = 'enabled' in request.form
-            dbsession.add(s)
+            e = tables.Event()
+            e.name = request.form['name']
+            dbsession.add(e)
             dbsession.commit()
-            return redirect(url_for('servers'))
+            return redirect(url_for('events'))
         else:
             return render_template(
-                'admin/server/add.html',
-                title='Add Server',
+                'admin/event/add.html',
+                title='Add Event',
                 year=datetime.now().year,
                 user=session['user'],
                 login='user' in session,
@@ -67,20 +60,20 @@ def addserver():
             message="You do not have permission to use this resource"
         )
 
-@app.route('/admin/server/<server>')
-def server(server):
+@app.route('/admin/event/<event>')
+def event(event):
     if 'user' in session and session['user']['group'] == 5:
         dbsession = Session()
-        servers = dbsession.query(tables.Server).filter(tables.Server.id == server)
-        if servers.count() > 0:
-            server = servers[0]
+        events = dbsession.query(tables.Event).filter(tables.Event.id==event)
+        if events.count() > 0:
+            event = events[0]
             return render_template(
-                'admin/server/view.html',
-                title=server.name,
+                'admin/event/view.html',
+                title=event.name,
                 year=datetime.now().year,
                 user=session['user'],
                 login='user' in session,
-                server=server,
+                event=event,
             )
         else:
             return render_template(
@@ -101,11 +94,11 @@ def server(server):
             message="You do not have permission to use this resource"
         )
 
-@app.route('/admin/server/<server>/edit',methods=['GET','POST'])
-def editserver(server):
+@app.route('/admin/event/<event>/edit',methods=['GET','POST'])
+def editevent(event):
     if 'user' in session and session['user']['group'] == 5:
         dbsession = Session()
-        servers = dbsession.query(tables.Server).filter(tables.Server.id == server)
+        servers = dbsession.query(tables.Server).filter(tables.Server.id == event)
         if servers.count() > 0:
             server = servers[0]
             if request.method == 'POST':
@@ -147,35 +140,24 @@ def editserver(server):
             message="You do not have permission to use this resource"
         )
 
-@app.route('/admin/server/<server>/addservice',methods=['GET','POST'])
-def serveraddservice(server):
-    if 'user' in session and session['user']['group'] == 5:
+
+@app.route('/admin/event/<event>/start')
+def startevent(event):
+    if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
-        servers = dbsession.query(tables.Server).filter(tables.Server.id == server)
-        if servers.count() > 0:
-            server = servers[0]
-            if request.method == 'POST':
-                s = tables.Service()
-                s.serverid = server.id
-                s.name = request.form['name']
-                s.typeid = request.form['type']
-                if request.form['port'] != "":
-                    s.port = request.form['port']
-                s.enabled = 'enabled' in request.form
-                dbsession.add(s)
-                dbsession.commit()
-                return redirect(url_for('server',server=server.id))
-            else:
-                types = dbsession.query(tables.ServiceType).order_by(tables.ServiceType.name.asc()).all()
-                return render_template(
-                    'admin/server/addservice.html',
-                    title='Add Server',
-                    year=datetime.now().year,
-                    user=session['user'],
-                    login='user' in session,
-                    types=types,
-                    server=server
-                )
+        events = dbsession.query(tables.Event).filter(tables.Event.id == event)
+        if events.count() > 0:
+            event = events[0]
+            events = dbsession.query(tables.Event).filter(tables.Event.current == True)
+            if events.count() > 0:
+                for e in events:
+                    e.current = False
+                    if e.end == None:
+                        e.end = datetime.now()
+            event.current = True
+            event.start = datetime.now()
+            dbsession.commit()
+            return redirect(url_for("events"))
         else:
             return render_template(
                 'admin/404.html',
@@ -195,32 +177,17 @@ def serveraddservice(server):
             message="You do not have permission to use this resource"
         )
 
-@app.route('/admin/server/<server>/editservice/<service>',methods=['GET','POST'])
-def servereditservice(server,service):
-    if 'user' in session and session['user']['group'] == 5:
+@app.route('/admin/event/<event>/stop')
+def stopevent(event):
+    if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
-        services = dbsession.query(tables.Service).filter(tables.Service.id == service)
-        if services.count() > 0:
-            service = services[0]
-            if request.method == 'POST':
-                service.name = request.form['name']
-                service.typeid = request.form['type']
-                if request.form['port'] != "":
-                    service.port = request.form['port']
-                service.enabled = 'enabled' in request.form
-                dbsession.commit()
-                return redirect(url_for('server',server=server))
-            else:
-                types = dbsession.query(tables.ServiceType).order_by(tables.ServiceType.name.asc()).all()
-                return render_template(
-                    'admin/server/editservice.html',
-                    title='Edit Server',
-                    year=datetime.now().year,
-                    user=session['user'],
-                    login='user' in session,
-                    types=types,
-                    service=service
-                )
+        events = dbsession.query(tables.Event).filter(tables.Event.id == event)
+        if events.count() > 0:
+            event = events[0]
+            event.current = False
+            event.end = datetime.now()
+            dbsession.commit()
+            return redirect(url_for("events"))
         else:
             return render_template(
                 'admin/404.html',

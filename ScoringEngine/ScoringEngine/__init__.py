@@ -1,13 +1,17 @@
-import ScoringEngine.conf
-import argparse
+VERSION = '2.6'
+VERSIONSTR = "Lepus ISE v%s DEV" % (VERSION)
+'''
 
+'''
 def arguments():
-    global ScoringEngine
-    parser = argparse.ArgumentParser(description='Lepus ISE v2.5')
+    import ScoringEngine.conf
+    import argparse
+    parser = argparse.ArgumentParser(description=VERSIONSTR)
     parser.add_argument('-e','--env', help='Environment', required=False)
     parser.add_argument('-c','--config', help='Specify the config file', required=False)
     parser.add_argument('--gen-config', help='Generates a new default config file', required=False, action='store_true')
     parser.add_argument('--gen-db', help='Imports the schema into a database', required=False, action='store_true')
+    parser.add_argument('--print-config', help='Clears all data in the database', required=False, action='store_true')
     parser.add_argument('--erase-db', help='Clears all data in the database', required=False, action='store_true')
     parser.add_argument('--clear-scoredata', help='Clears all score data', required=False, action='store_true')
     parser.add_argument('-v','--version', help='Generates a new default config file', required=False, action='store_true')
@@ -21,7 +25,7 @@ def arguments():
         config = args.config
 
     if args.version:
-        print "Lepus ISE v2.5"
+        print VERSIONSTR
         return False
     elif args.gen_config:
         ScoringEngine.conf.newConf(config)
@@ -54,8 +58,10 @@ def arguments():
 def pathSetup():
     from ScoringEngine.conf import conf
     import sys
-    for l in conf['tester locations']:
-        sys.path.append(l)
+    if 'tester locations' in conf:
+        if len(conf['tester locations']) > 0:
+            for l in conf['tester locations']:
+                sys.path.append(l)
 
 def main():
     if arguments():
@@ -79,4 +85,4 @@ def fcgimain():
         from flup.server.fcgi import WSGIServer
         pathSetup()
         setupApp()
-        WSGIServer(app).run()
+        WSGIServer(app, bindAddress=conf['fcgi']['socket']).run()

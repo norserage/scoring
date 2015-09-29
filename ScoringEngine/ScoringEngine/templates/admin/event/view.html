@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include "admin/menu.html" %}
+<div class="col-md-9">
+    <div class="page-header">
+        <h1 style="float:left;margin-top:0px;">{{ event.name }} <small>{{ event.start }}-{{ event.end }}</small></h1>
+        <div style="float:right">
+            {% if event.current %}
+            <span class="label label-success">Running</span>
+            {% elif event.end != None %}
+            <span class="label label-danger">Completed</span>
+            {% else %}
+                <span class="label label-warning">Not Started</span>
+            {% endif %}
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+    <h4>More Info Here</h4>
+    
+</div>
+{% endblock %}

@@ -1,9 +1,9 @@
 Flask
 mechanize
-MySQL-python
 pyaml
 PyYAML
 SQLAlchemy
 pycrypto
 psycopg2
+enum34
 
