@@ -20,7 +20,9 @@
     <th></th>
         {% for server in servers %}
             {% for service in server.services %}
-                <th>{{ server.name }}-{{ service.name }}</th>
+                {% if service.enabled %}
+                    <th>{{ server.name }}-{{ service.name }}</th>
+                {% endif %}
             {% endfor %}
         {% endfor %}
     </tr>
