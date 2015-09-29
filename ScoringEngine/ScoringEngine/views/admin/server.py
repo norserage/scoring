@@ -205,7 +205,8 @@ def servereditservice(server,service):
             if request.method == 'POST':
                 service.name = request.form['name']
                 service.typeid = request.form['type']
-                service.port = request.form['port']
+                if request.form['port'] != "":
+                    service.port = request.form['port']
                 service.enabled = 'enabled' in request.form
                 dbsession.commit()
                 return redirect(url_for('server',server=server))
