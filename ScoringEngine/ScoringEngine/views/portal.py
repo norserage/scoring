@@ -1,4 +1,4 @@
-from datetime import datetime
+﻿from datetime import datetime
 from flask import render_template, request, session, redirect
 from ScoringEngine.web import app
 from ScoringEngine.db import Session
@@ -14,7 +14,7 @@ def portal():
     if session['user']['group'] > 1:
         teams = dbsession.query(tables.Team).filter(tables.Team.enabled == True)
     else:
-        teams = dbsession.query(tables.Team).filter(tables.and_(tables.Team.enabled == True,tables.Team.id == session["user"]["team"]))
+        teams = dbsession.query(tables.Team).filter(tables.and_(tables.Team.enabled == True,tables.Team.id == session["user"]["team"])).order_by(tables.Team.name)
     for team in teams:
         row = []
         row.append(team.name)

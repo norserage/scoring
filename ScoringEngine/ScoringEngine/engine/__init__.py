@@ -1,5 +1,6 @@
-import threading
+﻿import threading
 import random
+import datetime
 from ScoringEngine.db import Session
 import ScoringEngine.db.tables as tables
 
@@ -15,12 +16,18 @@ def thread_start():
     while running:
         print "loop"
         score()
-        i = random.randint(120,240)
-        print "sleeping for %i" % (i)
+        i = random.randint(60,240)
+        date = datetime.datetime.now()
+        date += datetime.timedelta(seconds=i)
+        print "sleeping for %i (%s)" % (i, date)
         threading._sleep(i)
 
 def score():
     session = Session()
+    event = None
+    events = session.query(tables.Event).filter(tables.Event.current == True)
+    if events.count() > 0:
+        event = events[0].id
     for server in session.query(tables.TeamServer).all():
         print server
         if (server.server.enabled):
@@ -28,4 +35,4 @@ def score():
                 print service.type.tester
                 m=__import__(service.type.tester)
                 func = getattr(m, "test")
-                threading.Thread(target=func, args=[server,service]).start()
+                threading.Thread(target=func, args=[server,service,event]).start()

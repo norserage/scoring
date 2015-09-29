@@ -1,4 +1,4 @@
-from datetime import datetime
+﻿from datetime import datetime
 from flask import render_template, request, session, redirect, url_for, escape
 from ScoringEngine.web import app
 from ScoringEngine.db import Session
@@ -159,7 +159,8 @@ def serveraddservice(server):
                 s.serverid = server.id
                 s.name = request.form['name']
                 s.typeid = request.form['type']
-                s.port = request.form['port']
+                if request.form['port'] != "":
+                    s.port = request.form['port']
                 s.enabled = 'enabled' in request.form
                 dbsession.add(s)
                 dbsession.commit()

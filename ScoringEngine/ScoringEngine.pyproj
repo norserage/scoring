@@ -71,6 +71,7 @@
     <Compile Include="ScoringEngine\views\home.py" />
     <Compile Include="testers\DNS.py" />
     <Compile Include="testers\FTP.py" />
+    <Compile Include="testers\PING.py" />
     <Compile Include="testers\HTTP.py" />
     <Compile Include="testers\HTTPS.py" />
     <Compile Include="testers\IMAP.py" />
@@ -83,6 +84,7 @@
     <Folder Include="ScoringEngine\engine\" />
     <Folder Include="ScoringEngine\report\" />
     <Folder Include="ScoringEngine\templates\admin\" />
+    <Folder Include="ScoringEngine\templates\admin\event\" />
     <Folder Include="ScoringEngine\templates\admin\server\" />
     <Folder Include="ScoringEngine\templates\admin\service\" />
     <Folder Include="ScoringEngine\templates\admin\team\" />
@@ -130,6 +132,9 @@
     <Content Include="ScoringEngine\static\scripts\_references.js" />
     <Content Include="ScoringEngine\templates\about.html" />
     <Content Include="ScoringEngine\templates\admin\404.html" />
+    <Content Include="ScoringEngine\templates\admin\event\add.html" />
+    <Content Include="ScoringEngine\templates\admin\event\list.html" />
+    <Content Include="ScoringEngine\templates\admin\event\view.html" />
     <Content Include="ScoringEngine\templates\admin\index.html" />
     <Content Include="ScoringEngine\templates\admin\menu.html" />
     <Content Include="ScoringEngine\templates\admin\server\add.html" />

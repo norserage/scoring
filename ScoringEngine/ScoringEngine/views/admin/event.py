@@ -143,7 +143,7 @@ def editevent(event):
 
 @app.route('/admin/event/<event>/start')
 def startevent(event):
-    if 'user' in session and session['user']['group'] == 5:
+    if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
         events = dbsession.query(tables.Event).filter(tables.Event.id == event)
         if events.count() > 0:
@@ -156,6 +156,36 @@ def startevent(event):
                         e.end = datetime.now()
             event.current = True
             event.start = datetime.now()
+            dbsession.commit()
+            return redirect(url_for("events"))
+        else:
+            return render_template(
+                'admin/404.html',
+                title='404 Server Not Found',
+                year=datetime.now().year,
+                user=session['user'],
+                login='user' in session,
+                message="We could not find the server that you were looking for."
+            )
+    else:
+        return render_template(
+            'errors/403.html',
+            title='403 Access Denied',
+            year=datetime.now().year,
+            user=session['user'],
+            login='user' in session,
+            message="You do not have permission to use this resource"
+        )
+
+@app.route('/admin/event/<event>/stop')
+def stopevent(event):
+    if 'user' in session and session['user']['group'] >= 4:
+        dbsession = Session()
+        events = dbsession.query(tables.Event).filter(tables.Event.id == event)
+        if events.count() > 0:
+            event = events[0]
+            event.current = False
+            event.end = datetime.now()
             dbsession.commit()
             return redirect(url_for("events"))
         else:
