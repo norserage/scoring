@@ -11,7 +11,7 @@ from pprint import pprint as pp
 
 @app.route('/admin/user')
 def users():
-    if 'user' in session and session['user']['group'] == 5:
+    if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
         users = dbsession.query(tables.User).all()
         """Renders the home page."""
