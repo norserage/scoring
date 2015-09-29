@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="page-header">
+        <h1 style="float:left;margin-top:0px;">{{ inject.subject }} <small>{{ inject.points }} points</small></h1>
+
+        <div style="float:right">
+            <a class="btn btn-default" href="#">Respond</a>
+            <a class="btn btn-default" href="#">Responces</a>
+        </div>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div><pre>{{ inject.body }}</pre></div>
+
+{% endblock %}

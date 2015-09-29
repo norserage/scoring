@@ -5,4 +5,5 @@ PyYAML
 SQLAlchemy
 pycrypto
 psycopg2
+enum34
 

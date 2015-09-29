@@ -9,7 +9,7 @@ from pprint import pprint as pp
 
 @app.route('/admin')
 def admin():
-    if 'user' in session and session['user']['group'] == 5:
+    if 'user' in session and session['user']['group'] >= 4:
         return render_template(
             'admin/index.html',
             title='Admin',
@@ -31,7 +31,7 @@ def admin():
 
 @app.route('/admin/scoring/<flag>')
 def adminscoringswitch(flag):
-    if 'user' in session and session['user']['group'] == 5:
+    if 'user' in session and session['user']['group'] >= 4:
         if flag == "true":
             ScoringEngine.engine.running = True
             ScoringEngine.engine.start()
