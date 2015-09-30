@@ -36,3 +36,4 @@ def score():
                 m=__import__(service.type.tester)
                 func = getattr(m, "test")
                 threading.Thread(target=func, args=[server,service,event]).start()
+    session.close()

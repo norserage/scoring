@@ -38,3 +38,4 @@ def test(server, service, event):
         pass
     session.add(se)
     session.commit()
+    session.close()
