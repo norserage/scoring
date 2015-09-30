@@ -16,6 +16,7 @@ def test(server, service, event):
         #confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==server.team.id+'conf'))
         #conf = json.loads(confpair.value)
         br = mechanize.Browser()
+        br.set_handle_robots(False)
         br.open("https://"+server.getIP())
         se.up = True
         se.info = br.title()
