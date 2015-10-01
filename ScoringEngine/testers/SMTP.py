@@ -14,8 +14,7 @@ def test(server, service, event):
     se.eventid = event
     try:
         smtp = smtplib.SMTP(server.getIP())
-        confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==server.team.id+'conf'))
-        conf = json.loads(confpair.value)
+        conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
         user = utils.getRandomUser(session, conf['passdb'])
         smtp.login(user['user'],user['pass'])
         to_email = utils.getRandomEmail(session, conf['passdb'])

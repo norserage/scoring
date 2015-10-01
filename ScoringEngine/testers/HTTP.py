@@ -8,8 +8,8 @@ from datetime import datetime
 def test(server, service, event):
     session=Session()
     se = tables.ScoreEvent()
-    se.serviceid = service.id;
-    se.teamserverid = server.id;
+    se.serviceid = service.id
+    se.teamserverid = server.id
     se.scoretime = datetime.now()
     se.eventid = event
     try:
@@ -18,7 +18,6 @@ def test(server, service, event):
         br = mechanize.Browser()
         br.set_handle_robots(False)
         br.open("http://"+server.getIP())
-        
         se.up = True
         se.info = br.title()
     except Exception as e:
