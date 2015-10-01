@@ -18,7 +18,6 @@ def test(server, service, event):
         conf = json.loads(confpair.value)
         servers = conf['servers']
         ser = random.choice(servers)
-        #ser = servers[random.randint(0,servers.length)]
         dnsentry = ser['dns']
         ip = ser['ip']
         sp = subprocess.Popen(["nslookup",dnsentry,server.getIP()],stdout=subprocess.PIPE)
@@ -38,3 +37,4 @@ def test(server, service, event):
         pass
     session.add(se)
     session.commit()
+    session.close()

@@ -31,4 +31,4 @@ def test(server, service, event):
         se.up = False
     session.add(se)
     session.commit()
-    
+    session.close()

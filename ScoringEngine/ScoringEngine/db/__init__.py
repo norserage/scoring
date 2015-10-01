@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+﻿from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from ScoringEngine.conf import conf
 import tables
@@ -22,3 +22,4 @@ def createUser(name,username,password,team,group):
     user.group = group
     session.add(user)
     session.commit()
+    session.close()

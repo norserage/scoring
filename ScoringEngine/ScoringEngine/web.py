@@ -1,4 +1,4 @@
-"""
+﻿"""
 The flask application package.
 """
 
@@ -21,3 +21,4 @@ def setupApp():
     from ScoringEngine.conf import conf
     app.debug = conf['debug']
     app.secret_key = conf['secret']
+    
