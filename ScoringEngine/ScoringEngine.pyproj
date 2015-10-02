@@ -71,6 +71,7 @@
     <Compile Include="ScoringEngine\views\home.py" />
     <Compile Include="testers\DNS.py" />
     <Compile Include="testers\FTP.py" />
+    <Compile Include="testers\IMAPS.py" />
     <Compile Include="testers\PING.py" />
     <Compile Include="testers\HTTP.py" />
     <Compile Include="testers\HTTPS.py" />
