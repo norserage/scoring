@@ -4,9 +4,7 @@ VERSIONSTR = "Lepus ISE v%s DEV" % (VERSION)
 
 '''
 
-import ssl
 
-ssl._create_default_https_context = ssl._create_unverified_context
 
 def arguments():
     import ScoringEngine.conf
