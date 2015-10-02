@@ -13,7 +13,8 @@ def test(server, service, event):
     se.scoretime = datetime.now()
     se.eventid = event
     try:
-        smtp = smtplib.SMTP(server.getIP())
+        smtp = smtplib.SMTP(server.getIP(), service.port)
+        smtp.starttls()
         conf = utils.getServiceConfig(session, service, server.team)
         user = utils.getRandomUser(session, conf['passdb'])
         r = smtp.login(user['user'],user['pass'])
