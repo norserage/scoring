@@ -10,7 +10,7 @@ def portal():
     dbsession = Session()
     data=[]
     stmt = tables.exists().where(tables.Server.id==tables.TeamServer.serverid)
-    servers = dbsession.query(tables.Server).filter(tables.and_(stmt,tables.Server.enabled == True))
+    servers = dbsession.query(tables.Server).filter(tables.and_(stmt,tables.Server.enabled == True)).order_by(tables.Server.name)
     if session['user']['group'] > 1:
         teams = dbsession.query(tables.Team).filter(tables.Team.enabled == True).order_by(tables.Team.name)
     else:
