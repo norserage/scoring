@@ -14,8 +14,7 @@ def test(server, service, event):
     se.eventid = event
     try:
         imap = imaplib.IMAP4(server.getIP())
-        confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==server.team.id+'conf'))
-        conf = json.loads(confpair.value)
+        conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
         user = utils.getRandomUser(session, conf['passdb'])
         imap.login(user['user'],user['pass'])
         se.up = True
