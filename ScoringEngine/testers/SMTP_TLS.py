@@ -17,7 +17,7 @@ def test(server, service, event):
         smtp.starttls()
         conf = utils.getServiceConfig(session, service, server.team)
         user = utils.getRandomUser(session, conf['passdb'])
-        r = smtp.login(user['user'],user['pass'])
+        r = smtp.login(user['email'],user['pass'])
         to_email = utils.getRandomEmail(session, conf['passdb'])
         smtp.sendmail(user['email'],to_email,"This is the test ")
         se.up = True
