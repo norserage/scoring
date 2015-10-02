@@ -42,7 +42,36 @@
         </tr>
     {% endfor %}
 </table>
-
+<div class="page-header">
+    <h2>Scores</h2>
+</div>
+<table class="table">
+    <tr>
+        <th></th>
+        {% for server in servers %}
+        {% for service in server.services %}
+        {% if service.enabled %}
+        <th>{{ server.name }}-{{ service.name }}</th>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </tr>
+    {% for row in data %}
+    <tr>
+        {% for cell in row %}
+        {% if cell == "up" %}
+        <td class=""><span class="label label-success">{{ cell }}</span></td>
+        {% elif cell == "" or cell == None %}
+        <td class="">N/A</td>
+        {% elif cell == "down" %}
+        <td class=""><span class="label label-danger">{{ cell }}</span></td>
+        {% else %}
+        <th>{{ cell }}</th>
+        {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}
 
 {% block styles %}
