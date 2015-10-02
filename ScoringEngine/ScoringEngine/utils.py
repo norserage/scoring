@@ -35,6 +35,6 @@ def Ping(hostname,timeout):
         return False
 
 def getServiceConfig(session, service, team):
-    confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==team.id+'conf'))
+    confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==str(team.id)+'conf'))
     conf = json.loads(confpair[0].value)
     return conf

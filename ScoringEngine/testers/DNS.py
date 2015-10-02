@@ -17,23 +17,28 @@ def test(server, service, event):
         conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
         servers = conf['servers']
         ser = random.choice(servers)
+        print json.dumps(ser)
         dnsentry = ser['dns']
         ip = ser['ip']
         sp = subprocess.Popen(["nslookup",dnsentry,server.getIP()],stdout=subprocess.PIPE)
         lines = sp.stdout
         sp.wait()
-        l = lines.readLines()
+        l = lines.readlines()
 
         for line in l[2:]:
-            if line.contains(ip):
+            if ip in line:
+                print line
                 se.up = True
-                return
-
-        print "bad"
+                break
+            else:
+                se.up = False
+        se.info = json.dumps(l)
     except Exception as e:
         se.info = e.message
         se.up = False
         pass
+    
+    
     session.add(se)
     session.commit()
     session.close()
