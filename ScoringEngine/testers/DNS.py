@@ -35,9 +35,7 @@ def test(server, service, event):
         se.info = json.dumps(l)
     except Exception as e:
         se.info = e.message
-        se.up = False
-        pass
-    
+        se.up = False    
     
     session.add(se)
     session.commit()
