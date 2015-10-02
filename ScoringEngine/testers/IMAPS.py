@@ -14,7 +14,7 @@ def test(server, service, event):
     se.eventid = event
     try:
         imap = imaplib.IMAP4_SSL(server.getIP())
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
+        conf = utils.getServiceConfig(session, service, server.team)
         user = utils.getRandomUser(session, conf['passdb'])
         r = imap.login(user['email'],user['pass'])
         if r[0] == 'OK':
