@@ -36,7 +36,9 @@ def test(server, service, event):
     except Exception as e:
         se.info = e.message
         se.up = False    
-    
+    finally:
+        if not se.up:
+            se.up = False
     session.add(se)
     session.commit()
     session.close()
