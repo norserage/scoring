@@ -3,6 +3,7 @@ import random
 import platform
 import subprocess
 import re
+import json
 
 def getRandomUser(session, passwd_db):
     user = []
