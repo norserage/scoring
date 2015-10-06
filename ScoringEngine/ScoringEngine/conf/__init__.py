@@ -1,4 +1,4 @@
-import yaml
+﻿import yaml
 import pprint
 
 conf = {}
@@ -35,6 +35,10 @@ def newConf(config="conf.yaml"):
                 'file':'warning',
                 'db':'info',
                 'file_path':'scoring.log'
+            },
+            'engine':{
+                'min':60,
+                'max':120
             }
         },
         'dev':{
@@ -53,6 +57,10 @@ def newConf(config="conf.yaml"):
                 'file':'warning',
                 'db':'info',
                 'file_path':'scoring.log'
+            },
+            'engine':{
+                'min':60,
+                'max':120
             }
         },
         'local':{
@@ -71,6 +79,10 @@ def newConf(config="conf.yaml"):
                 'file':'warning',
                 'db':'info',
                 'file_path':'scoring.log'
+            },
+            'engine':{
+                'min':60,
+                'max':120
             }
         }
     }
