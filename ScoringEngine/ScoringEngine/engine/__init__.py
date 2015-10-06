@@ -3,6 +3,7 @@ import random
 import datetime
 from ScoringEngine.db import Session
 import ScoringEngine.db.tables as tables
+from ScoringEngine.conf import conf
 
 running = False
 event = None
@@ -16,7 +17,7 @@ def thread_start():
     while running:
         print "loop"
         score()
-        i = random.randint(60,240)
+        i = random.randint(conf['engine']['min'],conf['engine']['max'])
         date = datetime.datetime.now()
         date += datetime.timedelta(seconds=i)
         print "sleeping for %i (%s)" % (i, date)
