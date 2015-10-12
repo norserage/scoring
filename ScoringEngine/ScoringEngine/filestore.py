@@ -1,4 +1,4 @@
-__author__ = 'thebmw'
+﻿__author__ = 'thebmw'
 import bsddb3.db
 import uuid
 from ScoringEngine.conf import conf
@@ -15,8 +15,6 @@ def insert(data):
 def get(id):
     return db.get(id)
 
-def butts():
-    print("butts")
-    return
+
 
 

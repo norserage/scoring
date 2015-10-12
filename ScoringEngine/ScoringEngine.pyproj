@@ -42,6 +42,7 @@
     <Compile Include="ScoringEngine\engine\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ScoringEngine\filestore.py" />
     <Compile Include="ScoringEngine\logger.py">
       <SubType>Code</SubType>
     </Compile>
@@ -111,6 +112,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="ScoringEngine\static\content\bootstrap.css" />
+    <Content Include="ScoringEngine\static\content\bootstrap.cyborg.min.css" />
     <Content Include="ScoringEngine\static\content\bootstrap.min.css" />
     <Content Include="ScoringEngine\static\content\site.css" />
     <Content Include="ScoringEngine\static\favicon.ico" />
