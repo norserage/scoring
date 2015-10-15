@@ -56,6 +56,9 @@
     <Compile Include="ScoringEngine\views\admin\user.py" />
     <Compile Include="ScoringEngine\views\admin\team.py" />
     <Compile Include="ScoringEngine\views\admin\__init__.py" />
+    <Compile Include="ScoringEngine\views\api\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScoringEngine\views\inject.py" />
     <Compile Include="ScoringEngine\views\injectmanager\__init__.py" />
     <Compile Include="ScoringEngine\views\portal.py" />
@@ -93,6 +96,7 @@
     <Folder Include="ScoringEngine\templates\admin\team\" />
     <Folder Include="ScoringEngine\templates\admin\user\" />
     <Folder Include="ScoringEngine\templates\errors\" />
+    <Folder Include="ScoringEngine\templates\injectmanager\" />
     <Folder Include="ScoringEngine\templates\portal\" />
     <Folder Include="ScoringEngine\templates\user\" />
     <Folder Include="ScoringEngine\views\" />
@@ -103,6 +107,7 @@
     <Folder Include="ScoringEngine\templates\" />
     <Folder Include="ScoringEngine\views\admin\" />
     <Folder Include="ScoringEngine\views\injectmanager\" />
+    <Folder Include="ScoringEngine\views\api\" />
     <Folder Include="testers\" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +169,7 @@
     <Content Include="ScoringEngine\templates\errors\404.html" />
     <Content Include="ScoringEngine\templates\errors\403.html" />
     <Content Include="ScoringEngine\templates\index.html" />
+    <Content Include="ScoringEngine\templates\injectmanager\index.html" />
     <Content Include="ScoringEngine\templates\layout.html" />
     <Content Include="ScoringEngine\templates\portal\index.html" />
     <Content Include="ScoringEngine\templates\user\changepass.html" />
