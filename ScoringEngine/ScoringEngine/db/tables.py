@@ -6,6 +6,12 @@ from sqlalchemy.orm import relationship, backref
 metadata = MetaData()
 Base = declarative_base()
 
+def dump_datetime(value):
+    """Deserialize datetime object into string form for JSON processing."""
+    if value is None:
+        return None
+    return [value.strftime("%Y-%m-%d"), value.strftime("%H:%M:%S")]
+
 class Event(Base):
     __tablename__ = 'events'
 
@@ -14,6 +20,15 @@ class Event(Base):
     current = Column(Boolean, index=True, unique=False)
     start = Column(DateTime, index=True, unique=False)
     end = Column(DateTime, index=True, unique=False)
+
+    def seralize(self):
+        return {
+            'id':self.id,
+            'name':self.name,
+            'current': self.current,
+            'start':dump_datetime(self.start),
+            'end':dump_datetime(self.end)
+            }
     
 class Team(Base):
     __tablename__ = 'teams'
@@ -219,4 +234,5 @@ class TeamInjectSubmissionAttachment(Base):
     teaminjectid = Column(Integer, ForeignKey("teaminjectsubmissions.id"))
     filename = Column(String(255), nullable=False)
     size = Column(Integer, nullable=False)
+    fileid = Column(UUID, nullable=False)
     #data = Column(BLOB, nullable=False) Blobs suck in pgsql so we will store as file on file system or in a nosql document store

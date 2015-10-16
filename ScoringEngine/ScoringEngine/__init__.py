@@ -1,4 +1,5 @@
-﻿VERSION = '2.6'
+﻿from __future__ import print_function
+VERSION = '2.6'
 VERSIONSTR = "Lepus ISE v%s DEV" % (VERSION)
 '''
 
@@ -14,9 +15,7 @@ def arguments():
     parser.add_argument('-c','--config', help='Specify the config file', required=False)
     parser.add_argument('--gen-config', help='Generates a new default config file', required=False, action='store_true')
     parser.add_argument('--gen-db', help='Imports the schema into a database', required=False, action='store_true')
-    parser.add_argument('--print-config', help='Clears all data in the database', required=False, action='store_true')
-    parser.add_argument('--erase-db', help='Clears all data in the database', required=False, action='store_true')
-    parser.add_argument('--clear-scoredata', help='Clears all score data', required=False, action='store_true')
+    parser.add_argument('--print-config', help='Prints the current configuration', required=False, action='store_true')
     parser.add_argument('-v','--version', help='Generates a new default config file', required=False, action='store_true')
     
     args = parser.parse_args()
@@ -28,7 +27,7 @@ def arguments():
         config = args.config
 
     if args.version:
-        print VERSIONSTR
+        print(VERSIONSTR)
         return False
     elif args.gen_config:
         ScoringEngine.conf.newConf(config)
@@ -38,6 +37,11 @@ def arguments():
 
     ScoringEngine.conf.loadConf(config, env)
 
+    if args.print_config:
+        import pprint
+        print("")
+        pprint.pprint(ScoringEngine.conf.conf)
+
     if args.gen_db:
         import ScoringEngine.db
         import ScoringEngine.db.tables
@@ -45,16 +49,6 @@ def arguments():
         ScoringEngine.db.createUser("Administrator", "admin", "admin", -1, 5)
         return False
 
-    if args.erase_db:
-        import ScoringEngine.db
-        from sqlalchemy import delete, and_, text
-        from sqlalchemy import table, literal_column
-        
-        return False
-        
-    if args.clear_scoredata:
-
-        return False
     
     return True
 
@@ -80,6 +74,7 @@ def main():
         #engine.start() # Note that this starts a thread
         setupApp()
         app.run(HOST, PORT)
+        print("hello")
 
 def fcgimain():
     if arguments():
