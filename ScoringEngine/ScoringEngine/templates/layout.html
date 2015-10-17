@@ -27,7 +27,7 @@
                     {% if user %}
                     <li><a href="{{ url_for('portal') }}">Portal</a></li>
                     {% if user['group'] >= 3 %}
-                    <li><a href="#">Admin</a></li>
+                    <li><a href="#">Inject Manager</a></li>
                     {% endif %}
                     {% if user['group'] >= 4 %}
                     <li><a href="{{ url_for('admin') }}">Admin</a></li>
