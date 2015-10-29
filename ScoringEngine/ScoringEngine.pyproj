@@ -82,6 +82,12 @@
     <Compile Include="testers\IMAP.py" />
     <Compile Include="testers\SMTP_TLS.py" />
     <Compile Include="testers\SMTP.py" />
+    <Compile Include="testers\SSH.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="testers\TCP.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ScoringEngine\" />

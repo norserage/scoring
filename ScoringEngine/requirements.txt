@@ -6,4 +6,4 @@ SQLAlchemy
 pycrypto
 psycopg2
 enum34
-
+paramiko
