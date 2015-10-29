@@ -20,9 +20,12 @@ def test(server, service, event):
         br.open("http://"+server.getIP())
         se.up = True
         se.info = br.title()
+        
     except Exception as e:
         se.info = e.message
         se.up = False
+    finally:
+        br.close()
     session.add(se)
     session.commit()
     session.close()

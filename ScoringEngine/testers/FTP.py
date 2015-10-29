@@ -28,6 +28,8 @@ def test(server, service, event):
     except ftplib.error_perm as ep:
         se.info = ep.message
         se.up = False
+    finally:
+        ftp.close()
     session.add(se)
     session.commit()
     session.close()
