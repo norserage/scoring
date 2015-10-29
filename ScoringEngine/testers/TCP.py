@@ -3,10 +3,10 @@ from ScoringEngine.db import Session
 import ScoringEngine.utils as utils
 import json
 from datetime import datetime
-import paramiko
+import socket
 
 def test(server, service, event):
-    raise NotImplementedError();
+    #raise NotImplementedError();
     session=Session()
     se = tables.ScoreEvent()
     se.serviceid = service.id;
@@ -14,13 +14,15 @@ def test(server, service, event):
     se.scoretime = datetime.now()
     se.eventid = event
     try:
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-        ssh.connect(server.getIP(), username="chip",password="nkunku12",)
-        
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((server.getIP(), service.port))
+        se.up = True
+        se.info = s.recv(1024)
     except Exception as e:
         se.info = e.message
         se.up = False
+    finally:
+        s.close()
     session.add(se)
     session.commit()
     session.close()

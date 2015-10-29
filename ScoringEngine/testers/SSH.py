@@ -6,7 +6,7 @@ from datetime import datetime
 import paramiko
 
 def test(server, service, event):
-    raise NotImplementedError();
+    #raise NotImplementedError();
     session=Session()
     se = tables.ScoreEvent()
     se.serviceid = service.id;
@@ -17,10 +17,12 @@ def test(server, service, event):
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy)
         ssh.connect(server.getIP(), username="chip",password="nkunku12",)
-        
+        se.up = True
     except Exception as e:
         se.info = e.message
         se.up = False
+    finally:
+        ssh.close()
     session.add(se)
     session.commit()
     session.close()
