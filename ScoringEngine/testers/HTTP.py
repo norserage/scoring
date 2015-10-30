@@ -12,10 +12,11 @@ def test(server, service, event):
     se.teamserverid = server.id
     se.scoretime = datetime.now()
     se.eventid = event
+    br = mechanize.Browser()
     try:
         #confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==server.team.id+'conf'))
         #conf = json.loads(confpair.value)
-        br = mechanize.Browser()
+        #br = mechanize.Browser()
         br.set_handle_robots(False)
         br.open("http://"+server.getIP())
         se.up = True

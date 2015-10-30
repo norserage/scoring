@@ -1,4 +1,4 @@
-import ScoringEngine.db.tables as tables
+﻿import ScoringEngine.db.tables as tables
 from ScoringEngine.db import Session
 import ScoringEngine.utils as utils
 import json
@@ -13,8 +13,8 @@ def test(server, service, event):
     se.teamserverid = server.id;
     se.scoretime = datetime.now()
     se.eventid = event
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((server.getIP(), service.port))
         se.up = True
         se.info = s.recv(1024)

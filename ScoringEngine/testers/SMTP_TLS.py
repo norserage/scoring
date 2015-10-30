@@ -12,8 +12,10 @@ def test(server, service, event):
     se.teamserverid = server.id;
     se.scoretime = datetime.now()
     se.eventid = event
+    smtp = smtplib.SMTP()
     try:
-        smtp = smtplib.SMTP(server.getIP(), service.port)
+        #smtp = smtplib.SMTP(server.getIP(), service.port)
+        smtp.connect(server.getIP(), service.port)
         smtp.starttls()
         conf = utils.getServiceConfig(session, service, server.team)
         user = utils.getRandomUser(session, conf['passdb'])
@@ -27,7 +29,10 @@ def test(server, service, event):
         se.info = ep.message
         se.up = False
     finally:
-        smtp.close()
+        try:
+            smtp.close()
+        except Exception as ep:
+            pass
     session.add(se)
     session.commit()
     session.close()

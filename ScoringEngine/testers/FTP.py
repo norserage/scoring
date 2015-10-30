@@ -12,8 +12,10 @@ def test(server, service, event):
     se.teamserverid = server.id;
     se.scoretime = datetime.now()
     se.eventid = event
+    ftp = ftplib.FTP()
     try:
-        ftp = ftplib.FTP(server.getIP())
+        #ftp = ftplib.FTP(server.getIP())
+        ftp.connect(server.getIP())
         conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
         user = utils.getRandomUser(session, conf['passdb'])
         ftp.login(user['user'],user['pass'])
