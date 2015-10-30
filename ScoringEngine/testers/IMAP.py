@@ -12,8 +12,9 @@ def test(server, service, event):
     se.teamserverid = server.id;
     se.scoretime = datetime.now()
     se.eventid = event
+    
     try:
-        imap = imaplib.IMAP4(server.getIP())
+        imap = imaplib.IMAP4(server.getIP)
         conf = utils.getServiceConfig(session, service, server.team)
         user = utils.getRandomUser(session, conf['passdb'])
         r = imap.login(user['user'],user['pass'])
@@ -21,11 +22,10 @@ def test(server, service, event):
             se.up = True
         else:
             se.up = False
+        imap.close()
     except Exception as ep:
         se.info = ep.message
         se.up = False
-    finally:
-        imap.close()
     session.add(se)
     session.commit()
     session.close()

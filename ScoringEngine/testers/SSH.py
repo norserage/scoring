@@ -13,10 +13,12 @@ def test(server, service, event):
     se.teamserverid = server.id;
     se.scoretime = datetime.now()
     se.eventid = event
+    ssh = paramiko.SSHClient()
     try:
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-        ssh.connect(server.getIP(), username="chip",password="nkunku12",)
+        
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(server.getIP(), username="chip",password="aaaa")
+
         se.up = True
     except Exception as e:
         se.info = e.message

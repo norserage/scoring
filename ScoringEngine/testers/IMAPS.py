@@ -21,11 +21,10 @@ def test(server, service, event):
             se.up = True
         else:
             se.up = False
+        imap.close()
     except Exception as ep:
         se.info = ep.message
         se.up = False
-    finally:
-        imap.close()
     session.add(se)
     session.commit()
     session.close()
