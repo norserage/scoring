@@ -22,7 +22,10 @@ def test(server, service, event):
             se.up = True
         else:
             se.up = False
-        imap.close()
+        try:
+            imap.close()
+        except Exception as ep2:
+            pass
     except Exception as ep:
         se.info = ep.message
         se.up = False
