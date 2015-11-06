@@ -11,6 +11,11 @@ from pprint import pprint as pp
 @app.route('/admin')
 def admin():
     if 'user' in session and session['user']['group'] >= 4:
+        dbsession = Session()
+        event = None
+        events = dbsession.query(tables.Event).filter(tables.Event.current == True)
+        if events.count() > 0:
+            event = events[0].id
         return render_template(
             'admin/index.html',
             title='Admin',
@@ -19,6 +24,7 @@ def admin():
             user=session['user'],
             login='user' in session,
             driver=str(engine.driver),
+            event=event
         )
     else:
         return render_template(

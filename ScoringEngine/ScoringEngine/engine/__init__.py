@@ -32,7 +32,7 @@ def score():
     for server in session.query(tables.TeamServer).all():
         print server
         print server.team.name
-        if (server.server.enabled):
+        if (server.server.enabled and server.team.enabled):
             for service in session.query(tables.Service).filter(tables.and_(tables.Service.serverid==server.server.id,tables.Service.enabled==True)):
                 print service.type.tester
                 m=__import__(service.type.tester)

@@ -16,7 +16,23 @@
         </div>
         <div style="clear:both;"></div>
     </div>
-    <h4>More Info Here</h4>
+    <h4>Scoring Data</h4>
+    <table class="table">
+        <tr>
+            <th>Team Name</th>
+            <th>Points Erned</th>
+            <th>Points Possible</th>
+            <th>Uptime</th>
+        </tr>
+        {% for sd in scoredata %}
+        <tr>
+            <td>{{sd[0]}}</td>
+            <td>{{sd[1]}}</td>
+            <td>{{sd[2]}}</td>
+            <td>{{sd[3]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
     
 </div>
 {% endblock %}
