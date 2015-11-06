@@ -100,7 +100,7 @@ class ScoreEvent(Base):
     eventid = Column(Integer, ForeignKey('events.id'), index=True, unique=False)
     teamserverid = Column(Integer, ForeignKey('teamservers.id'), index=True, unique=False)
     serviceid = Column(Integer, ForeignKey('services.id'), index=True, unique=False)
-    scoretime = Column(DateTime, nullable=False)
+    scoretime = Column(DateTime, nullable=False, index=True, unique=False)
     up = Column(Boolean, nullable=False)
     info = Column(Text)
 
