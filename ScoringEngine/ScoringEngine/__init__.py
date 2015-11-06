@@ -1,5 +1,5 @@
 ﻿from __future__ import print_function
-VERSION = '2.6'
+VERSION = '3.0'
 VERSIONSTR = "Lepus ISE v%s DEV" % (VERSION)
 '''
 

@@ -7,7 +7,7 @@ from ScoringEngine.web import app
 
 
 @app.route('/report')
-def report():
+def reports():
     if session['user']['group'] >= 3:
         return render_template(
             'report/index.html',

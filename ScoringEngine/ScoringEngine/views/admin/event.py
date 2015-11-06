@@ -12,7 +12,7 @@ from pprint import pprint as pp
 def events():
     if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
-        events = dbsession.query(tables.Event).all()
+        events = dbsession.query(tables.Event).order_by(tables.Event.id).all()
         return render_template(
             'admin/event/list.html',
             title='Events',
@@ -34,7 +34,7 @@ def events():
 
 @app.route('/admin/event/add',methods=['GET','POST'])
 def addevent():
-    if 'user' in session and session['user']['group'] == 5:
+    if 'user' in session and session['user']['group'] >= 4:
         if request.method == 'POST':
             dbsession = Session()
             e = tables.Event()
@@ -62,11 +62,14 @@ def addevent():
 
 @app.route('/admin/event/<event>')
 def event(event):
-    if 'user' in session and session['user']['group'] == 5:
+    if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
         events = dbsession.query(tables.Event).filter(tables.Event.id==event)
+        
         if events.count() > 0:
             event = events[0]
+            scoredata = dbsession.execute(tables.text("select t.name, sum(case when se.up = true then 1 else 0 end), count(se.id), round((sum(case when se.up = true then 1.0 else 0.0 end)/count(se.id)) * 100.0, 2) from scoreevents se inner join teamservers ts on ts.id = se.teamserverid inner join teams t on ts.teamid = t.id where se.eventid = " + str(event.id) + " group by t.name order by t.name"))
+            
             return render_template(
                 'admin/event/view.html',
                 title=event.name,
@@ -74,6 +77,7 @@ def event(event):
                 user=session['user'],
                 login='user' in session,
                 event=event,
+                scoredata=scoredata
             )
         else:
             return render_template(
@@ -96,7 +100,7 @@ def event(event):
 
 @app.route('/admin/event/<event>/edit',methods=['GET','POST'])
 def editevent(event):
-    if 'user' in session and session['user']['group'] == 5:
+    if 'user' in session and session['user']['group'] >= 4:
         dbsession = Session()
         servers = dbsession.query(tables.Server).filter(tables.Server.id == event)
         if servers.count() > 0:
