@@ -5,6 +5,12 @@
     <h1>Events</h1>
 </div>
 <table class="table">
-
+    {% for event in events %}
+    <tr>
+        <td><a href="/inject/event/{{ event.id }}">{{ event.name }}</a></td>
+        <td>{{ event.start }}</td>
+        <td>{{ event.end }}</td>
+    </tr>
+    {% endfor %}
 </table>
 {% endblock %}
