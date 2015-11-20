@@ -177,6 +177,8 @@ class InjectCategory(Base):
     parentid = Column(Integer)
     name = Column(String(255), nullable=False)
 
+    
+
 
 class Inject(Base):
     __tablename__ = 'injects'
