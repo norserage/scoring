@@ -15,6 +15,7 @@ import ScoringEngine.views.admin.service
 import ScoringEngine.views.admin.event
 import ScoringEngine.views.portal
 import ScoringEngine.views.inject
+import ScoringEngine.views.injectmanager.manage
 import ScoringEngine.views.api
 
 def setupApp():
