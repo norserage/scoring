@@ -9,16 +9,17 @@ def test(server, service, event):
     #raise NotImplementedError();
     session=Session()
     se = tables.ScoreEvent()
-    se.serviceid = service.id;
-    se.teamserverid = server.id;
+    se.serviceid = service.id
+    se.teamserverid = server.id
     se.scoretime = datetime.now()
     se.eventid = event
     ssh = paramiko.SSHClient()
     try:
-        
+        conf = utils.getServiceConfig(session, service, server.team)
+        user = utils.getRandomUser(session, conf['passdb'])
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(server.getIP(), username="chip",password="aaaa")
-
+        ssh.connect(server.getIP(), username=user['user'], password=user['pass'])
+        ssh.exec_command("ping -c 4 8.8.8.8")
         se.up = True
     except Exception as e:
         se.info = e.message
