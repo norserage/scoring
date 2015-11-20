@@ -16,6 +16,10 @@ def test(server, service, event):
     ssh = paramiko.SSHClient()
     try:
         conf = utils.getServiceConfig(session, service, server.team)
+        if not conf.has_key('passdb'):
+            print("WARNING: Service %i not configured" % (service.id))
+            ssh.close()
+            return
         user = utils.getRandomUser(session, conf['passdb'])
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.connect(server.getIP(), username=user['user'], password=user['pass'])
