@@ -16,6 +16,7 @@ def test(server, service, event):
     try:
         url = "http://"+server.getIP()
         conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
+        print(json.dumps(conf))
         if conf.has_key("url"):
             url += conf['url']
         br.set_handle_robots(False)
