@@ -1,7 +1,7 @@
 ﻿import mechanize
 import ScoringEngine.db.tables as tables
 from ScoringEngine.db import Session
-import ScoringEngine.utils as utils
+import ScoringEngine.utils
 import json
 from datetime import datetime
 
