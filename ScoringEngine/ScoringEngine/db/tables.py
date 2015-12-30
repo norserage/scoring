@@ -69,6 +69,9 @@ class Service(Base):
     def __repr__(self):
         pass
 
+    def arg(self, name):
+        return (arg.value for arg in self.args if arg.key == name)
+
 
 class ServiceType(Base):
     __tablename__ = 'servicetypes'
