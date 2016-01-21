@@ -46,6 +46,9 @@
     <Compile Include="ScoringEngine\logger.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ScoringEngine\options\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ScoringEngine\report\__init__.py">
       <SubType>Code</SubType>
     </Compile>
@@ -97,6 +100,7 @@
     <Folder Include="ScoringEngine\conf\" />
     <Folder Include="ScoringEngine\db\" />
     <Folder Include="ScoringEngine\engine\" />
+    <Folder Include="ScoringEngine\options\" />
     <Folder Include="ScoringEngine\report\" />
     <Folder Include="ScoringEngine\templates\admin\" />
     <Folder Include="ScoringEngine\templates\admin\event\" />
@@ -166,8 +170,11 @@
     <Content Include="ScoringEngine\templates\admin\service\add.html" />
     <Content Include="ScoringEngine\templates\admin\service\edit.html" />
     <Content Include="ScoringEngine\templates\admin\service\list.html" />
+    <Content Include="ScoringEngine\templates\admin\service\view.html" />
     <Content Include="ScoringEngine\templates\admin\team\edit.html" />
     <Content Include="ScoringEngine\templates\admin\team\addserver.html" />
+    <Content Include="ScoringEngine\templates\admin\team\server.html" />
+    <Content Include="ScoringEngine\templates\admin\team\service.html" />
     <Content Include="ScoringEngine\templates\admin\team\view.html" />
     <Content Include="ScoringEngine\templates\admin\team\add.html" />
     <Content Include="ScoringEngine\templates\admin\team\list.html" />

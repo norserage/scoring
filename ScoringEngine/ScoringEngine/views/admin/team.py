@@ -6,6 +6,7 @@ import ScoringEngine.db.tables as tables
 import ScoringEngine.utils
 import ScoringEngine.engine
 from pprint import pprint as pp
+import json
 
 
 @app.route('/admin/team')
@@ -173,6 +174,80 @@ def teamaddserver(team):
                 login='user' in session,
                 message="We could not find the team that you were looking for."
             )
+    else:
+        return render_template(
+            'errors/403.html',
+            title='403 Access Denied',
+            year=datetime.now().year,
+            user=session['user'],
+            login='user' in session,
+            message="You do not have permission to use this resource"
+        )
+
+@app.route('/admin/team/<teamid>/server/<serverid>')
+def teamserver(teamid, serverid):
+    if 'user' in session and session['user']['group'] == 5:
+        dbsession = Session()
+        team = dbsession.query(tables.Team).filter(tables.Team.name.ilike(teamid)).first()
+        server = dbsession.query(tables.TeamServer).filter(tables.and_(tables.TeamServer.teamid==team.id, tables.TeamServer.serverid==serverid)).first()
+        return render_template(
+                'admin/team/server.html',
+                title='Server',
+                year=datetime.now().year,
+                user=session['user'],
+                login='user' in session,
+                team=team,
+                server=server
+            )
+    else:
+        return render_template(
+            'errors/403.html',
+            title='403 Access Denied',
+            year=datetime.now().year,
+            user=session['user'],
+            login='user' in session,
+            message="You do not have permission to use this resource"
+        )
+
+@app.route('/admin/team/<teamid>/server/<serverid>/service/<serviceid>',methods=['GET','POST'])
+def teamserverservice(teamid, serverid, serviceid):
+    if 'user' in session and session['user']['group'] == 5:
+        dbsession = Session()
+        team = dbsession.query(tables.Team).filter(tables.Team.name.ilike(teamid)).first()
+        server = dbsession.query(tables.TeamServer).filter(tables.and_(tables.TeamServer.teamid==team.id, tables.TeamServer.serverid==serverid)).first()
+        service = dbsession.query(tables.Service).filter(tables.Service.id == serviceid).first()
+        m=__import__(service.type.tester)
+        func = getattr(m, "options")
+        conf = ScoringEngine.utils.getServiceConfig(dbsession, service, server)
+        if request.method == 'POST':
+            t = len(conf) == 0
+            options=func()
+            for key,value in options:
+                if request.form[key].strip() != "":
+                    conf[key] = value.parse(request.form[key])
+                                
+            if t:
+                confpair = tables.ServiceArg()
+                confpair.key = "conf"
+                confpair.serverid = server.id
+                confpair.serviceid = serviceid
+                confpair.value = json.dumps(conf)
+                dbsession.add(confpair)
+            else: #Conf already exists
+                confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key=='conf', tables.ServiceArg.serverid==teamserver.id)).first()
+                confpair.value = json.dumps(conf)
+            dbsession.commit()
+        else:
+            return render_template(
+                    'admin/team/service.html',
+                    title='Server',
+                    year=datetime.now().year,
+                    user=session['user'],
+                    login='user' in session,
+                    options=func(),
+                    conf=conf,
+                    service=service
+                )
     else:
         return render_template(
             'errors/403.html',

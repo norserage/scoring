@@ -15,7 +15,7 @@ def test(server, service, event):
     br = mechanize.Browser()
     try:
         url = "https://"+server.getIP()
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
+        conf = ScoringEngine.utils.getServiceConfig(session, service, server)
         if conf.has_key("url"):
             url += conf['url']
         br.set_handle_robots(False)
