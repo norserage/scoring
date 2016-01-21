@@ -2,6 +2,7 @@
 from ScoringEngine.db import Session
 import json
 import ScoringEngine.utils
+import ScoringEngine.options
 import subprocess
 import random
 from datetime import datetime
@@ -42,3 +43,8 @@ def test(server, service, event):
     session.add(se)
     session.commit()
     session.close()
+
+def options():
+    return {
+        'servers': ScoringEngine.options.JSON()
+        }

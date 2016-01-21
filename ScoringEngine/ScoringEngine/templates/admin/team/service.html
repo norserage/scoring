@@ -15,12 +15,12 @@
             <label for="{{ key }}">{{ key | title }}</label>
             {% if value.type == "String" %}
                 <input type="text" class="form-control" id="{{key}}" placeholder="{{ key | title }}" name="{{key}}" value="{{ value.value(conf[key]) }}">
+            {% elif value.type == "JSON" %}
+                <textarea class="form-control" name="{{ key }}">{{ value.value(conf[key]) }}</textarea>
             {% endif %}
         </div>
         {% endfor %}
+        <button type="submit" class="btn btn-default">Save</button>
     </form>
-            
-            
-        
 </div>
 {% endblock %}

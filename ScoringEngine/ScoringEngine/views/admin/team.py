@@ -218,11 +218,13 @@ def teamserverservice(teamid, serverid, serviceid):
         service = dbsession.query(tables.Service).filter(tables.Service.id == serviceid).first()
         m=__import__(service.type.tester)
         func = getattr(m, "options")
+        print(service.id)
+        print(server.id)
         conf = ScoringEngine.utils.getServiceConfig(dbsession, service, server)
         if request.method == 'POST':
             t = len(conf) == 0
             options=func()
-            for key,value in options:
+            for key,value in options.iteritems():
                 if request.form[key].strip() != "":
                     conf[key] = value.parse(request.form[key])
                                 
@@ -234,7 +236,7 @@ def teamserverservice(teamid, serverid, serviceid):
                 confpair.value = json.dumps(conf)
                 dbsession.add(confpair)
             else: #Conf already exists
-                confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key=='conf', tables.ServiceArg.serverid==teamserver.id)).first()
+                confpair = dbsession.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key=='conf', tables.ServiceArg.serverid==server.id)).first()
                 confpair.value = json.dumps(conf)
             dbsession.commit()
         else:
