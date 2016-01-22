@@ -2,6 +2,7 @@
 from ScoringEngine.db import Session
 import ScoringEngine.utils as utils
 import json
+import ScoringEngine.options
 from datetime import datetime
 import paramiko
 
@@ -33,3 +34,9 @@ def test(server, service, event):
     session.add(se)
     session.commit()
     session.close()
+
+
+def options():
+    return {
+        'passdb': ScoringEngine.options.PasswordDB()
+        }

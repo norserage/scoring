@@ -48,11 +48,13 @@ class JSON(Option):
 
 class PasswordDB(EnumS):
     
-    def __init__(self, session, optional=True):
+    def __init__(self, optional=True):
+        import ScoringEngine.db
         import ScoringEngine.db.tables
+        session = ScoringEngine.db.Session()
         self.optional = optional
         self.options = []
         for o in session.query(ScoringEngine.db.tables.PasswordDatabase.db).distinct():
-            self.options.append(o)
+            self.options.append(o[0])
         self.type = 'Enum'
 
