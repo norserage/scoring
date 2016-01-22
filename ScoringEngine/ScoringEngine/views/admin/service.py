@@ -33,6 +33,35 @@ def services():
             message="You do not have permission to use this resource"
         )
 
+@app.route('/admin/service/<id>')
+def service(id):
+    if 'user' in session and session['user']['group'] == 5:
+        dbsession = Session()
+        service = dbsession.query(tables.ServiceType).filter(tables.ServiceType.id == id).first()
+        m=__import__(service.tester)
+        func = getattr(m, "options")
+        pp(func())
+        """Renders the home page."""
+        return render_template(
+            'admin/service/view.html',
+            title='Service Types',
+            year=datetime.now().year,
+            enginestatus=ScoringEngine.engine.running,
+            user=session['user'],
+            login='user' in session,
+            service=service,
+            options=func()
+        )
+    else:
+        return render_template(
+            'errors/403.html',
+            title='403 Access Denied',
+            year=datetime.now().year,
+            user=session['user'],
+            login='user' in session,
+            message="You do not have permission to use this resource"
+        )
+
 @app.route('/admin/service/add',methods=['GET','POST'])
 def addservice():
     if 'user' in session and session['user']['group'] == 5:

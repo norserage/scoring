@@ -4,6 +4,7 @@ import platform
 import subprocess
 import re
 import json
+import pprint
 
 def getRandomUser(session, passwd_db):
     user = []
@@ -35,11 +36,12 @@ def Ping(hostname,timeout):
     else: 
         return False
 
-def getServiceConfig(session, service, team):
+def getServiceConfig(session, service, teamserver):
     # TODO change how this is done to be easier to manage from the web interface
-    confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==str(team.id)+'conf'))
+    confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key=='conf', tables.ServiceArg.serverid==teamserver.id))
     if confpair.count() > 0:
         conf = json.loads(confpair[0].value)
+        pprint.pprint(conf)
         return conf
     else:
         return {}

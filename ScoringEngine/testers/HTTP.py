@@ -3,6 +3,7 @@ import ScoringEngine.db.tables as tables
 from ScoringEngine.db import Session
 import ScoringEngine.utils
 import json
+import ScoringEngine.options
 from datetime import datetime
 
 def test(server, service, event):
@@ -39,3 +40,9 @@ def test(server, service, event):
     session.add(se)
     session.commit()
     session.close()
+
+def options():
+    return {
+        'url': ScoringEngine.options.String(),
+        'regex': ScoringEngine.options.String()
+        }

@@ -1,6 +1,7 @@
 ﻿import mechanize
 import ScoringEngine.db.tables as tables
 from ScoringEngine.db import Session
+import ScoringEngine.options
 import ScoringEngine.utils
 import json
 from datetime import datetime
@@ -15,7 +16,7 @@ def test(server, service, event):
     br = mechanize.Browser()
     try:
         url = "https://"+server.getIP()
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
+        conf = ScoringEngine.utils.getServiceConfig(session, service, server)
         if conf.has_key("url"):
             url += conf['url']
         br.set_handle_robots(False)
@@ -37,3 +38,9 @@ def test(server, service, event):
     session.add(se)
     session.commit()
     session.close()
+
+def options():
+    return {
+        'url': ScoringEngine.options.String(),
+        'regex': ScoringEngine.options.String()
+        }

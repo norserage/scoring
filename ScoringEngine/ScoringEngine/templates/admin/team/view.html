@@ -26,7 +26,7 @@
         <tbody>
             {% for server in team.servers %}
             <tr>
-                <td>{{ server.server.name }}</td>
+                <td><a href="{{ url_for('teamserver',teamid=team.name,serverid=server.server.id) }}">{{ server.server.name }}</a></td>
                 <td>{{ server.getIP() }}</td>
                 <td>
                     {% if server.server.enabled %}
