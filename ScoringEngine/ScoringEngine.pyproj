@@ -126,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="LICENSE.txt" />
+    <Content Include="NOTICE.txt" />
     <Content Include="requirements.txt" />
     <Content Include="scoring.fcgi.py">
       <SubType>Code</SubType>
