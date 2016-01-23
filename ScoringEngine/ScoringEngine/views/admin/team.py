@@ -227,7 +227,9 @@ def teamserverservice(teamid, serverid, serviceid):
             for key,value in options.iteritems():
                 if request.form[key].strip() != "":
                     conf[key] = value.parse(request.form[key])
-                                
+                else:
+                    if conf.has_key(key):
+                        conf[key] = None
             if t:
                 confpair = tables.ServiceArg()
                 confpair.key = "conf"

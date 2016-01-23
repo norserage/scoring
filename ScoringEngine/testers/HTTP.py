@@ -16,7 +16,7 @@ def test(server, service, event):
     br = mechanize.Browser()
     try:
         url = "http://"+server.getIP()
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
+        conf = ScoringEngine.utils.getServiceConfig(session, service, server)
         print(json.dumps(conf))
         if conf.has_key("url"):
             url += conf['url']

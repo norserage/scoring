@@ -15,7 +15,7 @@ def test(server, service, event):
     se.scoretime = datetime.now()
     se.eventid = event
     try:
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
+        conf = ScoringEngine.utils.getServiceConfig(session, service, server)
         servers = conf['servers']
         ser = random.choice(servers)
         print json.dumps(ser)

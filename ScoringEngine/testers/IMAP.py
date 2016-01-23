@@ -16,7 +16,7 @@ def test(server, service, event):
     
     try:
         imap = imaplib.IMAP4(server.getIP)
-        conf = utils.getServiceConfig(session, service, server.team)
+        conf = utils.getServiceConfig(session, service, server)
         user = utils.getRandomUser(session, conf['passdb'])
         r = imap.login(user['user'],user['pass'])
         if r[0] == 'OK':

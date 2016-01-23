@@ -16,7 +16,7 @@ def test(server, service, event):
     se.eventid = event
     ssh = paramiko.SSHClient()
     try:
-        conf = utils.getServiceConfig(session, service, server.team)
+        conf = utils.getServiceConfig(session, service, server)
         if not conf.has_key('passdb'):
             print("WARNING: Service %i not configured" % (service.id))
             ssh.close()

@@ -17,7 +17,7 @@ def test(server, service, event):
     try:
         #ftp = ftplib.FTP(server.getIP())
         ftp.connect(server.getIP())
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server.team)
+        conf = ScoringEngine.utils.getServiceConfig(session, service, server)
         user = utils.getRandomUser(session, conf['passdb'])
         ftp.login(user['user'],user['pass'])
         
