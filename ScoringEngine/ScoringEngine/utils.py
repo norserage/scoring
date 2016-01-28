@@ -8,7 +8,8 @@ import pprint
 
 def getRandomUser(session, passwd_db):
     user = []
-    for usr in session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.db==passwd_db):
+    passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name==passwd_db).first()
+    for usr in passwddb.entries:
         user.append({'user':usr.user,'pass':usr.password,'domain':usr.domain,'email':usr.email})
         
     #outuser = user[random.randint(0,user.count - 1)]
@@ -17,7 +18,8 @@ def getRandomUser(session, passwd_db):
 
 def getRandomEmail(session, passwd_db):
     user = []
-    for usr in session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.db==passwd_db):
+    passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name==passwd_db).first()
+    for usr in passwddb.entries:
         user.append(usr.email)
     #outuser = user[random.randint(0,user.count - 1)]
     outuser = random.choice(user)

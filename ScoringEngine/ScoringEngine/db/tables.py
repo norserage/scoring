@@ -127,18 +127,26 @@ class PasswordDatabase(Base):
     __tablename__ = 'passdb'
 
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
-    db = Column(String(10), nullable=False)
+    name = Column(String(25), nullable=False, index=True, unique=True)
     domain = Column(String(15))
+
+class PasswordDatabaseEntry(Base):
+    __tablename__ = 'passdbentry'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    passdbid = Column(Integer, ForeignKey('passdb.id'), index=True)
     user = Column(String(255), nullable=False)
     password = Column(String(255), nullable=False)
     email = Column(String(255))
+
+    passdb = relationship("PasswordDatabase", backref=backref('entries', order_by=id))
 
 class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     name = Column(String(45))
-    username = Column(String(25), nullable=False)
+    username = Column(String(25), nullable=False, unique=True, index=True)
     password = Column(String(60), nullable=False)
     team = Column(Integer, nullable=False)
     group = Column(Integer, nullable=False)
@@ -239,5 +247,5 @@ class TeamInjectSubmissionAttachment(Base):
     teaminjectid = Column(Integer, ForeignKey("teaminjectsubmissions.id"))
     filename = Column(String(255), nullable=False)
     size = Column(Integer, nullable=False)
-    fileid = Column(UUID, nullable=False)
+    #fileid = Column(UUID, nullable=False)
     #data = Column(BLOB, nullable=False) Blobs suck in pgsql so we will store as file on file system or in a nosql document store
