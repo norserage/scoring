@@ -1,4 +1,19 @@
-﻿import ScoringEngine.db.tables as tables
+﻿"""
+Copyright 2016 Brandon Warner
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+import ScoringEngine.db.tables as tables
 import random
 import platform
 import subprocess
@@ -8,7 +23,8 @@ import pprint
 
 def getRandomUser(session, passwd_db):
     user = []
-    for usr in session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.db==passwd_db):
+    passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name==passwd_db).first()
+    for usr in passwddb.entries:
         user.append({'user':usr.user,'pass':usr.password,'domain':usr.domain,'email':usr.email})
         
     #outuser = user[random.randint(0,user.count - 1)]
@@ -17,7 +33,8 @@ def getRandomUser(session, passwd_db):
 
 def getRandomEmail(session, passwd_db):
     user = []
-    for usr in session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.db==passwd_db):
+    passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name==passwd_db).first()
+    for usr in passwddb.entries:
         user.append(usr.email)
     #outuser = user[random.randint(0,user.count - 1)]
     outuser = random.choice(user)
