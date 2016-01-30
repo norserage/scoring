@@ -56,6 +56,7 @@
     <Compile Include="ScoringEngine\views\admin\event.py" />
     <Compile Include="ScoringEngine\views\admin\server.py" />
     <Compile Include="ScoringEngine\views\admin\service.py" />
+    <Compile Include="ScoringEngine\views\admin\passdb.py" />
     <Compile Include="ScoringEngine\views\admin\user.py" />
     <Compile Include="ScoringEngine\views\admin\team.py" />
     <Compile Include="ScoringEngine\views\admin\__init__.py" />
@@ -104,6 +105,7 @@
     <Folder Include="ScoringEngine\report\" />
     <Folder Include="ScoringEngine\templates\admin\" />
     <Folder Include="ScoringEngine\templates\admin\event\" />
+    <Folder Include="ScoringEngine\templates\admin\passdb\" />
     <Folder Include="ScoringEngine\templates\admin\server\" />
     <Folder Include="ScoringEngine\templates\admin\service\" />
     <Folder Include="ScoringEngine\templates\admin\team\" />
@@ -162,6 +164,11 @@
     <Content Include="ScoringEngine\templates\admin\event\view.html" />
     <Content Include="ScoringEngine\templates\admin\index.html" />
     <Content Include="ScoringEngine\templates\admin\menu.html" />
+    <Content Include="ScoringEngine\templates\admin\passdb\import.html" />
+    <Content Include="ScoringEngine\templates\admin\passdb\add.html" />
+    <Content Include="ScoringEngine\templates\admin\passdb\edit.html" />
+    <Content Include="ScoringEngine\templates\admin\passdb\list.html" />
+    <Content Include="ScoringEngine\templates\admin\passdb\view.html" />
     <Content Include="ScoringEngine\templates\admin\server\add.html" />
     <Content Include="ScoringEngine\templates\admin\server\editservice.html" />
     <Content Include="ScoringEngine\templates\admin\server\addservice.html" />
