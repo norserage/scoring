@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include "admin/menu.html" %}
+<div class="col-md-9">
+    <div class="page-header">
+        <h1>{{ passdb.name}} <small>{{ passdb.domain }}</small></h1>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Email Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in passdb.entries %}
+            <tr>
+                <td>{{ entry.user }}</td>
+                <td>{{ entry.password }}</td>
+                <td>{{ entry.email }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    <a class="btn btn-default" href="#">Add</a>
+                    <a class="btn btn-default" href="{{ url_for('importpassdb',passdb=passdb.name) }}">Import</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+   
+</div>
+{% endblock %}

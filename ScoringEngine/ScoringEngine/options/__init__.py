@@ -69,7 +69,7 @@ class PasswordDB(EnumS):
         session = ScoringEngine.db.Session()
         self.optional = optional
         self.options = []
-        for o in session.query(ScoringEngine.db.tables.PasswordDatabase.db).distinct():
+        for o in session.query(ScoringEngine.db.tables.PasswordDatabase.name).distinct():
             self.options.append(o[0])
         self.type = 'Enum'
 
