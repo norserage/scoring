@@ -90,6 +90,9 @@
     <Compile Include="testers\HTTP.py" />
     <Compile Include="testers\HTTPS.py" />
     <Compile Include="testers\IMAP.py" />
+    <Compile Include="testers\RDP.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="testers\SMTP_TLS.py" />
     <Compile Include="testers\SMTP.py" />
     <Compile Include="testers\SSH.py">
