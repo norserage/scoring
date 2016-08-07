@@ -233,6 +233,7 @@ class AssignedInject(Base):
     points = Column(Integer, nullable=False)
 
     inject = relationship("Inject")
+    event = relationship("Event", backref=backref('injects', order_by=when))
 
 class TeamInjectSubmission(Base):
     __tablename__ = 'teaminjectsubmissions'
