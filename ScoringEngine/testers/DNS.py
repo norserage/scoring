@@ -33,7 +33,7 @@ def test(server, service, event):
         conf = ScoringEngine.utils.getServiceConfig(session, service, server)
         servers = conf['servers']
         ser = random.choice(servers)
-        print json.dumps(ser)
+        print(json.dumps(ser))
         dnsentry = ser['dns']
         ip = ser['ip']
         sp = subprocess.Popen(["nslookup",dnsentry,server.getIP()],stdout=subprocess.PIPE)

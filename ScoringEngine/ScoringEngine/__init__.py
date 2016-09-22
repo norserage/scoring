@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from __future__ import print_function
-VERSION = '3.1'
+VERSION = '3.2'
 VERSIONSTR = "Lepus ISE v%s DEV" % (VERSION)
 '''
 
