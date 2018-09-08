@@ -193,3 +193,5 @@ ModelManifest.xml
 
 
 .settings/
+
+venv/

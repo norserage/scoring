@@ -23,7 +23,7 @@ VERSIONSTR = "Lepus ISE v%s DEV" % (VERSION)
 
 
 def arguments():
-    import ScoringEngine.conf
+    import ScoringEngine.core.conf
     import argparse
     parser = argparse.ArgumentParser(description=VERSIONSTR)
     parser.add_argument('-e','--env', help='Environment', required=False)
@@ -45,30 +45,30 @@ def arguments():
         print(VERSIONSTR)
         return False
     elif args.gen_config:
-        ScoringEngine.conf.newConf(config)
+        ScoringEngine.core.conf.newConf(config)
         return False
     elif args.env:
         env = args.env
 
-    ScoringEngine.conf.loadConf(config, env)
+    ScoringEngine.core.conf.loadConf(config, env)
 
     if args.print_config:
         import pprint
         print("")
-        pprint.pprint(ScoringEngine.conf.conf)
+        pprint.pprint(ScoringEngine.core.conf.conf)
 
     if args.gen_db:
-        import ScoringEngine.db
-        import ScoringEngine.db.tables
-        ScoringEngine.db.tables.Base.metadata.create_all(ScoringEngine.db.engine)
-        ScoringEngine.db.createUser("Administrator", "admin", "admin", -1, 5)
+        import ScoringEngine.core.db
+        import ScoringEngine.core.db.tables
+        ScoringEngine.core.db.tables.Base.metadata.create_all(ScoringEngine.core.db.engine)
+        ScoringEngine.core.db.createUser("Administrator", "admin", "admin", -1, 5)
         return False
 
     
     return True
 
 def pathSetup():
-    from ScoringEngine.conf import conf
+    from ScoringEngine.core.conf import conf
     import sys
     if 'tester locations' in conf:
         if len(conf['tester locations']) > 0:
@@ -77,7 +77,7 @@ def pathSetup():
 
 def main():
     if arguments():
-        from ScoringEngine.conf import conf
+        from ScoringEngine.core.conf import conf
         from os import environ
         from ScoringEngine.web import app, setupApp
         HOST = environ.get('SERVER_HOST', conf['listen'])
@@ -93,7 +93,7 @@ def main():
 
 def fcgimain():
     if arguments():
-        from ScoringEngine.conf import conf
+        from ScoringEngine.core.conf import conf
         from ScoringEngine.web import app, setupApp
         from flup.server.fcgi import WSGIServer
         pathSetup()

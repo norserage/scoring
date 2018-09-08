@@ -13,11 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ScoringEngine.db.tables as tables
-from ScoringEngine.db import Session
+import ScoringEngine.core.db.tables as tables
+from ScoringEngine.core.db import Session
 import json
 import ScoringEngine.utils
-import ScoringEngine.options
+import ScoringEngine.engine.options
 import subprocess
 import random
 from datetime import datetime
@@ -61,5 +61,5 @@ def test(server, service, event):
 
 def options():
     return {
-        'servers': ScoringEngine.options.JSON()
+        'servers': ScoringEngine.engine.options.JSON()
         }

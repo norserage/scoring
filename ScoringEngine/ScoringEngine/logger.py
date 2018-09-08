@@ -13,10 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from distutils.log import Log
 import time
 from datetime import datetime
-from ScoringEngine.conf import conf
+from ScoringEngine.core.conf import conf
 from enum import Enum
 
 
@@ -142,7 +141,10 @@ else:
             logger.addWriter(FileWriter(LogSeverity[conf['logger']['file']], conf['logger']['file_path']))
     if 'db' in conf['logger']:
         try:
-            from ScoringEngine.db import tables, Session
+            from ScoringEngine.core.db import Session
+            from ScoringEngine.core.db import tables
+
+
             class DBWriter(LogWriter):
                 def log(self, severity, module, message):
                     session = Session()

@@ -13,11 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ScoringEngine.db.tables as tables
-from ScoringEngine.db import Session
-import ScoringEngine.utils as utils
-import ScoringEngine.options
-import json
+import ScoringEngine.core.db.tables as tables
+from ScoringEngine.core.db import Session
 from datetime import datetime
 import socket
 

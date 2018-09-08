@@ -14,11 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import smtplib
-import ScoringEngine.db.tables as tables
-from ScoringEngine.db import Session
+import ScoringEngine.core.db.tables as tables
+from ScoringEngine.core.db import Session
 import ScoringEngine.utils as utils
-import ScoringEngine.options
-import json
+import ScoringEngine.engine.options
 from datetime import datetime
 
 def test(server, service, event):
@@ -53,5 +52,5 @@ def test(server, service, event):
 
 def options():
     return {
-        'passdb': ScoringEngine.options.PasswordDB()
+        'passdb': ScoringEngine.engine.options.PasswordDB()
         }

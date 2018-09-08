@@ -1,4 +1,5 @@
 Flask
+flask-login
 mechanize
 pyaml
 PyYAML
@@ -7,3 +8,4 @@ pycrypto
 psycopg2
 enum34
 paramiko
+bcrypt

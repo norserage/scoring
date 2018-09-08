@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% include "admin/menu.html" %}
+<div class="col-md-9">
+    <div class="page-header">
+        <h1>Password Databases</h1>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Domain</th>
+                <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for passdb in passdblist %}
+            <tr>
+                <td><a href="{{ url_for('passdb',passdb=passdb.name) }}">{{ passdb.name }}</a></td>
+                <td>{{ passdb.domain }}</td>
+                <td><a href="{{ url_for('editpassdb',passdb=passdb.name) }}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><a href="{{ url_for('addpassdb') }}" class="btn btn-default">Add</a></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}
