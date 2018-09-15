@@ -13,3 +13,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
+from ScoringEngine.core.configreader import configreader
+
+config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], {
+    "database": "",
+    "tests": [],
+    "debug": True,  # TODO this should default to false in production
+    "secret": "fakesecret",  # TODO this should not be staticly set
+})
+
+if len(config.get_item("tests")) > 0:
+    import sys
+    for l in config.get_item("tests"):
+        sys.path.append(l)

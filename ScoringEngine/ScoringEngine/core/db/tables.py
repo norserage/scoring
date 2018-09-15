@@ -183,7 +183,7 @@ class User(Base):
         return False
 
     def get_id(self):
-        return self.id
+        return unicode(self.id)
 
     ####################
     # Password Helpers #
@@ -220,6 +220,19 @@ class User(Base):
             return "Manager"
         elif self.group == 5:
             return "Admin"
+
+    ##################
+    # Static Helpers #
+    ##################
+    @staticmethod
+    def create(name, username, new_password, team, group):
+        u = User()
+        u.name = name
+        u.username = username
+        u.team = team
+        u.group = group
+        u.set_password(new_password)
+        return u
 
 class Log(Base):
     __tablename__ = 'log'

@@ -15,13 +15,13 @@ limitations under the License.
 """
 from flask import Flask
 from flask_login import LoginManager
-from ScoringEngine.core.conf import conf
+from ScoringEngine.core import config
 from ScoringEngine.core.db import getSession, tables
 
 app = Flask(__name__)
 
-app.debug = conf['debug']
-app.secret_key = conf['secret']
+app.debug = config.get_item("debug")
+app.secret_key = config.get_item("secret")
 
 class AnonymousUser:
     @property
@@ -35,6 +35,14 @@ class AnonymousUser:
     @property
     def is_anonymous(self):
         return True
+
+    @property
+    def name(self):
+        return "Anon"
+
+    @property
+    def group(self):
+        return 0
 
 
 login_manager = LoginManager()

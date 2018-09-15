@@ -21,11 +21,10 @@ from ScoringEngine.web.flask_utils import require_group, db_user
 
 @app.route('/')
 @login_required
-def home():
+def index():
     return redirect(url_for("portal"))
 
 @app.route('/about')
-@login_required
 def about():
     """Renders the about page."""
     return render_template(
@@ -38,4 +37,4 @@ def about():
 @app.route('/favicon.ico')
 def favicon():
     """Renders the about page."""
-    return app.send_static_file("favicon.ico")
+    return app.send_static_file("img/bunnyshield.ico")
