@@ -57,4 +57,14 @@ def load_user(user_id):
         return user
     return None
 
+@app.context_processor
+def inject_template_vars():
+    def menu(str1, str2):
+        return "active" if str1 == str2 else ""
+
+    def menu_open(str1, str2):
+        return "menu-open" if str1 == str2 else ""
+    return dict(menu=menu, menu_open=menu_open)
+
+
 import ScoringEngine.web.views

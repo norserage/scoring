@@ -1,8 +1,6 @@
 Flask
 flask-login
 mechanize
-pyaml
-PyYAML
 SQLAlchemy
 pycrypto
 psycopg2

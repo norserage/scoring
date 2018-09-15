@@ -31,11 +31,11 @@ def portal():
     stmt = tables.exists().where(tables.Server.id == tables.TeamServer.serverid)
     servers = dbsession.query(tables.Server).filter(tables.and_(stmt, tables.Server.enabled == True)).order_by(
         tables.Server.name)
-    if session['user']['group'] > 1:
+    if current_user.group > 1:
         teams = dbsession.query(tables.Team).filter(tables.Team.enabled == True).order_by(tables.Team.name)
     else:
         teams = dbsession.query(tables.Team).filter(
-            tables.and_(tables.Team.enabled == True, tables.Team.id == session["user"]["team"])).order_by(
+            tables.and_(tables.Team.enabled == True, tables.Team.id == current_user.team)).order_by(
             tables.Team.name)
     for team in teams:
         row = []

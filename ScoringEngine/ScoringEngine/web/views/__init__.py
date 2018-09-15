@@ -17,3 +17,4 @@ import ScoringEngine.web.views.home
 import ScoringEngine.web.views.user
 import ScoringEngine.web.views.portal
 import ScoringEngine.web.views.admin
+import ScoringEngine.web.views.admin.user

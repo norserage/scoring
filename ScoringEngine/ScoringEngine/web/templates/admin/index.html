@@ -1,7 +1,6 @@
-{% extends "layout.html" %}
+{% set base_menu = 'admin' %}{% set sub_menu='dashboard' %}{% extends "layouts/default.html" %}
 
 {% block content %}
-{% include "admin/menu.html" %}
 <div class="col-md-9">
     <p>
         Server Status:

@@ -16,39 +16,32 @@ limitations under the License.
 from datetime import datetime
 from flask import render_template, session
 from ScoringEngine.web import app
-from ScoringEngine.core.db import Session, engine
-import ScoringEngine.core.db.tables as tables
+from ScoringEngine.core.db import getSession, tables, engine
 import ScoringEngine.utils
 import ScoringEngine.engine
 
+from ScoringEngine.web.flask_utils import db_user, require_group
+from flask_login import current_user, login_required
 
 @app.route('/admin')
+@login_required
+@require_group(4)
+@db_user
 def admin():
-    if 'user' in session and session['user']['group'] >= 4:
-        dbsession = Session()
-        event = None
-        events = dbsession.query(tables.Event).filter(tables.Event.current == True)
-        if events.count() > 0:
-            event = events[0].id
-        return render_template(
-            'admin/index.html',
-            title='Admin',
-            year=datetime.now().year,
-            enginestatus=ScoringEngine.engine.running,
-            user=session['user'],
-            login='user' in session,
-            driver=str(engine.driver),
-            event=event
-        )
-    else:
-        return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
-            year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
-        )
+    dbsession = getSession()
+    event = None
+    events = dbsession.query(tables.Event).filter(tables.Event.current == True)
+    if events.count() > 0:
+        event = events[0].id
+    return render_template(
+        'admin/index.html',
+        title='Admin',
+        year=datetime.now().year,
+        enginestatus=ScoringEngine.engine.running,
+        driver=str(engine.driver),
+        event=event
+    )
+
 
 @app.route('/admin/scoring/<flag>')
 def adminscoringswitch(flag):

@@ -20,6 +20,12 @@ config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], 
     "tests": [],
     "debug": True,  # TODO this should default to false in production
     "secret": "fakesecret",  # TODO this should not be staticly set
+    "clam": {
+        "enabled": False,
+        "path": None,
+        "address": None,
+        "port": None
+    }
 })
 
 if len(config.get_item("tests")) > 0:

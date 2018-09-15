@@ -7,6 +7,8 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="icon" type="image/png" href="/static/img/bunnyshield_square.png" >
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
@@ -15,6 +17,8 @@
     <link rel="stylesheet" href="/static/plugins/adminlte/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <!-- ISE style -->
+    <link href="/static/ise.css" rel="stylesheet">
 
     {% block styles %}{% endblock %}
 </head>
@@ -159,8 +163,8 @@
         <div class="sidebar">
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image">
-                    <img src="/static/img/bunnyshield.png" class="" alt="User Image">
+                <div class="image" >
+                    <img src="/static/img/bunnyshield_square.png" alt="User Image">
                 </div>
                 <div class="info">
                     <a href="{{ url_for('user', user=current_user.username) }}" class="d-block">{{ current_user.name }}</a>
@@ -172,8 +176,8 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
-                    <li class="nav-item has-treeview">
-                        <a href="{{ url_for('portal') }}" class="nav-link">
+                    <li class="nav-item">
+                        <a href="{{ url_for('portal') }}" class="nav-link {{ menu("portal", base_menu) }}">
                             <i class="nav-icon fa fa-dashboard"></i>
                             <p>
                                 Portal
@@ -219,7 +223,7 @@
                         </li>
                     {% endif %}
                     {% if current_user.group >= 4 %}
-                        <li class="nav-item has-treeview">
+                        <li class="nav-item has-treeview {{ menu_open("admin", base_menu) }}">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa fa-edit"></i>
                                 <p>
@@ -228,21 +232,45 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url_for('admin') }}" class="nav-link">
+                                    <a href="{{ url_for('admin') }}" class="nav-link {{ menu("dashboard", sub_menu) }}">
                                         <i class="fa fa-circle-o nav-icon"></i>
                                         <p>Admin Dashboard</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../forms/advanced.html" class="nav-link">
+                                    <a href="{{ url_for('users') }}" class="nav-link {{ menu("users", sub_menu) }}">
                                         <i class="fa fa-circle-o nav-icon"></i>
-                                        <p>Advanced Elements</p>
+                                        <p>Users</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="../forms/editors.html" class="nav-link">
                                         <i class="fa fa-circle-o nav-icon"></i>
-                                        <p>Editors</p>
+                                        <p>Events</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../forms/editors.html" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Teams</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../forms/editors.html" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Servers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../forms/editors.html" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Service Types</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="../forms/editors.html" class="nav-link">
+                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <p>Password Databases</p>
                                     </a>
                                 </li>
                             </ul>
@@ -274,7 +302,7 @@
         <!-- Main content -->
         <section class="content">
 
-            {% block body %}{% endblock %}
+            {% block content %}{% endblock %}
 
         </section>
         <!-- /.content -->
@@ -285,7 +313,7 @@
         <div class="float-right d-none d-sm-block">
             <b>Version</b> 4.0.0-alpha
         </div>
-        <strong>Copyright &copy; 2014-2018 <a href="http://thebmw.tech">thebmw</a>.</strong> All rights
+        <strong>Copyright &copy; 2015-2018 <a href="http://thebmw.tech">thebmw</a>.</strong> All rights
         reserved.
     </footer>
 
@@ -307,5 +335,7 @@
 {#<script src="../../plugins/fastclick/fastclick.js"></script>#}
 <!-- AdminLTE App -->
 <script src="/static/plugins/adminlte/js/adminlte.min.js"></script>
+
+{% block scripts %}{% endblock %}
 </body>
 </html>

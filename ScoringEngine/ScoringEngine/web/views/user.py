@@ -23,13 +23,12 @@ from ScoringEngine.web.flask_utils import db_user, require_group
 
 
 def do_login(user):
-    tables.UserAuditLogEntry.create(user.id, 'login')
     login_user(user)
     if 'tmp_user' in session:
         session.pop('tmp_user')
     next = request.args.get("next")
-    if not is_safe_url(next):
-        return redirect(url_for('index'))
+    # if not is_safe_url(next):
+    #     return redirect(url_for('index'))
     return redirect(next or url_for('index'))
 
 

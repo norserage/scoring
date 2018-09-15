@@ -194,7 +194,7 @@ class User(Base):
 
     def verify_password(self, password):
         import bcrypt
-        return bcrypt.checkpw(password, self.password)
+        return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
 
     #####################
     # Helper Properties #
@@ -209,7 +209,8 @@ class User(Base):
                 return team[0].name
         return "No Team"
 
-    def getGroupName(self):
+    @property
+    def group_name(self):
         if self.group == 1:
             return "User"
         elif self.group == 2:
@@ -338,5 +339,4 @@ class TeamInjectSubmissionAttachment(Base):
     teaminjectid = Column(Integer, ForeignKey("teaminjectsubmissions.id"))
     filename = Column(String(255), nullable=False)
     size = Column(Integer, nullable=False)
-    #fileid = Column(UUID, nullable=False)
-    #data = Column(BLOB, nullable=False) Blobs suck in pgsql so we will store as file on file system or in a nosql document store
+    data = Column(LargeBinary, nullable=False)
