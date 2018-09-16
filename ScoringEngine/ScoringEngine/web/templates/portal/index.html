@@ -62,11 +62,11 @@
     <tr>
         {% for cell in row %}
         {% if cell == "up" %}
-        <td class=""><span class="label label-success">&nbsp;</span></td>
+        <td class=""><span class="label label-success label-round">&nbsp;&nbsp;&nbsp;</span></td>
         {% elif cell == "" or cell == None %}
-        <td class=""><span class="label label-default">&nbsp;</span></td>
+        <td class=""><span class="label label-default label-round">&nbsp;&nbsp;&nbsp;</span></td>
         {% elif cell == "down" %}
-        <td class=""><span class="label label-danger">&nbsp;</span></td>
+        <td class=""><span class="label label-danger label-round">&nbsp;&nbsp;&nbsp;</span></td>
         {% else %}
         <th>{{ cell }}</th>
         {% endif %}
@@ -78,7 +78,7 @@
 
 {% block styles %}
 <style type="text/css">
-    td {
+    td, th {
         text-align:center;
     }
 </style>

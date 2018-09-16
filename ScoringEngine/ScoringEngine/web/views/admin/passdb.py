@@ -16,184 +16,134 @@ limitations under the License.
 from datetime import datetime
 from flask import render_template, request, session, redirect, url_for
 from ScoringEngine.web import app
-from ScoringEngine.core.db import Session
-import ScoringEngine.core.db.tables as tables
-import ScoringEngine.utils
-import ScoringEngine.engine
+from ScoringEngine.core.db import getSession, tables
 import Crypto.Hash.MD5
 import csv
 
+from ScoringEngine.web.flask_utils import db_user, require_group
+from flask_login import current_user, login_required
+
 
 @app.route('/admin/passdb')
+@login_required
+@require_group(4)
+@db_user
 def passdbs():
-    if 'user' in session and session['user']['group'] >= 4:
-        dbsession = Session()
-        passdblist = dbsession.query(tables.PasswordDatabase).order_by(tables.PasswordDatabase.name)
-        
-        return render_template(
-            'admin/passdb/list.html',
-            title='Home Page',
-            year=datetime.now().year,
-            enginestatus=ScoringEngine.engine.running,
-            user=session['user'],
-            login='user' in session,
-            passdblist=passdblist
-        )
-    else:
-        return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
-            year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
-        )
+    dbsession = getSession()
+    passdblist = dbsession.query(tables.PasswordDatabase).order_by(tables.PasswordDatabase.name)
+
+    return render_template(
+        'admin/passdb/list.html',
+        title='Password Databases',
+        year=datetime.now().year,
+        passdblist=passdblist
+    )
 
 @app.route('/admin/passdb/add',methods=['GET','POST'])
+@login_required
+@require_group(4)
+@db_user
 def addpassdb():
-    if 'user' in session and session['user']['group'] == 5:
-        dbsession = Session()
-        if request.method == 'POST':
-            db = tables.PasswordDatabase()
-            db.name = request.form["name"]
-            db.domain = request.form["domain"]
-            
-            dbsession.add(db)
-            dbsession.commit()
-            return redirect(url_for('passdbs'))
-        else:
-            teams = dbsession.query(tables.Team).all()
-            return render_template(
-                'admin/passdb/add.html',
-                title='Add Password Database',
-                year=datetime.now().year,
-                user=session['user'],
-                login='user' in session,
-            )
+    dbsession = getSession()
+    if request.method == 'POST':
+        db = tables.PasswordDatabase()
+        db.name = request.form["name"]
+        db.domain = request.form["domain"]
+
+        dbsession.add(db)
+        dbsession.commit()
+        return redirect(url_for('passdbs'))
     else:
+        teams = dbsession.query(tables.Team).all()
         return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
+            'admin/passdb/add.html',
+            title='Add Password Database',
             year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
         )
 
 @app.route('/admin/passdb/<passdb>')
+@login_required
+@require_group(4)
+@db_user
 def passdb(passdb):
-    if 'user' in session and session['user']['group'] == 5:
-        dbsession = Session()
-        passdbs = dbsession.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name.ilike(passdb))
-        if passdbs.count() > 0:
-            passdb = passdbs[0]
-            return render_template(
-                'admin/passdb/view.html',
-                title=passdb.name,
-                year=datetime.now().year,
-                user=session['user'],
-                login='user' in session,
-                passdb=passdb,
-            )
-        else:
-            return render_template(
-                'admin/404.html',
-                title='404 User Not Found',
-                year=datetime.now().year,
-                user=session['user'],
-                login='user' in session,
-                message="We could not find the user that you were looking for."
-            )
+    dbsession = getSession()
+    passdbs = dbsession.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name.ilike(passdb))
+    if passdbs.count() > 0:
+        passdb = passdbs[0]
+        return render_template(
+            'admin/passdb/view.html',
+            title=passdb.name,
+            year=datetime.now().year,
+            passdb=passdb,
+        )
     else:
         return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
+            'admin/404.html',
+            title='404 User Not Found',
             year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
+            message="We could not find the user that you were looking for."
         )
 
-@app.route('/admin/user/<passdb>/edit',methods=['GET','POST'])
+@app.route('/admin/passdb/<passdb>/edit',methods=['GET','POST'])
+@login_required
+@require_group(4)
+@db_user
 def editpassdb(passdb):
-    if 'user' in session and session['user']['group'] == 5:
-        dbsession = Session()
-        users = dbsession.query(tables.User).filter(tables.User.name.ilike(passdb))
-        if users.count() > 0:
-            dbuser = users[0]
-            if request.method == 'POST':
-                dbuser.name = request.form["name"]
-                dbuser.username = request.form["username"]
-                dbuser.team = request.form["team"]
-                dbuser.group = request.form["group"]
-                if str(request.form["password"]).strip() != "":
-                    m = Crypto.Hash.MD5.new()
-                    m.update(request.form["password"])
-                    dbuser.password = m.hexdigest()
-                #team.save()
-                dbsession.commit()
-                return redirect(url_for('adminuser',user=dbuser.name))
-            else:
-                teams = dbsession.query(tables.Team).all()
-                return render_template(
-                    'admin/user/edit.html',
-                    title='Edit Team',
-                    year=datetime.now().year,
-                    user=session['user'],
-                    login='user' in session,
-                    dbuser=dbuser,
-                    teams=teams
-                )
-        else:
-            return render_template(
-                'admin/404.html',
-                title='404 User Not Found',
-                year=datetime.now().year,
-                user=session['user'],
-                login='user' in session,
-                message="We could not find the user that you were looking for."
-            )
-    else:
-        return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
-            year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
-        )
-
-@app.route('/admin/passdb/<passdb>/import',methods=['GET','POST'])
-def importpassdb(passdb):
-    if 'user' in session and session['user']['group'] == 5:
-        dbsession = Session()
-        db = dbsession.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name.ilike(passdb)).first()
+    dbsession = getSession()
+    users = dbsession.query(tables.User).filter(tables.User.name.ilike(passdb))
+    if users.count() > 0:
+        dbuser = users[0]
         if request.method == 'POST':
-            file = request.files['file']
-            if file:
-                datafile = csv.reader(file)
-                for line in datafile:
-                    entry = tables.PasswordDatabaseEntry()
-                    entry.user, entry.password, entry.email = line[0], line[1], line[2]
-                    entry.passdbid = db.id
-                    dbsession.add(entry)
+            dbuser.name = request.form["name"]
+            dbuser.username = request.form["username"]
+            dbuser.team = request.form["team"]
+            dbuser.group = request.form["group"]
+            if str(request.form["password"]).strip() != "":
+                m = Crypto.Hash.MD5.new()
+                m.update(request.form["password"])
+                dbuser.password = m.hexdigest()
+            #team.save()
             dbsession.commit()
-            return redirect(url_for('passdb',passdb=passdb))
+            return redirect(url_for('adminuser',user=dbuser.name))
         else:
             teams = dbsession.query(tables.Team).all()
             return render_template(
-                'admin/passdb/import.html',
-                title='Import Password Database',
+                'admin/user/edit.html',
+                title='Edit Team',
                 year=datetime.now().year,
-                user=session['user'],
-                login='user' in session,
+                dbuser=dbuser,
+                teams=teams
             )
     else:
         return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
+            'admin/404.html',
+            title='404 User Not Found',
             year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
+            message="We could not find the user that you were looking for."
+        )
+
+@app.route('/admin/passdb/<passdb>/import',methods=['GET','POST'])
+@login_required
+@require_group(4)
+@db_user
+def importpassdb(passdb):
+    dbsession = getSession()
+    db = dbsession.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name.ilike(passdb)).first()
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            datafile = csv.reader(file)
+            for line in datafile:
+                entry = tables.PasswordDatabaseEntry()
+                entry.user, entry.password, entry.email = line[0], line[1], line[2]
+                entry.passdbid = db.id
+                dbsession.add(entry)
+        dbsession.commit()
+        return redirect(url_for('passdb',passdb=passdb))
+    else:
+        teams = dbsession.query(tables.Team).all()
+        return render_template(
+            'admin/passdb/import.html',
+            title='Import Password Database',
+            year=datetime.now().year,
         )

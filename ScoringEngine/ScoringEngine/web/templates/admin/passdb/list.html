@@ -1,8 +1,7 @@
-{% extends "layout.html" %}
+{% set base_menu='admin' %}{% set sub_menu='passdb' %}{% extends "layouts/default.html" %}
 
 {% block content %}
-{% include "admin/menu.html" %}
-<div class="col-md-9">
+<div class="content-center">
     <div class="page-header">
         <h1>Password Databases</h1>
     </div>
@@ -30,4 +29,18 @@
         </tfoot>
     </table>
 </div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap4.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+    $(function () {
+       $('table').dataTable();
+    });
+    </script>
 {% endblock %}

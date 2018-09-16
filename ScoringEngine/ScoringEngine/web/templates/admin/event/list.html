@@ -1,34 +1,35 @@
-{% extends "layout.html" %}
+{% set base_menu='admin' %}{% set sub_menu='events' %}{% extends "layouts/default.html" %}
 
 {% block content %}
-{% include "admin/menu.html" %}
-<div class="col-md-9">
+<div class="content-center">
     <div class="page-header">
         <h1>Events</h1>
     </div>
     <table class="table">
         <thead>
             <tr>
+                <th>#</th>
                 <th>Name</th>
                 <th>Start</th>
                 <th>End</th>
-                <th>#</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
             {% for event in events %}
             <tr>
+                <td>{{ event.id }}</td>
                 <td><a href="{{ url_for('event',event=event.id) }}">{{ event.name }}</a></td>
                 <td>
                     {% if event.start == None  %}
-                        <a href="/admin/event/{{ event.id }}/start">Start</a>
+                        <a href="{{ url_for('startevent', event=event.id) }}">Start</a>
                     {% else %}
                         {{ event.start }}
                     {% endif %}
                 </td>
                 <td>
                     {% if event.current %}
-                        <a href="/admin/event/{{ event.id }}/stop">Stop</a>
+                        <a href="{{ url_for('stopevent', event=event.id) }}">Stop</a>
                     {% else %}
                         {{ event.end }}
                     {% endif %}
@@ -44,4 +45,20 @@
         </tfoot>
     </table>
 </div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap4.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+    $(function () {
+       $('table').dataTable({
+           "order": [[ 0, "desc" ]]
+       });
+    });
+    </script>
 {% endblock %}

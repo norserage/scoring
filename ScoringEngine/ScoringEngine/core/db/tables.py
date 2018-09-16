@@ -250,10 +250,10 @@ class IncedentResponse(Base):
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     eventid = Column(Integer, ForeignKey('events.id'), index=True, unique=False)
     teamserverid = Column(Integer, ForeignKey('teamservers.id'), index=True, unique=False)
-    addedby = Column(Integer, ForeignKey('users.id'), unique=False, index=false)
-    added = Column(DateTime, nullable=false)
-    points = Column(Integer, nullable=false)
-    comments = Column(Text,nullable=false)
+    addedby = Column(Integer, ForeignKey('users.id'), unique=False, index=False)
+    added = Column(DateTime, nullable=False)
+    points = Column(Integer, nullable=False)
+    comments = Column(Text,nullable=False)
 
 
 
@@ -262,10 +262,11 @@ class IncedentResponseAttachment(Base):
 
     id = Column(Integer, primary_key=True, index=True, unique=True)
     irid = Column(Integer, ForeignKey('incedentresponses.id'))
-    filename = Column(String(128), nullable=false)
-    size = Column(Integer, nullable=false)
+    filename = Column(String(255), nullable=False)
+    data = Column(LargeBinary, nullable=False)
+    size = Column(Integer, nullable=False)
     added_by = Column(Integer, ForeignKey("users.id"))
-    added = Column(DateTime, nullable=false)
+    added = Column(DateTime, nullable=False)
 
     ir = relationship("IncedentResponse", backref=backref('files', order_by=id))
 

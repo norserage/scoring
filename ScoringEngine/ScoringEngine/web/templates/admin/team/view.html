@@ -1,8 +1,7 @@
-{% extends "layout.html" %}
+{% set base_menu='admin' %}{% set sub_menu='teams' %}{% extends "layouts/default.html" %}
 
 {% block content %}
-{% include "admin/menu.html" %}
-<div class="col-md-9">
+<div class="content-center">
     <div class="page-header">
         <h1 style="float:left;margin-top:0px;">{{ team.name }} <small>{{ team.network }}</small></h1>
         <div style="float:right">

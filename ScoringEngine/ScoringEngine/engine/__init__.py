@@ -16,9 +16,8 @@ limitations under the License.
 import threading
 import random
 import datetime
-from ScoringEngine.core.db import Session
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.conf import conf
+from ScoringEngine.core.db import Session, tables
+from ScoringEngine.core import config
 
 running = False
 event = None
@@ -29,10 +28,10 @@ def start():
     thread.start()
 
 def thread_start():
-    while running:
+    while True:
         print "loop"
         score()
-        i = random.randint(conf['engine']['min'],conf['engine']['max'])
+        i = random.randint(config.get_item("engine/min"), config.get_item("engine/max"))
         date = datetime.datetime.now()
         date += datetime.timedelta(seconds=i)
         print "sleeping for %i (%s)" % (i, date)

@@ -1,8 +1,7 @@
-{% extends "layout.html" %}
+{% set base_menu='admin' %}{% set sub_menu='events' %}{% extends "layouts/default.html" %}
 
 {% block content %}
-{% include "admin/menu.html" %}
-<div class="col-md-9">
+<div class="content-center">
     <div class="page-header">
         <h1 style="float:left;margin-top:0px;">{{ event.name }} <small>{{ event.start }}-{{ event.end }}</small></h1>
         <div style="float:right">
@@ -20,7 +19,7 @@
     <table class="table">
         <tr>
             <th>Team Name</th>
-            <th>Points Erned</th>
+            <th>Points Earned</th>
             <th>Points Possible</th>
             <th>Uptime</th>
         </tr>

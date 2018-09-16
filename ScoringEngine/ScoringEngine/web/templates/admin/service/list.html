@@ -1,8 +1,7 @@
-{% extends "layout.html" %}
+{% set base_menu='admin' %}{% set sub_menu='service' %}{% extends "layouts/default.html" %}
 
 {% block content %}
-{% include "admin/menu.html" %}
-<div class="col-md-9">
+<div class="content-center">
     <div class="page-header">
         <h1>Service Types</h1>
     </div>
@@ -17,7 +16,7 @@
         <tbody>
             {% for service in services %}
             <tr>
-                <td>{{ service.name }}</td>
+                <td><a href="{{ url_for('service', id=service.id) }}">{{ service.name }}</a></td>
                 <td>{{ service.tester }}</td>
                 <td><a href="{{ url_for('editservice',service=service.id) }}">Edit</a></td>
             </tr>

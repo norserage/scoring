@@ -25,6 +25,10 @@ config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], 
         "path": None,
         "address": None,
         "port": None
+    },
+    "engine": {
+        "min": 60,
+        "max": 120
     }
 })
 

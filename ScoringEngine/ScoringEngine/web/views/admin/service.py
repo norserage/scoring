@@ -16,133 +16,93 @@ limitations under the License.
 from datetime import datetime
 from flask import render_template, request, session, redirect, url_for
 from ScoringEngine.web import app
-from ScoringEngine.core.db import Session
-import ScoringEngine.core.db.tables as tables
-import ScoringEngine.utils
-import ScoringEngine.engine
+from ScoringEngine.core.db import getSession, tables
 from pprint import pprint as pp
+
+from ScoringEngine.web.flask_utils import db_user, require_group
+from flask_login import current_user, login_required
 
 
 @app.route('/admin/service')
+@login_required
+@require_group(4)
+@db_user
 def services():
-    if 'user' in session and session['user']['group'] == 5:
-        dbsession = Session()
-        services = dbsession.query(tables.ServiceType).all()
-        """Renders the home page."""
-        return render_template(
-            'admin/service/list.html',
-            title='Service Types',
-            year=datetime.now().year,
-            enginestatus=ScoringEngine.engine.running,
-            user=session['user'],
-            login='user' in session,
-            services=services
-        )
-    else:
-        return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
-            year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
-        )
+    dbsession = getSession()
+    services = dbsession.query(tables.ServiceType).all()
+    """Renders the home page."""
+    return render_template(
+        'admin/service/list.html',
+        title='Service Types',
+        year=datetime.now().year,
+        services=services
+    )
 
 @app.route('/admin/service/<id>')
+@login_required
+@require_group(4)
+@db_user
 def service(id):
-    if 'user' in session and session['user']['group'] == 5:
-        dbsession = Session()
-        service = dbsession.query(tables.ServiceType).filter(tables.ServiceType.id == id).first()
-        m=__import__(service.tester)
-        func = getattr(m, "options")
-        pp(func())
-        """Renders the home page."""
-        return render_template(
-            'admin/service/view.html',
-            title='Service Types',
-            year=datetime.now().year,
-            enginestatus=ScoringEngine.engine.running,
-            user=session['user'],
-            login='user' in session,
-            service=service,
-            options=func()
-        )
-    else:
-        return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
-            year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
-        )
+    dbsession = getSession()
+    service = dbsession.query(tables.ServiceType).filter(tables.ServiceType.id == id).first()
+    m=__import__(service.tester)
+    func = getattr(m, "options")
+    pp(func())
+    """Renders the home page."""
+    return render_template(
+        'admin/service/view.html',
+        title='Service Types',
+        year=datetime.now().year,
+        service=service,
+        options=func()
+    )
 
 @app.route('/admin/service/add',methods=['GET','POST'])
+@login_required
+@require_group(4)
+@db_user
 def addservice():
-    if 'user' in session and session['user']['group'] == 5:
-        if request.method == 'POST':
-            dbsession = Session()
-            st = tables.ServiceType()
-            st.name = request.form['name']
-            st.tester = request.form['tester']
-            dbsession.add(st)
-            dbsession.commit()
-            return redirect(url_for('services'))
-        else:
-            return render_template(
-                'admin/service/add.html',
-                title='Add Service Type',
-                year=datetime.now().year,
-                user=session['user'],
-                login='user' in session,
-            )
+    if request.method == 'POST':
+        dbsession = getSession()
+        st = tables.ServiceType()
+        st.name = request.form['name']
+        st.tester = request.form['tester']
+        dbsession.add(st)
+        dbsession.commit()
+        return redirect(url_for('services'))
     else:
         return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
+            'admin/service/add.html',
+            title='Add Service Type',
             year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
         )
 
 
 @app.route('/admin/service/<service>/edit',methods=['GET','POST'])
+@login_required
+@require_group(4)
+@db_user
 def editservice(service):
-    if 'user' in session and session['user']['group'] == 5:
-        dbsession = Session()
-        services = dbsession.query(tables.ServiceType).filter(tables.ServiceType.id == service)
-        if services.count() > 0:
-            service = services[0]
-            if request.method == 'POST':
-                service.name = request.form['name']
-                service.tester = request.form['tester']
-                dbsession.commit()
-                return redirect(url_for('services'))
-            else:
-                return render_template(
-                    'admin/service/edit.html',
-                    title='Edit Team',
-                    year=datetime.now().year,
-                    user=session['user'],
-                    login='user' in session,
-                    service=service
-                )
+    dbsession = getSession()
+    services = dbsession.query(tables.ServiceType).filter(tables.ServiceType.id == service)
+    if services.count() > 0:
+        service = services[0]
+        if request.method == 'POST':
+            service.name = request.form['name']
+            service.tester = request.form['tester']
+            dbsession.commit()
+            return redirect(url_for('services'))
         else:
             return render_template(
-                'admin/404.html',
-                title='404 Server Not Found',
+                'admin/service/edit.html',
+                title='Edit Team',
                 year=datetime.now().year,
-                user=session['user'],
-                login='user' in session,
-                message="We could not find the service that you were looking for."
+                service=service
             )
     else:
         return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
+            'admin/404.html',
+            title='404 Server Not Found',
             year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
+            message="We could not find the service that you were looking for."
         )
