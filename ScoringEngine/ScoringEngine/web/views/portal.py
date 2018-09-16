@@ -62,11 +62,66 @@ def portal():
                         row.append(None)
         data.append(row)
 
+    event = tables.Event.current_event()
+    if event:
+        injects = dbsession.query(tables.AssignedInject).filter(tables.AssignedInject.eventid == event.id)
+    else:
+        injects = []
+
     return render_template(
         'portal/index.html',
         title='Portal',
         year=datetime.now().year,
         data=data,
-        servers=servers
+        servers=servers,
+        injects=injects
     )
 
+@app.route('/portal/score')
+@login_required
+@require_group(1)
+@db_user
+def portal_score():
+    dbsession = getSession()
+    data=[]
+    stmt = tables.exists().where(tables.Server.id == tables.TeamServer.serverid)
+    servers = dbsession.query(tables.Server).filter(tables.and_(stmt, tables.Server.enabled == True)).order_by(
+        tables.Server.name)
+    if current_user.group > 1:
+        teams = dbsession.query(tables.Team).filter(tables.Team.enabled == True).order_by(tables.Team.name)
+    else:
+        teams = dbsession.query(tables.Team).filter(
+            tables.and_(tables.Team.enabled == True, tables.Team.id == current_user.team)).order_by(
+            tables.Team.name)
+    for team in teams:
+        row = []
+        row.append(team.name)
+        for server in servers:
+            teamservers = dbsession.query(tables.TeamServer).filter(
+                tables.and_(tables.TeamServer.serverid == server.id, tables.TeamServer.teamid == team.id))
+            for service in server.services:
+                if service.enabled:
+                    if teamservers.count() > 0:
+                        teamserver = teamservers[0]
+                        score = dbsession.query(tables.ScoreEvent).filter(
+                            tables.and_(tables.ScoreEvent.serviceid == service.id, tables.ScoreEvent.teamserverid == teamserver.id)).order_by(
+                            tables.ScoreEvent.scoretime.desc()).limit(1)
+                        if score.count() > 0:
+                            s = score[0]
+                            if s.up:
+                                row.append("up")
+                            else:
+                                row.append("down")
+                        else:
+                            row.append("")
+                    else:
+                        row.append(None)
+        data.append(row)
+
+    return render_template(
+        'portal/score_table.html',
+        title='Portal',
+        year=datetime.now().year,
+        data=data,
+        servers=servers
+    )

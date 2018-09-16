@@ -2,17 +2,19 @@
 
 {% block content %}
 
-{% if current_user.group == 1 %}
-<div class="page-header">
-    <h2>Injects</h2>
-</div>
-<ol>
-{% for inject in injects %}
-    <li><a href="#">{{ inject.title }}</a></li>
-{% endfor %}
-</ol>
-{% endif %}
-<!-- The Users Have Spoken
+    {% if current_user.group == 1 %}
+        <div class="page-header">
+            <h2>Injects</h2>
+        </div>
+        <ol>
+            {% for inject in injects %}
+                {% if inject.should_show %}
+                    <li><a href="#">{{ inject.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    {% endif %}
+    <!-- The Users Have Spoken
 <div class="page-header">
     <h2>Scores</h2>
 </div>
@@ -44,42 +46,58 @@
     {% endfor %}
 </table>
 -->
-<div class="page-header">
-    <h2>Scores</h2>
-</div>
-<table class="table">
-    <tr>
-        <th></th>
-        {% for server in servers %}
-        {% for service in server.services %}
-        {% if service.enabled %}
-        <th>{{ server.name }}-{{ service.name }}</th>
-        {% endif %}
-        {% endfor %}
-        {% endfor %}
-    </tr>
-    {% for row in data %}
-    <tr>
-        {% for cell in row %}
-        {% if cell == "up" %}
-        <td class=""><span class="label label-success label-round">&nbsp;&nbsp;&nbsp;</span></td>
-        {% elif cell == "" or cell == None %}
-        <td class=""><span class="label label-default label-round">&nbsp;&nbsp;&nbsp;</span></td>
-        {% elif cell == "down" %}
-        <td class=""><span class="label label-danger label-round">&nbsp;&nbsp;&nbsp;</span></td>
-        {% else %}
-        <th>{{ cell }}</th>
-        {% endif %}
-        {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
+    <div class="page-header">
+        <h2>Scores</h2>
+    </div>
+    <div id="score">
+        <table class="table">
+            <tr>
+                <th></th>
+                {% for server in servers %}
+                    {% for service in server.services %}
+                        {% if service.enabled %}
+                            <th>{{ server.name }}-{{ service.name }}</th>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </tr>
+            {% for row in data %}
+                <tr>
+                    {% for cell in row %}
+                        {% if cell == "up" %}
+                            <td class=""><span class="label label-success label-round">&nbsp;&nbsp;&nbsp;</span></td>
+                        {% elif cell == "" or cell == None %}
+                            <td class=""><span class="label label-default label-round">&nbsp;&nbsp;&nbsp;</span></td>
+                        {% elif cell == "down" %}
+                            <td class=""><span class="label label-danger label-round">&nbsp;&nbsp;&nbsp;</span></td>
+                        {% else %}
+                            <th>{{ cell }}</th>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
 
 {% block styles %}
-<style type="text/css">
-    td, th {
-        text-align:center;
-    }
-</style>
+    <style type="text/css">
+        td, th {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function refresh() {
+    $("#score").load("{{ url_for('portal_score') }}");
+}
+
+    $(function () {
+   setInterval(refresh, 30000)
+});
+
+
+</script>
 {% endblock %}

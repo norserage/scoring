@@ -42,6 +42,11 @@ class Event(Base):
             'start':dump_datetime(self.start),
             'end':dump_datetime(self.end)
             }
+
+    @staticmethod
+    def current_event():
+        from ScoringEngine.core.db import getSession
+        return getSession().query(Event).filter(Event.current == True).first()
     
 class Team(Base):
     __tablename__ = 'teams'
@@ -190,7 +195,7 @@ class User(Base):
     ####################
     def set_password(self, new_password):
         import bcrypt
-        self.password = bcrypt.hashpw(new_password, bcrypt.gensalt())
+        self.password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
 
     def verify_password(self, password):
         import bcrypt
@@ -277,8 +282,13 @@ class InjectCategory(Base):
     __tablename__ = 'injectcategories'
 
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
-    parentid = Column(Integer)
+    parentid = Column(Integer, nullable=True, index=True)
     name = Column(String(255), nullable=False)
+
+    @property
+    def childern(self):
+        from ScoringEngine.core.db import getSession
+        return getSession().query(InjectCategory).filter(InjectCategory.parentid == self.id)
 
     
 
@@ -308,6 +318,13 @@ class AssignedInject(Base):
     duration = Column(Integer, nullable=False)
     allowlate = Column(Boolean, nullable=False)
     points = Column(Integer, nullable=False)
+
+    @property
+    def should_show(self):
+        from datetime import datetime, timedelta
+        if self.event.current and datetime.now() >= self.when and (datetime.now() <= (self.when + timedelta(minutes=self.duration)) or self.allowlate):
+            return True
+        return False
 
     inject = relationship("Inject")
     event = relationship("Event", backref=backref('injects', order_by=when))

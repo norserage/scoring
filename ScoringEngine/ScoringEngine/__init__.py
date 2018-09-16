@@ -40,7 +40,7 @@ def arguments():
         import ScoringEngine.core.db.tables
         ScoringEngine.core.db.tables.Base.metadata.create_all(ScoringEngine.core.db.engine)
         s = ScoringEngine.core.db.getSession()
-        u = ScoringEngine.core.db.tables.User.create("Administrator", "admin", "admin", -1, 5)
+        u = ScoringEngine.core.db.tables.User.create("Administrator", "admin", u"admin", -1, 5)
         s.add(u)
         s.commit()
         s.close()
@@ -52,8 +52,6 @@ def arguments():
 
 def main():
     if arguments():
-        from ScoringEngine.core.conf import conf
-        from os import environ
         from ScoringEngine.web import app
         app.run('127.0.0.1', 5080)
         print("hello")
