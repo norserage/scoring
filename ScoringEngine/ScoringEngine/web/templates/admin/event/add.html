@@ -1,0 +1,23 @@
+{% set base_menu='admin' %}{% set sub_menu='events' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+    <form method="post">
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Add Event</h3>
+            </div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label for="name">Event Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Event Name" name="name">
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -29,8 +29,8 @@ if not args.quite:
     if not c == None:
         conf = c
 
-import ScoringEngine.conf
-ScoringEngine.conf.newConf(conf)
+import ScoringEngine.core.conf
+ScoringEngine.core.conf.newConf(conf)
     
 db = args.db
 if not args.quite:

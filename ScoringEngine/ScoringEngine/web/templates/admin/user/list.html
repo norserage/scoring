@@ -1,0 +1,54 @@
+{% set base_menu='admin' %}{% set sub_menu='users' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+<div class="content-center">
+    <div class="page-header">
+        <h1>Users</h1>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Group</th>
+                <th>Team</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.name }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.group_name }}</td>
+                <td>{{ user.team_name }}</td>
+                <td>
+                    <div class="btn-group">
+                        <a href="{{ url_for('adminuser', user=user.name) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                        <a href="{{ url_for('edituser', user=user.name) }}" class="btn btn-secondary"><i class="fa fa-edit"></i></a>
+                    </div>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><a href="{{ url_for('adduser') }}" class="btn btn-default">Add</a></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap4.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+    $(function () {
+       $('table').dataTable();
+    });
+    </script>
+{% endblock %}

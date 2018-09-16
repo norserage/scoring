@@ -1,0 +1,36 @@
+{% set base_menu='admin' %}{% set sub_menu='server' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+    <form method="post">
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Add Server</h3>
+            </div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label for="name">Server Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Server Name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="ip3">IP_3</label>
+                    <input type="text" class="form-control" id="ip3" placeholder="10.255.{3}.{4}" name="ip3">
+                </div>
+                <div class="form-group">
+                    <label for="ip4">IP_4</label>
+                    <input type="text" class="form-control" id="ip4" placeholder="10.255.{3}.{4}" name="ip4">
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="enabled">Enabled
+                    </label>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

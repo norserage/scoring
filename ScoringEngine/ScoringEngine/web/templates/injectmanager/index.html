@@ -1,0 +1,21 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Events</h1>
+</div>
+<table class="table">
+    <tr>
+        <th>Event</th>
+        <th>Start</th>
+        <th>End</th>
+    </tr>
+    {% for event in events %}
+    <tr>
+        <td><a href="/inject/event/{{ event.id }}">{{ event.name }}</a></td>
+        <td>{{ event.start }}</td>
+        <td>{{ event.end }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

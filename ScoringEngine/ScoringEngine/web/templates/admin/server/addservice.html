@@ -1,0 +1,39 @@
+{% set base_menu='admin' %}{% set sub_menu='server' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+    <form method="post">
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Add Service to {{ server.name }}</h3>
+            </div>
+            <div class="card-body">
+        <div class="form-group">
+            <label for="name">Service Name</label>
+            <input type="text" class="form-control" id="name" placeholder="Service Name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="port">Port</label>
+            <input type="number" class="form-control" id="port" placeholder="Port" name="port">
+        </div>
+        <div class="form-group">
+            <label for="type">Service Type</label>
+            <select class="form-control" name="type" id="type">
+            {% for type in types %}
+                <option value="{{ type.id }}">{{ type.name }}</option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="enabled">Enabled
+            </label>
+        </div>
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

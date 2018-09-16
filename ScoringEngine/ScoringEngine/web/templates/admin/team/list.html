@@ -1,0 +1,59 @@
+{% set base_menu='admin' %}{% set sub_menu='teams' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+<div class="content-center">
+    <div class="page-header">
+        <h1>Teams</h1>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Network</th>
+                <th>Enabled</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+            <tr>
+                <td>{{ team.name }}</td>
+                <td>{{ team.network }}</td>
+                <td>
+                    {% if team.enabled %}
+                    <span class="label label-success">Enabled</span>
+                    {% else %}
+                    <span class="label label-danger">Disabled</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a href="{{ url_for('team', team=team.name) }}" class="btn btn-primary"><i class="fa fa-eye"></i> </a>
+                        <a href="{{ url_for('editteam', team=team.name) }}" class="btn btn-secondary"><i class="fa fa-edit"></i></a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><a href="{{ url_for('addteam') }}" class="btn btn-default">Add</a></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap4.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+    $(function () {
+       $('table').dataTable();
+    });
+    </script>
+{% endblock %}

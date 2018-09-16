@@ -1,0 +1,49 @@
+{% set base_menu='admin' %}{% set sub_menu='server' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+    <form method="post">
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Edit Service</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="name">Service Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Service Name" name="name"
+                           value="{{ service.name }}">
+                </div>
+                <div class="form-group">
+                    <label for="port">Port</label>
+                    <input type="number" class="form-control" id="port" placeholder="Port" name="port"
+                           value="{{ service.port }}">
+                </div>
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <select class="form-control" name="type" id="type">
+                        {% for type in types %}
+                            {% if type.id == service.typeid %}
+                                <option value="{{ type.id }}" selected>{{ type.name }}</option>
+                            {% else %}
+                                <option value="{{ type.id }}">{{ type.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        {% if service.enabled %}
+                            <input type="checkbox" name="enabled" checked>Enabled
+                        {% else %}
+                            <input type="checkbox" name="enabled">Enabled
+                        {% endif %}
+                    </label>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

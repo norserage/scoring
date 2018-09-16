@@ -1,0 +1,28 @@
+{% set base_menu='admin' %}{% set sub_menu='teams' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+    <form method="post">
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Add User</h3>
+            </div>
+            <div class="card-body">
+
+        <div class="form-group">
+            <label for="server">Server</label>
+            <select name="server" id="server" class="form-control">
+                {% for server in servers %}
+                <option value="{{ server.id }}">{{ server.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
