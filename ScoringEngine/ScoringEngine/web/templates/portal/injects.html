@@ -1,8 +1,7 @@
-{% set base_menu='portal' %}{% extends "layouts/default.html" %}
+{% set base_menu='inject_portal' %}{% extends "layouts/default.html" %}
 
 {% block content %}
 
-    {% if current_user.group == 1 %}
         <div class="page-header">
             <h2>Injects</h2>
         </div>
@@ -15,13 +14,6 @@
                 {% endfor %}
             </ol>
         </div>
-    {% endif %}
-    <div class="page-header">
-        <h2>Scores</h2>
-    </div>
-    <div id="score">
-        Loading...
-    </div>
 {% endblock %}
 
 {% block styles %}
@@ -34,15 +26,9 @@
 
 {% block scripts %}
     <script>
-        function refresh_injects() {
-            {% if current_user.group == 1 %}
-            $("#injects").load("{{ url_for('portal_injects') }}")
-            {% endif %}
-        }
-
         function refresh() {
+            $("#injects").load("{{ url_for('portal_injects') }}")
             $("#score").load("{{ url_for('portal_score') }}");
-            refresh_injects()
         }
 
         $(function () {

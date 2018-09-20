@@ -1,5 +1,6 @@
 Flask
 flask-login
+flask-markdown
 mechanize
 SQLAlchemy
 pycrypto

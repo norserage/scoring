@@ -1,0 +1,23 @@
+{% set base_menu='injectmanager' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+<div class="content-center">
+    <div class="page-header">
+        <h1 style="margin-top: 0px" class="pull-left">{{ inject.subject }}</h1>
+        <p class="pull-right">
+            <div class="btn-group pull-right">
+                            <a href="{{ url_for('injectmanager_inject_edit', id=inject.id) }}" class="btn btn-secondary" title="Edit"><i class="fa fa-edit"></i> </a>
+                            <a href="{{ url_for('injectmanager_inject_assign', id=inject.id) }}" class="btn btn-success" title="Assign"><i class="fa fa-plus-square"></i> </a>
+                            <a href="{{ url_for('injectmanager_inject', id=inject.id) }}" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i> </a>
+                        </div>
+        </p>
+    </div>
+    <div style="clear: both">
+        <p><b>Duration:</b> {{ inject.duration }}<br>
+            <b>Points:</b> {{ inject.points }}</p>
+    </div>
+    <div>
+        {{ inject.body | markdown }}
+    </div>
+</div>
+{% endblock %}

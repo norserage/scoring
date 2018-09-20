@@ -7,7 +7,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="icon" type="image/png" href="/static/img/bunnyshield_square.png" >
+    <link rel="icon" type="image/png" href="/static/img/bunnyshield_square.png">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.min.css">
@@ -26,7 +26,7 @@
 <!-- Site wrapper -->
 <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand bg-white navbar-light border-bottom">
+    <nav class="main-header navbar navbar-expand bg-primary navbar-light border-bottom">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -64,7 +64,8 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                            <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar"
+                                 class="img-size-50 mr-3 img-circle">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     Brad Diesel
@@ -80,7 +81,8 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                            <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar"
+                                 class="img-size-50 img-circle mr-3">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     John Pierce
@@ -96,7 +98,8 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                            <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar"
+                                 class="img-size-50 img-circle mr-3">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
                                     Nora Silvester
@@ -140,7 +143,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('logout')}}"><i class="fa fa-sign-out"></i> Logout</a>
+                <a class="nav-link" href="{{ url_for('logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#">
@@ -166,17 +169,19 @@
         <div class="sidebar">
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                <div class="image" >
+                <div class="image">
                     <img src="/static/img/bunnyshield_square.png" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="{{ url_for('user', user=current_user.username) }}" class="d-block">{{ current_user.name }}</a>
+                    <a href="{{ url_for('user', user=current_user.username) }}"
+                       class="d-block">{{ current_user.name }}</a>
                 </div>
             </div>
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item">
@@ -187,12 +192,40 @@
                             </p>
                         </a>
                     </li>
+                    {% if current_user.group == 1 %}
+                        <li class="nav-item">
+                            <a href="{{ url_for('score_portal') }}"
+                               class="nav-link {{ menu("score_portal", base_menu) }}">
+                                <i class="nav-icon fa fa-dashboard"></i>
+                                <p>
+                                    Scoreboard
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('inject_portal') }}"
+                               class="nav-link {{ menu("inject_portal", base_menu) }}">
+                                <i class="nav-icon fa fa-dashboard"></i>
+                                <p>
+                                    Injects
+                                </p>
+                            </a>
+                        </li>
+                    {% endif %}
                     {% if current_user.group >= 3 %}
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ url_for('inject_score') }}" class="nav-link {{ menu('injectscore', base_menu) }}">
+                                <i class="nav-icon fa fa-calendar"></i>
+                                <p>
+                                    Inject Scoring
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ url_for('injectmanager') }}" class="nav-link {{ menu('injectmanager',base_menu) }}">
                                 <i class="nav-icon fa fa-th"></i>
                                 <p>
-                                    Inject Manager
+                                    Inject Database
                                 </p>
                             </a>
                         </li>
@@ -265,7 +298,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url_for('services') }}" class="nav-link {{ menu("service", sub_menu) }}">
+                                    <a href="{{ url_for('services') }}"
+                                       class="nav-link {{ menu("service", sub_menu) }}">
                                         <i class="fa fa-circle-o nav-icon"></i>
                                         <p>Service Types</p>
                                     </a>

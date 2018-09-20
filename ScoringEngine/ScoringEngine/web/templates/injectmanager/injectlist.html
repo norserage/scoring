@@ -1,0 +1,48 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Points</th>
+            <th>Duration</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if injects.count() == 0 %}
+            <tr>
+                <td>
+                There are currently no injects in this category
+                </td>
+                <td></td>
+            <td></td>
+            <td></td>
+            </tr>
+        {% else %}
+            {% for inject in injects %}
+                <tr>
+                    <td>{{ inject.subject }}</td>
+                    <td>{{ inject.points }}</td>
+                    <td>{{ inject.duration }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{{ url_for('injectmanager_inject', id=inject.id) }}" class="btn btn-primary" title="View"><i class="fa fa-eye"></i> </a>
+                            <a href="{{ url_for('injectmanager_inject_edit', id=inject.id) }}" class="btn btn-secondary" title="Edit"><i class="fa fa-edit"></i> </a>
+                            <a href="{{ url_for('injectmanager_inject_assign', id=inject.id) }}" class="btn btn-success" title="Assign"><i class="fa fa-plus-square"></i> </a>
+                            <a href="{{ url_for('injectmanager_inject', id=inject.id) }}" class="btn btn-danger" title="Delete"><i class="fa fa-trash"></i> </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                <a href="{{ url_for('injectmanager_addinject') }}{{ "?id=" + (request.args['id'] | string) if 'id' in request.args}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Inject</a>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<script>
+    $('table').dataTable()
+</script>

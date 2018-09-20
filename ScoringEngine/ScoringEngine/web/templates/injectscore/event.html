@@ -1,0 +1,51 @@
+{% set base_menu='injectscore' %}{% extends "layouts/default.html" %}
+
+
+{% block content %}
+<div class="content-center">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Points</th>
+            <th>Start</th>
+            <th>Stop</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for inject in injects %}
+        <tr>
+            <td>{{ inject.subject }}</td>
+            <td>{{ inject.points }}</td>
+            <td class="{{ "bg-success" if inject.when < datetime.now() }}">
+                {{ inject.when }}
+            </td>
+            <td class="{{ "bg-danger" if inject.end < datetime.now() }}">
+                {{ inject.end }}
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a href="{{ url_for('inject_score_event_inject', event=inject.eventid, inject=inject.id) }}" class="btn btn-primary"><i class="fa fa-eye"></i> </a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap4.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+    $(function () {
+       $('table').dataTable();
+    });
+    </script>
+{% endblock %}

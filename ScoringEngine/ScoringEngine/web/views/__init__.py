@@ -17,6 +17,8 @@ import ScoringEngine.web.views.errors
 import ScoringEngine.web.views.home
 import ScoringEngine.web.views.user
 import ScoringEngine.web.views.portal
+import ScoringEngine.web.views.inject
+
 import ScoringEngine.web.views.admin
 import ScoringEngine.web.views.admin.user
 import ScoringEngine.web.views.admin.team
@@ -24,3 +26,7 @@ import ScoringEngine.web.views.admin.event
 import ScoringEngine.web.views.admin.passdb
 import ScoringEngine.web.views.admin.server
 import ScoringEngine.web.views.admin.service
+
+import ScoringEngine.web.views.injectmanager
+
+import ScoringEngine.web.views.injectscore

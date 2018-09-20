@@ -286,7 +286,7 @@ class InjectCategory(Base):
     name = Column(String(255), nullable=False)
 
     @property
-    def childern(self):
+    def children(self):
         from ScoringEngine.core.db import getSession
         return getSession().query(InjectCategory).filter(InjectCategory.parentid == self.id)
 
@@ -298,9 +298,9 @@ class Inject(Base):
 
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     categoryid = Column(Integer, ForeignKey('injectcategories.id'))
-    subjet = Column(String(255), nullable=False)
+    subject = Column(String(255), nullable=False)
     body = Column(Text, nullable=False)
-    durration = Column(Integer, nullable=False)
+    duration = Column(Integer, nullable=False)
     points = Column(Integer, nullable=False)
 
 
@@ -326,6 +326,11 @@ class AssignedInject(Base):
             return True
         return False
 
+    @property
+    def end(self):
+        from datetime import timedelta
+        return self.when + timedelta(minutes=self.duration)
+
     inject = relationship("Inject")
     event = relationship("Event", backref=backref('injects', order_by=when))
 
@@ -338,6 +343,9 @@ class TeamInjectSubmission(Base):
     when = Column(DateTime, nullable=False)
     body = Column(Text, nullable=False)
     points = Column(Integer, nullable=False)
+
+    inject = relationship("AssignedInject", backref=backref('submissions'))
+    team = relationship("Team")
 
     inject = relationship("AssignedInject", backref=backref('submissions', order_by=id))
 

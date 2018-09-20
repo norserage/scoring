@@ -15,6 +15,7 @@ limitations under the License.
 """
 from flask import Flask
 from flask_login import LoginManager
+from flaskext.markdown import Markdown
 from ScoringEngine.core import config
 from ScoringEngine.core.db import getSession, tables
 
@@ -49,6 +50,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 login_manager.anonymous_user = AnonymousUser
+
+Markdown(app)
 
 @login_manager.user_loader
 def load_user(user_id):
