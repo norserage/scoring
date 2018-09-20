@@ -195,4 +195,5 @@ ModelManifest.xml
 .settings/
 
 venv/
+/ScoringEngine/env/
 /ScoringEngine/config.json
