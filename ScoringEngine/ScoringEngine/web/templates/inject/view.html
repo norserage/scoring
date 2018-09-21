@@ -6,7 +6,7 @@
         <h1 style="float:left;margin-top:0px;">{{ inject.subject }} <small>{{ inject.points }} points</small></h1>
 
         <div style="float:right">
-            <a class="btn btn-primary" href="#">Respond</a>
+            <a class="btn btn-primary" href="{{ url_for('inject_respond', id=inject.id) }}">Respond</a>
         </div>
         <div style="clear:both;"></div>
     </div>

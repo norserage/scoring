@@ -1,0 +1,38 @@
+{% extends "layouts/default.html" %}
+
+{% block content %}
+    <div class="content-center">
+    <div class="page-header">
+        <h1 style="float:left;margin-top:0px;">{{ inject.subject }} <small>{{ inject.points }} points</small></h1>
+        <div style="clear:both;"></div>
+    </div>
+
+    <div>{{ inject.body | markdown }}</div>
+
+    <div>
+        <h1>Score</h1>
+        <form method="post">
+            <div class="form-group">
+                <label for="score">Score</label>
+                <input type="number" max="{{ inject.points }}" min="0" class="form-control" placeholder="Points" name="score" id="score" value="{{ resp.points }}">
+            </div>
+            <button class="btn btn-primary" type="submit">Set Score</button>
+        </form>
+    </div>
+
+    <div>
+        <h1>Response</h1>
+        <div>{{ resp.body | markdown }}</div>
+        <h3>Files</h3>
+        <ul>
+            {% for file in resp.files %}
+            <li>
+                <a href="{{ url_for('file_download', id=file.id) }}">{{ file.filename }}</a> ({{ file.size }})
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    </div>
+
+{% endblock %}
+

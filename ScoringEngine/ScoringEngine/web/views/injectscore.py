@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from datetime import datetime
-from flask import render_template
+from flask import render_template, make_response, request
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
 from ScoringEngine.core.db import tables
@@ -74,3 +74,34 @@ def inject_score_event_inject(event, inject):
         title="Score " + inject.subject,
         inject=inject
     )
+
+@app.route('/injectscore/<event>/inject/<inject>/response/<response>', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+@db_user
+def inject_score_event_inject_response(event, inject, response):
+    session = getSession()
+    inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    resp = session.query(tables.TeamInjectSubmission).filter(tables.TeamInjectSubmission.id == response).first()
+    if request.method == 'POST':
+        resp.points = request.form['score']
+        session.commit()
+    return render_template(
+        'injectscore/score.html',
+        title="Score " + inject.subject,
+        inject=inject,
+        resp=resp
+    )
+
+@app.route('/file/<id>')
+@login_required
+@require_group(3)
+@db_user
+def file_download(id):
+    session = getSession()
+    f = session.query(tables.TeamInjectSubmissionAttachment).filter(tables.TeamInjectSubmissionAttachment.id == id).first()
+    if f:
+        r = make_response(f.data)
+        r.headers['Content-Disposition'] = 'attachment; filename="' + f.filename + '"'
+        r.mimetype='application/octet-stream'
+        return r

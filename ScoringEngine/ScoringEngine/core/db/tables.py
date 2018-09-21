@@ -347,8 +347,6 @@ class TeamInjectSubmission(Base):
     inject = relationship("AssignedInject", backref=backref('submissions'))
     team = relationship("Team")
 
-    inject = relationship("AssignedInject", backref=backref('submissions', order_by=id))
-
 class TeamInjectSubmissionNote(Base):
     __tablename__ = 'teaminjectsubmissionnotes'
 
@@ -366,3 +364,5 @@ class TeamInjectSubmissionAttachment(Base):
     filename = Column(String(255), nullable=False)
     size = Column(Integer, nullable=False)
     data = Column(LargeBinary, nullable=False)
+
+    inject = relationship("TeamInjectSubmission", backref=backref('files'))
