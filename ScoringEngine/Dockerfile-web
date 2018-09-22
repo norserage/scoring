@@ -1,12 +1,7 @@
 FROM python:2
 
-COPY ScoringEngine /app/ScoringEngine
-COPY testers /app/testers
-COPY app.py /app/app.py
-COPY runserver.py /app/runserver.py
-COPY requirements.txt /app/
-COPY runner.sh /runner.sh
-COPY setup /setup
+COPY ScoringEngine /app
+COPY ScoringEngine/setup /setup
 
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
@@ -106,4 +101,4 @@ EXPOSE 80
 
 RUN pip install uwsgi && pip install supervisor && pip install supervisor-stdout
 
-CMD ["/runner.sh"]
+CMD ["/app/runner.sh"]

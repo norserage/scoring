@@ -1,11 +1,7 @@
 FROM python:2
 
-COPY ScoringEngine /app/ScoringEngine
-COPY testers /app/testers
-COPY runscore.py /app/
-COPY requirements.txt /app/
-COPY runner.sh /runner.sh
+COPY ScoringEngine /app
 
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-CMD ["/runner.sh"]
+CMD ["/app/runner.sh"]
