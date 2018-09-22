@@ -15,9 +15,9 @@ limitations under the License.
 """
 from ScoringEngine.core.configreader import configreader
 
-config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], {
+_default_config = {
     "database": "",
-    "tests": [],
+    "tests": ['testers'],
     "debug": True,  # TODO this should default to false in production
     "secret": "fakesecret",  # TODO this should not be staticly set
     "clam": {
@@ -30,7 +30,9 @@ config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], 
         "min": 60,
         "max": 120
     }
-})
+}
+
+config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], _default_config)
 
 if len(config.get_item("tests")) > 0:
     import sys

@@ -21,6 +21,7 @@ def arguments():
     import argparse
     parser = argparse.ArgumentParser(description=VERSIONSTR)
     parser.add_argument('--gen-config', help='Generates a new default config file', required=False, action='store_true')
+    parser.add_argument('--make-config', help='Generates a new default config file', required=False)
     parser.add_argument('--gen-db', help='Imports the schema into a database', required=False, action='store_true')
     parser.add_argument('--print-config', help='Prints the current configuration', required=False, action='store_true')
     parser.add_argument('-v','--version', help='Generates a new default config file', required=False, action='store_true')
@@ -34,6 +35,25 @@ def arguments():
         from ScoringEngine.core import config
         config.save_default("config.json")
         return False
+    elif args.make_config:
+        import os
+        from ScoringEngine.core import _default_config
+        from json import dumps
+        from random import choice
+        from string import printable
+
+        c = _default_config
+
+        if 'POSTGRES_PORT' in os.environ:
+            cs = "postgres://postgres:" + os.environ['POSTGRES_ENV_POSTGRES_PASSWORD'] + "@" + os.environ['POSTGRES_PORT_5432_TCP_ADDR'] + ":" + os.environ['POSTGRES_PORT_5432_TCP_PORT'] + "/ise"
+            c['database'] = cs
+
+        c['secret'] = "".join([choice(printable) for _ in range(0, 32)])
+        c['debug'] = False
+
+
+        with open(args.make_config, 'w') as f:
+            f.write(dumps(c, indent=4))
 
     if args.gen_db:
         import ScoringEngine.core.db
