@@ -3,6 +3,7 @@ FROM python:2
 COPY ScoringEngine /app/ScoringEngine
 COPY testers /app/testers
 COPY app.py /app/app.py
+COPY runserver.py /app/runserver.py
 COPY requirements.txt /app/
 COPY runner.sh /runner.sh
 COPY setup /setup
