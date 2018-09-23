@@ -15,7 +15,6 @@ limitations under the License.
 """
 import time
 from datetime import datetime
-from ScoringEngine.core.conf import conf
 from enum import Enum
 
 
@@ -124,36 +123,37 @@ class MultiFileWriter(LogWriter):
 
 
 logger = MultiWriter()
-if 'logger' not in conf:
-    logger.addWriter(ConsoleWriter(LogSeverity.debug))
-else:
-    if 'console' in conf['logger']:
-        if 'console_format' in conf['logger']:
-            logger.addWriter(ConsoleWriter(LogSeverity[conf['logger']['console']], conf['logger']['console_format']))
-        else:
-            logger.addWriter(ConsoleWriter(LogSeverity[conf['logger']['console']]))
-    if 'file' in conf['logger']:
-        if 'file_path' not in conf['logger']:
-            conf['logger']['file_path'] = "scoring.log" # Default log file path
-        if 'file_format' in conf['logger']:
-            logger.addWriter(FileWriter(LogSeverity[conf['logger']['file']], conf['logger']['file_path'], conf['logger']['file_format']))
-        else:
-            logger.addWriter(FileWriter(LogSeverity[conf['logger']['file']], conf['logger']['file_path']))
-    if 'db' in conf['logger']:
-        try:
-            from ScoringEngine.core.db import Session
-            from ScoringEngine.core.db import tables
-
-
-            class DBWriter(LogWriter):
-                def log(self, severity, module, message):
-                    session = Session()
-                    l = tables.Log()
-                    l.time = datetime.now()
-                    l.message = message
-                    l.module = module
-                    l.severity = severity.value
-                    session.add(l)
-            logger.addWriter(DBWriter(LogSeverity[conf['logger']['db']]))
-        except Exception as e:
-            pass
+logger.addWriter(ConsoleWriter(LogSeverity.debug))
+# if 'logger' not in conf:
+#     logger.addWriter(ConsoleWriter(LogSeverity.debug))
+# else:
+#     if 'console' in conf['logger']:
+#         if 'console_format' in conf['logger']:
+#             logger.addWriter(ConsoleWriter(LogSeverity[conf['logger']['console']], conf['logger']['console_format']))
+#         else:
+#             logger.addWriter(ConsoleWriter(LogSeverity[conf['logger']['console']]))
+#     if 'file' in conf['logger']:
+#         if 'file_path' not in conf['logger']:
+#             conf['logger']['file_path'] = "scoring.log" # Default log file path
+#         if 'file_format' in conf['logger']:
+#             logger.addWriter(FileWriter(LogSeverity[conf['logger']['file']], conf['logger']['file_path'], conf['logger']['file_format']))
+#         else:
+#             logger.addWriter(FileWriter(LogSeverity[conf['logger']['file']], conf['logger']['file_path']))
+#     if 'db' in conf['logger']:
+#         try:
+#             from ScoringEngine.core.db import Session
+#             from ScoringEngine.core.db import tables
+#
+#
+#             class DBWriter(LogWriter):
+#                 def log(self, severity, module, message):
+#                     session = Session()
+#                     l = tables.Log()
+#                     l.time = datetime.now()
+#                     l.message = message
+#                     l.module = module
+#                     l.severity = severity.value
+#                     session.add(l)
+#             logger.addWriter(DBWriter(LogSeverity[conf['logger']['db']]))
+#         except Exception as e:
+#             pass
