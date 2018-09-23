@@ -55,6 +55,8 @@ def arguments():
         with open(args.make_config, 'w') as f:
             f.write(dumps(c, indent=4))
 
+        return False
+
     if args.gen_db:
         import ScoringEngine.core.db
         import ScoringEngine.core.db.tables
