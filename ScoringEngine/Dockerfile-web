@@ -97,12 +97,11 @@ EXPOSE 80
 
 RUN pip install uwsgi && pip install supervisor && pip install supervisor-stdout
 
-COPY ScoringEngine /app
-COPY ScoringEngine/setup /setup
+COPY ScoringEngine /
 
-RUN pip install --no-cache-dir -r /app/requirements.txt
-
+RUN pip install --no-cache-dir -r /requirements.txt
 
 
 
-CMD ["/app/runner.sh", "web"]
+
+CMD ["/runner.sh", "web"]

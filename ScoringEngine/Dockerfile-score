@@ -1,7 +1,7 @@
 FROM python:2
 
-COPY ScoringEngine /app
+COPY ScoringEngine /
 
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt
 
-CMD ["/app/runner.sh", "score"]
+CMD ["/runner.sh", "score"]
