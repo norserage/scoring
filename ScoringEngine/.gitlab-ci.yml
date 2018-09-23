@@ -8,6 +8,8 @@ dev_docker_build:
   - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN registry.thebmw.com
   script:
     - chmod 775 ScoringEngine/runner.sh
+    - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
+    - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-web" -f ScoringEngine/Dockerfile-web .
     - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-score" -f ScoringEngine/Dockerfile-score .
     - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-web"
@@ -22,6 +24,8 @@ release_docker_build:
   - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN registry.thebmw.com
   script:
     - chmod 775 ScoringEngine/runner.sh
+    - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
+    - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
     - docker build --pull -t "$CI_REGISTRY_IMAGE:web" -f ScoringEngine/Dockerfile-web .
     - docker build --pull -t "$CI_REGISTRY_IMAGE:score" -f ScoringEngine/Dockerfile-score .
     - docker push "$CI_REGISTRY_IMAGE:web"
