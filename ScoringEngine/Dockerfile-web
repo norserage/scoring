@@ -101,4 +101,4 @@ EXPOSE 80
 
 RUN pip install uwsgi && pip install supervisor && pip install supervisor-stdout
 
-CMD ["/app/runner.sh"]
+CMD ["/app/runner.sh", "web"]

@@ -4,4 +4,4 @@ COPY ScoringEngine /app
 
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-CMD ["/app/runner.sh"]
+CMD ["/app/runner.sh", "score"]

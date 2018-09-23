@@ -3,7 +3,7 @@
 function setup {
     if [ ! -e "/etc/ise/config.json" ]; then
         echo "Missing config file beginning setup"
-        python /app/runserver.py --make-config
+        python /app/runserver.py --make-config=/etc/ise/config.json
         python /app/runserver.py --gen-db
     fi
     echo "Setup Complete"
