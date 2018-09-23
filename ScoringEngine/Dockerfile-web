@@ -1,9 +1,5 @@
 FROM python:2
 
-COPY ScoringEngine /app
-COPY ScoringEngine/setup /setup
-
-RUN pip install --no-cache-dir -r /app/requirements.txt
 
 # Handle nginx install
 ENV NGINX_VERSION 1.15.3-1~stretch
@@ -100,5 +96,13 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 EXPOSE 80
 
 RUN pip install uwsgi && pip install supervisor && pip install supervisor-stdout
+
+COPY ScoringEngine /app
+COPY ScoringEngine/setup /setup
+
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+
+
 
 CMD ["/app/runner.sh", "web"]
