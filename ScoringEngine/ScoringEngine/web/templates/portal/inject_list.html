@@ -1,0 +1,16 @@
+{% if injects.count() > 0 %}
+<ol>
+    {% set ns=namespace(no_items=True) %}
+    {% for inject in injects %}
+        {% if inject.should_show %}
+            {% set ns.no_items=False %}
+            <li><a href="{{ url_for('inject', id=inject.id) }}">{{ inject.subject }}</a></li>
+        {% endif %}
+    {% endfor %}
+    {% if ns.no_items %}
+        <p>No injects are avaiable</p>
+    {% endif %}
+</ol>
+{% else %}
+<p>No injects are avaiable</p>
+{% endif %}

@@ -1,0 +1,35 @@
+﻿{% set base_menu='admin' %}{% set sub_menu='teams' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+<div class="content-center">
+    <div class="page-header">
+        <h1 style="float:left;margin-top:0px;">{{ service.name }}</h1>
+
+        <div style="clear:both;"></div>
+    </div>
+    <h4>Options</h4>
+    <form method="post">
+        {% for key,value in options.iteritems() %}
+        <div class="form-group">
+            <label for="{{ key }}">{{ key | title }}</label>
+            {% if value.type == "String" %}
+                <input type="text" class="form-control" id="{{key}}" placeholder="{{ key | title }}" name="{{key}}" value="{{ value.value(conf[key]) }}">
+            {% elif value.type == "JSON" %}
+                <textarea class="form-control" name="{{ key }}">{{ value.value(conf[key]) }}</textarea>
+            {% elif value.type == "Enum" %}
+                <select class="form-control" id="{{ key }}" name="{{ key }}">
+                    {% for option in value.options %}
+                        {% if option == value.value(conf[key]) %}
+                            <option value="{{ option }}" selected>{{ option }}</option>
+                        {% else %}
+                            <option value="{{ option }}">{{ option }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-default">Save</button>
+    </form>
+</div>
+{% endblock %}

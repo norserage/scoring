@@ -1,0 +1,50 @@
+{% set base_menu='injectmanager' %}{% set sub_menu='users' %}{% extends "layouts/default.html" %}
+
+{% macro cat(item, prefix="") %}
+    <option value="{{ item.id }}" {{ "selected" if 'id' in request.args and item.id == (request.args['id'] | int) }}>{{ prefix }}{{ item.name }}</option>
+    {% for i in item.children %}
+        {{ cat(i, prefix + item.name + "/") }}
+    {% endfor %}
+{% endmacro %}
+
+
+{% block content %}
+    <form method="post">
+        <div class="card card-primary card-center" style="max-width: 900px;">
+            <div class="card-header">
+                <h3 class="card-title">Add Inject</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="team">Category</label>
+                    <select class="form-control" name="category">
+                        {% for c in categories %}
+                            {{ cat(c) }}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject">
+                </div>
+                <div class="form-group">
+                    <label for="duration">Duration (Minutes)</label>
+                    <input type="number" class="form-control" id="duration" placeholder="Duration" name="duration">
+                </div>
+                <div class="form-group">
+                    <label for="points">Points Possible</label>
+                    <input type="number" class="form-control" id="points" placeholder="Points" name="points">
+                </div>
+                <div class="form-group">
+                    <label for="body">Body</label>
+                    <textarea class="form-control" name="body" id="body" rows="15"></textarea>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -14,11 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import mechanize
-import ScoringEngine.db.tables as tables
-from ScoringEngine.db import Session
-import ScoringEngine.options
+import ScoringEngine.core.db.tables as tables
+from ScoringEngine.core.db import Session
+import ScoringEngine.engine.options
 import ScoringEngine.utils
-import json
 from datetime import datetime
 
 def test(server, service, event):
@@ -56,6 +55,6 @@ def test(server, service, event):
 
 def options():
     return {
-        'url': ScoringEngine.options.String(),
-        'regex': ScoringEngine.options.String()
+        'url': ScoringEngine.engine.options.String(),
+        'regex': ScoringEngine.engine.options.String()
         }

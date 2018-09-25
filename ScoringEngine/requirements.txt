@@ -1,9 +1,10 @@
 Flask
+flask-login
+flask-markdown
 mechanize
-pyaml
-PyYAML
 SQLAlchemy
 pycrypto
 psycopg2
 enum34
 paramiko
+bcrypt

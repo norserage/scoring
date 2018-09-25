@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ScoringEngine.db.tables as tables
+import ScoringEngine.core.db.tables as tables
 import random
 import platform
 import subprocess
@@ -23,7 +23,7 @@ import pprint
 
 def getRandomUser(session, passwd_db):
     user = []
-    passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name==passwd_db).first()
+    passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name == passwd_db).first()
     for usr in passwddb.entries:
         user.append({'user':usr.user,'pass':usr.password,'email':usr.email})
         
@@ -33,7 +33,7 @@ def getRandomUser(session, passwd_db):
 
 def getRandomEmail(session, passwd_db):
     user = []
-    passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name==passwd_db).first()
+    passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name == passwd_db).first()
     for usr in passwddb.entries:
         user.append(usr.email)
     #outuser = user[random.randint(0,user.count - 1)]
@@ -55,7 +55,8 @@ def Ping(hostname,timeout):
 
 def getServiceConfig(session, service, teamserver):
     # TODO change how this is done to be easier to manage from the web interface
-    confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key=='conf', tables.ServiceArg.serverid==teamserver.id))
+    confpair = session.query(tables.ServiceArg).filter(
+        tables.and_(tables.ServiceArg.serviceid == service.id, tables.ServiceArg.key == 'conf', tables.ServiceArg.serverid == teamserver.id))
     if confpair.count() > 0:
         conf = json.loads(confpair[0].value)
         pprint.pprint(conf)

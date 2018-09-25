@@ -1,0 +1,23 @@
+{% set base_menu='admin' %}{% set sub_menu='passdb' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Add Team</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="file">File</label>
+                    <input type="file" class="form-control" id="file" placeholder="File" name="file">
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% set base_menu='portal' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+
+    {% if current_user.group == 1 %}
+        <div class="page-header">
+            <h2>Injects</h2>
+        </div>
+        <div id="injects">
+            <ol>
+                {% for inject in injects %}
+                    {% if inject.should_show %}
+                        <li><a href="#">{{ inject.title }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        </div>
+    {% endif %}
+    <div class="page-header">
+        <h2>Scores</h2>
+    </div>
+    <div id="score">
+        Loading...
+    </div>
+{% endblock %}
+
+{% block styles %}
+    <style type="text/css">
+        td, th {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function refresh_injects() {
+            {% if current_user.group == 1 %}
+            $("#injects").load("{{ url_for('portal_injects') }}")
+            {% endif %}
+        }
+
+        function refresh() {
+            $("#score").load("{{ url_for('portal_score') }}");
+            refresh_injects()
+        }
+
+        $(function () {
+            refresh();
+            setInterval(refresh, 30000);
+        });
+
+
+    </script>
+{% endblock %}

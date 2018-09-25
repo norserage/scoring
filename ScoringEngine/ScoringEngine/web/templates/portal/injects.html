@@ -1,0 +1,41 @@
+{% set base_menu='inject_portal' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+
+        <div class="page-header">
+            <h2>Injects</h2>
+        </div>
+        <div id="injects">
+            <ol>
+                {% for inject in injects %}
+                    {% if inject.should_show %}
+                        <li><a href="#">{{ inject.title }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        </div>
+{% endblock %}
+
+{% block styles %}
+    <style type="text/css">
+        td, th {
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function refresh() {
+            $("#injects").load("{{ url_for('portal_injects') }}")
+            $("#score").load("{{ url_for('portal_score') }}");
+        }
+
+        $(function () {
+            refresh();
+            setInterval(refresh, 30000);
+        });
+
+
+    </script>
+{% endblock %}

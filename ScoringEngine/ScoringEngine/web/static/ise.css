@@ -1,0 +1,15 @@
+.card-center {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.content-center {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.label-round {
+    border-radius: 25px;
+    padding-left: 5px;
+    padding-right: 5px;
+}

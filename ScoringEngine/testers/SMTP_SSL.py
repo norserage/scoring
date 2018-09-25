@@ -1,8 +1,7 @@
 ﻿import smtplib
-import ScoringEngine.db.tables as tables
-from ScoringEngine.db import Session
+import ScoringEngine.core.db.tables as tables
+from ScoringEngine.core.db import Session
 import ScoringEngine.utils as utils
-import json
 from datetime import datetime
 
 def test(server, service, event):
@@ -22,7 +21,7 @@ def test(server, service, event):
         to_email = utils.getRandomEmail(session, conf['passdb'])
         smtp.sendmail(user['email'],to_email,"This is the test ")
         se.up = True
-        
+
         #se.info = smtp.ehlo_msg
     except Exception as ep:
         se.info = ep.message

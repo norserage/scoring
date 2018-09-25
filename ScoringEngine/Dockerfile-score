@@ -1,0 +1,7 @@
+FROM python:2
+
+COPY ScoringEngine /
+
+RUN pip install --no-cache-dir -r /requirements.txt
+
+CMD ["/runner.sh", "score"]

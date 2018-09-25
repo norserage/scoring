@@ -13,11 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ScoringEngine.db.tables as tables
-from ScoringEngine.db import Session
+import ScoringEngine.core.db.tables as tables
+from ScoringEngine.core.db import Session
 import ScoringEngine.utils as utils
-import json
-import ScoringEngine.options
+import ScoringEngine.engine.options
 from datetime import datetime
 import paramiko
 
@@ -53,5 +52,5 @@ def test(server, service, event):
 
 def options():
     return {
-        'passdb': ScoringEngine.options.PasswordDB()
+        'passdb': ScoringEngine.engine.options.PasswordDB()
         }

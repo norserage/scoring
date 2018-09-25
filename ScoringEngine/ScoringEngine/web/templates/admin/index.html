@@ -1,0 +1,38 @@
+{% set base_menu = 'admin' %}{% set sub_menu='dashboard' %}{% extends "layouts/default.html" %}
+
+{% block content %}
+<div class="col-md-9">
+    <p>
+        Server Status:
+        {% if enginestatus %}
+            <span class="label label-success">Running</span> <button onclick="toggleServer(false)">Stop</button>
+        {% else %}
+            <span class="label label-danger">Not Running</span> <button onclick="toggleServer(true)">Start</button>
+        {% endif %}
+    </p>
+    <p>
+        Database Type:
+        {{ driver }}
+    </p>
+    <p>
+        Event:
+        {{ event }}
+    </p>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    function toggleServer(flag) {
+        //alert("hi")
+        var xmlhttp = new XMLHttpRequest();
+        if (flag) {
+            xmlhttp.open("GET", "/admin/scoring/true", false);
+        }
+        else {
+            xmlhttp.open("GET", "/admin/scoring/false", false);
+        }
+        xmlhttp.send();
+        location = location;
+    }
+</script>
+{% endblock %}
