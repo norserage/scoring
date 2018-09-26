@@ -70,10 +70,18 @@ def arguments():
 
     return True
 
-
+def validate_env():
+    from ScoringEngine.core.db import getSession, tables, closeSession
+    if getSession().query(tables.User).count() == 0:
+        # We should create the default admin user if there are no users.
+        print("No users found creating default admin user")
+        getSession().add(tables.User.create("Administrator", "admin", u"admin", -1, 5))
+        getSession().commit()
+    closeSession()
 
 def main():
     if arguments():
+        validate_env()
         from ScoringEngine.web import app
         app.run('127.0.0.1', 5080)
         print("hello")
