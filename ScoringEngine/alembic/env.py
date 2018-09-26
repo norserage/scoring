@@ -1,5 +1,6 @@
 from __future__ import with_statement
 import sys
+import os
 from alembic import context
 from sqlalchemy import engine_from_config, pool, create_engine
 from logging.config import fileConfig
@@ -12,7 +13,7 @@ config = context.config
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
 
-sys.path.append("D:\\development\\scoring\\ScoringEngine")
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../"))
 
 # add your model's MetaData object here
 # for 'autogenerate' support
