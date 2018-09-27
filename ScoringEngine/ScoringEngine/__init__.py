@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from __future__ import print_function
-VERSION = '4.0'
-VERSIONSTR = "Lepus ISE v%s DEV" % (VERSION)
+VERSION = '4.0-ALPHA'
+VERSIONSTR = "Lepus ISE v%s" % (VERSION)
 
 def arguments():
     import argparse
@@ -24,14 +24,10 @@ def arguments():
     parser.add_argument('--make-config', help='Generates a new default config file', required=False)
     parser.add_argument('--gen-db', help='Imports the schema into a database', required=False, action='store_true')
     parser.add_argument('--print-config', help='Prints the current configuration', required=False, action='store_true')
-    parser.add_argument('-v','--version', help='Generates a new default config file', required=False, action='store_true')
     
     args = parser.parse_args()
 
-    if args.version:
-        print(VERSIONSTR)
-        return False
-    elif args.gen_config:
+    if args.gen_config:
         from ScoringEngine.core import config
         config.save_default("config.json")
         return False
@@ -70,10 +66,25 @@ def arguments():
 
     return True
 
-
+def validate_env():
+    from ScoringEngine.core.db import getSession, tables, closeSession
+    try:
+        if getSession().query(tables.User).count() == 0:
+            # We should create the default admin user if there are no users.
+            print("No users found creating default admin user")
+            getSession().add(tables.User.create("Administrator", "admin", u"admin", -1, 5))
+            getSession().commit()
+        closeSession()
+    except Exception as e:
+        import sys
+        print(e)
+        print(e.message)
+        sys.exit(1)
 
 def main():
+    print(VERSIONSTR)
     if arguments():
+        validate_env()
         from ScoringEngine.web import app
         app.run('127.0.0.1', 5080)
         print("hello")

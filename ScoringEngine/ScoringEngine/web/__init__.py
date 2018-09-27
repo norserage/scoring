@@ -67,7 +67,9 @@ def inject_template_vars():
 
     def menu_open(str1, str2):
         return "menu-open" if str1 == str2 else ""
-    return dict(menu=menu, menu_open=menu_open)
+
+    from ScoringEngine import VERSION
+    return dict(menu=menu, menu_open=menu_open, VERSION=VERSION)
 
 
 import ScoringEngine.web.views
