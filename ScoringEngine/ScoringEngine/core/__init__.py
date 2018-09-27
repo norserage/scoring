@@ -69,6 +69,9 @@ _default_config = {
                 "defaultconsole"
             ]
         }
+    },
+    "analytics": {
+        "html": ""
     }
 }
 
