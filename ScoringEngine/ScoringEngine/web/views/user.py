@@ -17,9 +17,9 @@ from datetime import datetime
 from flask import render_template, request, session, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
-from ScoringEngine.logger import logger
 from flask_login import login_user, logout_user, current_user, login_required
 from ScoringEngine.web.flask_utils import db_user, require_group
+from ScoringEngine.core import logger
 
 
 def do_login(user):
@@ -40,10 +40,10 @@ def login():
         users = db.query(tables.User).filter(tables.User.username == request.form['username'])
         for user in users:
             if user.verify_password(request.form['password']):
-                logger.logDebug("User", "Login for " + user.username)
+                logger.debug("Login for " + user.username)
                 return do_login(user)
             else:
-                logger.logDebug("User", "Incorrect Password for " + user.username)
+                logger.warning("Incorrect password for " + user.username)
         return render_template(
             'user/login.html',
             title='Home Page',
