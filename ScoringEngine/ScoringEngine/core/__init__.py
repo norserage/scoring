@@ -72,7 +72,9 @@ _default_config = {
     },
     "analytics": {
         "html": ""
-    }
+    },
+    "session_provider": "flask.sessions.SecureCookieSessionInterface",
+    "session_redis": None
 }
 
 config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], _default_config)

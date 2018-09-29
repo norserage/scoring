@@ -18,6 +18,8 @@ from flask_login import LoginManager
 from flaskext.markdown import Markdown
 from ScoringEngine.core import config
 from ScoringEngine.core.db import getSession, tables
+from pydoc import locate
+import importlib
 
 app = Flask(__name__)
 
@@ -72,6 +74,17 @@ def inject_template_vars():
     from ScoringEngine.core import config
     from flask import Markup
     return dict(menu=menu, menu_open=menu_open, VERSION=VERSION, analytics=Markup(config.get_item("analytics/html")))
+
+
+# Setup session provider
+
+def _get_class_from_string(s):
+    module_name, class_name = s.rsplit(".", 1)
+    module = importlib.import_module(module_name)
+    return getattr(module, class_name)
+
+
+app.session_interface = _get_class_from_string(config.get_item("session_provider"))
 
 
 import ScoringEngine.web.views
