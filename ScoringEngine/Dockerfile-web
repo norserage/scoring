@@ -95,13 +95,13 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 
 EXPOSE 80
 
-RUN pip install uwsgi && pip install supervisor && pip install supervisor-stdout
+COPY requirements.txt /requirements.txt
+
+RUN pip install --no-cache-dir -r /requirements.txt && \
+    pip install --no-cache-dir uwsgi && \
+    pip install --no-cache-dir supervisor && \
+    pip install --no-cache-dir supervisor-stdout
 
 COPY ScoringEngine /
-
-RUN pip install --no-cache-dir -r /requirements.txt
-
-
-
 
 CMD ["/runner.sh", "web"]
