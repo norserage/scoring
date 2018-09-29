@@ -34,7 +34,6 @@ function update_db {
 }
 
 function web_start {
-    update_db
     /usr/local/bin/supervisord -n -c /setup/supervisord.conf
 }
 
@@ -43,6 +42,8 @@ function score_start {
 }
 
 setup
+
+update_db
 
 case "$1" in
     web)
