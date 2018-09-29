@@ -16,8 +16,6 @@ limitations under the License.
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from ScoringEngine.core import config
-import tables
-import pprint
 
 engine = create_engine(config.get_item('database'))
 Session = sessionmaker(bind=engine)
