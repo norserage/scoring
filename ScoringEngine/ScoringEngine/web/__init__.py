@@ -84,7 +84,7 @@ def _get_class_from_string(s):
     return getattr(module, class_name)
 
 
-app.session_interface = _get_class_from_string(config.get_item("session_provider"))
+app.session_interface = _get_class_from_string(config.get_item("session_provider"))()
 
 
 import ScoringEngine.web.views
