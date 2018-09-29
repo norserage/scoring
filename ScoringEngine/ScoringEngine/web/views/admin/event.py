@@ -91,33 +91,20 @@ def event(event):
 @db_user
 def editevent(event):
     dbsession = getSession()
-    servers = dbsession.query(tables.Server).filter(tables.Server.id == event)
-    if servers.count() > 0:
-        server = servers[0]
-        if request.method == 'POST':
-            server.name = request.form['name']
-            if request.form['ip3'].strip() == "":
-                server.ip_3 = None
-            else:
-                server.ip_3 = request.form['ip3']
-            server.ip_4 = request.form['ip4']
-            server.enabled = 'enabled' in request.form
+    event = dbsession.query(tables.Event).filter(tables.Event.id == event).first()
+    if event:
+        if request.method == "POST":
+            event.name = request.form['name']
             dbsession.commit()
-            return redirect(url_for('server', server=server.id))
-        else:
-            return render_template(
-                'admin/server/edit.html',
-                title='Edit Team',
-                year=datetime.now().year,
-                server=server
-            )
-    else:
+            return redirect(url_for('events'))
         return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            message="We could not find the server that you were looking for."
+            "admin/event/edit.html",
+            title="Edit Event " + str(event.id),
+            event=event
         )
+    else:
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found()
 
 
 @app.route('/admin/event/<event>/start')
