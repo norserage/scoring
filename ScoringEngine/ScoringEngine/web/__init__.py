@@ -41,7 +41,7 @@ class AnonymousUser:
 
     @property
     def name(self):
-        return "Anon"
+        return "(=^_^=)"
 
     @property
     def group(self):
