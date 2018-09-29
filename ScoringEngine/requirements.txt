@@ -8,5 +8,6 @@ psycopg2
 enum34
 paramiko
 bcrypt
+redis
 
 alembic
