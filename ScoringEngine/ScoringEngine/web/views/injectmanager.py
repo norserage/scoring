@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+from ScoringEngine.core import config
+
 from ScoringEngine.core.db import getSession, tables
 from flask import render_template, session, redirect, url_for, request
 from ScoringEngine.web import app
@@ -22,6 +24,7 @@ from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
 
 from datetime import datetime
+import pytz
 
 @app.route('/injectmanager')
 @login_required
@@ -144,7 +147,11 @@ def injectmanager_inject_assign(id):
     if request.method == "POST":
         ai = tables.AssignedInject()
         ai.injectid = id
-        ai.when = datetime.strptime(request.form['when'], '%Y-%m-%d %H:%M')
+        tz = pytz.timezone(config.get_item("default_timezone"))
+        if "timezone" in current_user.settings:
+            tz = pytz.timezone(current_user.settings['timezone'])
+        localwhen = tz.localize(datetime.strptime(request.form['when'], '%Y-%m-%d %H:%M'))
+        ai.when = localwhen.astimezone(pytz.UTC)
         ai.subject = request.form['subject']
         ai.duration = request.form['duration']
         ai.points = request.form['points']

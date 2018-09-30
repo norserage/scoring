@@ -24,14 +24,14 @@
                     {% if event.start == None  %}
                         <a href="{{ url_for('startevent', event=event.id) }}">Start</a>
                     {% else %}
-                        {{ event.start }}
+                        {{ event.start | localtime }}
                     {% endif %}
                 </td>
                 <td>
                     {% if event.current %}
                         <a href="{{ url_for('stopevent', event=event.id) }}">Stop</a>
                     {% else %}
-                        {{ event.end }}
+                        {{ event.end | localtime }}
                     {% endif %}
                 </td>
                 <td><a href="{{ url_for('editevent',event=event.id) }}" class="button">Edit</a></td>

@@ -1,16 +1,81 @@
-﻿{% extends "layout.html" %}
+﻿{% extends "layouts/default.html" %}
 
 {% block content %}
-<div class="page-header">
-    <h1 style="float:left;margin-top:0px;">{{ dbuser.name }} <small>{{ dbuser.getTeam() }}</small></h1>
-    
-    <div style="float:right">
-        <a class="btn btn-default" href="{{ url_for('changeuserpassword',user=dbuser.username) }}">Change Password</a>
-    </div>
-    <div style="clear:both;"></div>
-</div>
-<h3>{{ dbuser.username }}</h3>
-<h4>{{ dbuser.getTeam() }}</h4>
-<h4>{{ dbuser.getGroupName() }}</h4>
 
+    <form method="post">
+        <div class="card card-primary card-center content-center">
+            <div class="card-header">
+                <h3 class="card-title">User Profile</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9" style="border-bottom: 1px solid lightgray; padding-bottom: 3px; margin-bottom: 10px;">
+                        <h3 style="padding-bottom: 0px; margin-bottom: 0px;">Profile</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-form-label text-right">
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" name="name" id="name" class="form-control" value="{{ dbuser.name }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-form-label text-right">
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" id="username" class="form-control" value="{{ dbuser.username }}" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-form-label text-right">
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-form-label text-right">
+                        <label for="team">Team</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" id="team" class="form-control" value="{{ dbuser.team_name }}" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-form-label text-right">
+                        <label for="name">Name</label>
+                    </div>
+                    <div class="col-md-9">
+                        <input type="text" id="name" class="form-control" value="{{ dbuser.name }}" disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9" style="border-bottom: 1px solid lightgray; padding-bottom: 3px; margin-bottom: 10px;">
+                        <h3 style="padding-bottom: 0px; margin-bottom: 0px;">Settings</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-form-label text-right">
+                        <label for="timezone">Timezone</label>
+                    </div>
+                    <div class="col-md-9">
+                        <select class="form-control" id="timezone" name="timezone">
+                            {% for tz in timezones %}
+                                <option {{ "selected" if tz == dbuser.settings['timezone'] or ('timezone' not in dbuser.settings and tz == config.get_item("default_timezone"))}}>{{ tz }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary pull-right" type="submit">Save</button>
+            </div>
+        </div>
+    </form>
 {% endblock %}
