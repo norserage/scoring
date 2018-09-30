@@ -32,15 +32,14 @@ def test(server, service, event):
     try:
         url = "http://"+server.getIP()
         conf = ScoringEngine.utils.getServiceConfig(session, service, server)
-        print(json.dumps(conf))
-        if conf.has_key("url"):
+        if 'url' in conf:
             url += conf['url']
         br.set_handle_robots(False)
         res = br.open(url)
         contents = res.read()
-        if conf.has_key("regex"):
+        if "regex" in conf and conf['regex'].trim() != "":
             import re
-            if re.search(conf['regex'], contents) == None:
+            if re.search(conf['regex'], contents) is None:
                 se.up = False
             else:
                 se.up = True

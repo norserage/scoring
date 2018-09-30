@@ -67,13 +67,32 @@ def arguments():
     return True
 
 def validate_env():
+    import os, os.path
+    from ScoringEngine.core import logger, config
     from ScoringEngine.core.db import getSession, tables, closeSession
     try:
+        logger.debug("Checking if >0 users")
         if getSession().query(tables.User).count() == 0:
             # We should create the default admin user if there are no users.
-            print("No users found creating default admin user")
+            logger.warning("No users found creating default admin account")
             getSession().add(tables.User.create("Administrator", "admin", u"admin", -1, 5))
             getSession().commit()
+
+        # refresh scoretype table
+        logger.debug("Refreshing scoretypes")
+        for d in config.get_item("tests"):
+            for f in os.listdir(d):
+                if os.path.isfile(os.path.join(d, f)):
+                    p = f.split('.')
+                    if len(p) > 1 and p[1] == "py":
+                        t = getSession().query(tables.ServiceType).filter(tables.ServiceType.tester == p[0]).first()
+                        if not t:
+                            logger.debug("Adding type: %s" % p[0])
+                            t = tables.ServiceType()
+                            t.tester = p[0]
+                            t.name = p[0].capitalize()
+                            getSession().add(t)
+        getSession().commit()
         closeSession()
     except Exception as e:
         import sys

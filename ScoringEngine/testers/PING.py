@@ -27,12 +27,10 @@ def test(server, service, event):
     se.scoretime = datetime.now()
     se.eventid = event
     try:
-        #confpair = session.query(tables.ServiceArg).filter(tables.and_(tables.ServiceArg.serviceid==service.id,tables.ServiceArg.key==server.team.id+'conf'))
-        #conf = json.loads(confpair.value)
         r = utils.Ping(server.getIP(), 5)
         if r:
             se.up = True
-            se.info = json.dumps({trip:r})
+            se.info = json.dumps({'trip': r})
         else:
             se.up = False
     except Exception as e:
