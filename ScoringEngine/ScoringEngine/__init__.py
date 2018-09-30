@@ -84,7 +84,7 @@ def validate_env():
             for f in os.listdir(d):
                 if os.path.isfile(os.path.join(d, f)):
                     p = f.split('.')
-                    if p.count() > 1 and p[1] == "py":
+                    if len(p) > 1 and p[1] == "py":
                         t = getSession().query(tables.ServiceType).filter(tables.ServiceType.tester == p[0]).first()
                         if not t:
                             logger.debug("Adding type: %s" % p[0])
