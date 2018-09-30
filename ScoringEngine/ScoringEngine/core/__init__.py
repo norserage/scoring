@@ -75,7 +75,7 @@ _default_config = {
     },
     "session_provider": "flask.sessions.SecureCookieSessionInterface",
     "session_redis": None,
-    "default_tz": "UTC"
+    "default_timezone": "UTC"
 }
 
 config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], _default_config)
