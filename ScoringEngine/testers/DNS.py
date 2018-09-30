@@ -15,6 +15,7 @@ limitations under the License.
 """
 import ScoringEngine.core.db.tables as tables
 from ScoringEngine.core.db import Session
+from ScoringEngine.core import logger
 import json
 import ScoringEngine.utils
 import ScoringEngine.engine.options
@@ -31,9 +32,12 @@ def test(server, service, event):
     se.eventid = event
     try:
         conf = ScoringEngine.utils.getServiceConfig(session, service, server)
+        if 'servers' not in conf:
+            logger.warning("No servers configured for service %i" % service.id)
+            session.close()
+            return
         servers = conf['servers']
         ser = random.choice(servers)
-        print(json.dumps(ser))
         dnsentry = ser['dns']
         ip = ser['ip']
         sp = subprocess.Popen(["nslookup",dnsentry,server.getIP()],stdout=subprocess.PIPE)

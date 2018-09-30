@@ -16,6 +16,7 @@ limitations under the License.
 import smtplib
 import ScoringEngine.core.db.tables as tables
 from ScoringEngine.core.db import Session
+from ScoringEngine.core import logger
 import ScoringEngine.utils as utils
 import ScoringEngine.engine.options
 from datetime import datetime
@@ -33,10 +34,14 @@ def test(server, service, event):
         smtp.connect(server.getIP(), service.port)
         smtp.starttls()
         conf = utils.getServiceConfig(session, service, server)
+        if 'passdb' not in conf:
+            logger.warning("Service %i is not configured" % service.id)
+            session.close()
+            return
         user = utils.getRandomUser(session, conf['passdb'])
-        r = smtp.login(user['email'],user['pass'])
+        r = smtp.login(user['email'], user['pass'])
         to_email = utils.getRandomEmail(session, conf['passdb'])
-        smtp.sendmail(user['email'],to_email,"This is the test ")
+        smtp.sendmail(user['email'], to_email, "This is the test ")
         se.up = True
         
         #se.info = smtp.ehlo_msg

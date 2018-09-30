@@ -17,6 +17,7 @@ import ScoringEngine.core.db.tables as tables
 from ScoringEngine.core.db import Session
 import ScoringEngine.utils as utils
 import ScoringEngine.engine.options
+from ScoringEngine.core import logger
 from datetime import datetime
 import paramiko
 
@@ -31,9 +32,10 @@ def test(server, service, event):
     ssh = paramiko.SSHClient()
     try:
         conf = utils.getServiceConfig(session, service, server)
-        if not conf.has_key('passdb'):
-            print("WARNING: Service %i not configured" % (service.id))
+        if 'passdb' not in conf:
+            logger.warning("Service %i is not configured" % service.id)
             ssh.close()
+            session.close()
             return
         user = utils.getRandomUser(session, conf['passdb'])
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
