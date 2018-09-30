@@ -121,9 +121,9 @@ def startevent(event):
             for e in events:
                 e.current = False
                 if e.end == None:
-                    e.end = datetime.now()
+                    e.end = datetime.utcnow()
         event.current = True
-        event.start = datetime.now()
+        event.start = datetime.utcnow()
         dbsession.commit()
         return redirect(url_for("events"))
     else:
@@ -144,7 +144,7 @@ def stopevent(event):
     if events.count() > 0:
         event = events[0]
         event.current = False
-        event.end = datetime.now()
+        event.end = datetime.utcnow()
         dbsession.commit()
         return redirect(url_for("events"))
     else:

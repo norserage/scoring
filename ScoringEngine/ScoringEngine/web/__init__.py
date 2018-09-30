@@ -47,6 +47,10 @@ class AnonymousUser:
     def group(self):
         return 0
 
+    @property
+    def settings(self):
+        return {}
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -73,7 +77,20 @@ def inject_template_vars():
     from ScoringEngine import VERSION
     from ScoringEngine.core import config
     from flask import Markup
+
     return dict(menu=menu, menu_open=menu_open, VERSION=VERSION, analytics=Markup(config.get_item("analytics/html")))
+
+@app.template_filter('localtime')
+def localtime(t):
+    if t is None:
+        return None
+    import datetime
+    import pytz
+    from flask_login import current_user
+    tz = pytz.timezone(config.get_item("default_timezone"))
+    if "timezone" in current_user.settings:
+        tz = pytz.timezone(current_user.settings['timezone'])
+    return t.replace(tzinfo=pytz.UTC).astimezone(tz)
 
 
 # Setup session provider

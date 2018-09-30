@@ -19,10 +19,10 @@
             <td>{{ inject.subject }}</td>
             <td>{{ inject.points }}</td>
             <td class="{{ "bg-success" if inject.when < datetime.now() }}">
-                {{ inject.when }}
+                {{ inject.when | localtime }}
             </td>
             <td class="{{ "bg-danger" if inject.end < datetime.now() }}">
-                {{ inject.end }}
+                {{ inject.end | localtime }}
             </td>
             <td>
                 <div class="btn-group">
