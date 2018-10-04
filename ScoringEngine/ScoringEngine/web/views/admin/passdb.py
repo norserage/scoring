@@ -77,12 +77,8 @@ def passdb(passdb):
             passdb=passdb,
         )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 User Not Found',
-            year=datetime.now().year,
-            message="We could not find the user that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 @app.route('/admin/passdb/<passdb>/edit',methods=['GET','POST'])
 @login_required
@@ -115,12 +111,8 @@ def editpassdb(passdb):
                 teams=teams
             )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 User Not Found',
-            year=datetime.now().year,
-            message="We could not find the user that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 @app.route('/admin/passdb/<passdb>/import',methods=['GET','POST'])
 @login_required

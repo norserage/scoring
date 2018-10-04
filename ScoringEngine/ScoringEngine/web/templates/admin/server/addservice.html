@@ -9,7 +9,7 @@
             <div class="card-body">
         <div class="form-group">
             <label for="name">Service Name</label>
-            <input type="text" class="form-control" id="name" placeholder="Service Name" name="name">
+            <input type="text" class="form-control" id="name" placeholder="Service Name" name="name" required>
         </div>
         <div class="form-group">
             <label for="port">Port</label>
@@ -36,4 +36,10 @@
             </div>
         </div>
     </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $("form").validate();
+</script>
 {% endblock %}

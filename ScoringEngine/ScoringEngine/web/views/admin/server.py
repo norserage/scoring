@@ -77,12 +77,8 @@ def server(server):
             server=server,
         )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Team Not Found',
-            year=datetime.now().year,
-            message="We could not find the team that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 @app.route('/admin/server/<server>/edit',methods=['GET','POST'])
 @login_required
@@ -111,12 +107,8 @@ def editserver(server):
                 server=server
             )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            message="We could not find the server that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 @app.route('/admin/server/<server>/addservice',methods=['GET','POST'])
 @login_required
@@ -148,12 +140,8 @@ def serveraddservice(server):
                 server=server
             )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            message="We could not find the server that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 @app.route('/admin/server/<server>/editservice/<service>',methods=['GET','POST'])
 @login_required
@@ -182,9 +170,5 @@ def servereditservice(server,service):
                 service=service
             )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            message="We could not find the server that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)

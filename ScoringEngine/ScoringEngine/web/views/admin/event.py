@@ -104,7 +104,7 @@ def editevent(event):
         )
     else:
         from ScoringEngine.web.views.errors import page_not_found
-        return page_not_found()
+        return page_not_found(None)
 
 
 @app.route('/admin/event/<event>/start')
@@ -127,12 +127,8 @@ def startevent(event):
         dbsession.commit()
         return redirect(url_for("events"))
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            message="We could not find the server that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 @app.route('/admin/event/<event>/stop')
 @login_required
@@ -148,11 +144,5 @@ def stopevent(event):
         dbsession.commit()
         return redirect(url_for("events"))
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="We could not find the server that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)

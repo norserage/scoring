@@ -11,12 +11,12 @@
                 <div class="form-group">
                     <label for="name">Team Name</label>
                     <input type="text" class="form-control" id="name" placeholder="Team Name" name="name"
-                           value="{{ team.name }}">
+                           value="{{ team.name }}" required>
                 </div>
                 <div class="form-group">
                     <label for="network">Network</label>
                     <input type="text" class="form-control" id="network" placeholder="10.255.{3}.{4}" name="network"
-                           value="{{ team.network }}">
+                           value="{{ team.network }}" required>
                 </div>
                 <div class="checkbox">
                     <label>
@@ -35,4 +35,10 @@
             </div>
         </div>
     </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $("form").validate();
+</script>
 {% endblock %}
