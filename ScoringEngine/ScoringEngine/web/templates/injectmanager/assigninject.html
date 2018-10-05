@@ -53,3 +53,23 @@
         </div>
     </form>
 {% endblock %}
+
+{% block styles %}
+<link href="/static/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/moment/moment.min.js"></script>
+    <script src="/static/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script>
+    $(function () {
+        $("form").validate();
+        $("#when").datetimepicker(
+            {
+                format: 'Y-MM-DD HH:mm'
+            }
+        )
+    })
+
+</script>
+{% endblock %}
