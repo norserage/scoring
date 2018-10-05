@@ -76,12 +76,8 @@ def team(team):
             team=team,
         )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Team Not Found',
-            year=datetime.now().year,
-            message="We could not find the team that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 
 @app.route('/admin/team/<team>/edit',methods=['GET','POST'])
@@ -107,12 +103,8 @@ def editteam(team):
                 team=team
             )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Team Not Found',
-            year=datetime.now().year,
-            message="We could not find the team that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 
 @app.route('/admin/team/<team>/addserver',methods=['GET','POST'])
@@ -142,12 +134,8 @@ def teamaddserver(team):
                 servers=servers
             )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Team Not Found',
-            year=datetime.now().year,
-            message="We could not find the team that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 
 @app.route('/admin/team/<teamid>/server/<serverid>')

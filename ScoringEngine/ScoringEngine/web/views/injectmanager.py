@@ -112,6 +112,8 @@ def injectmanager_inject(id):
             title="Inject - " + inject.subject,
             inject=inject
         )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
 
 @app.route("/injectmanager/inject/<id>/edit", methods=['GET', 'POST'])
 @login_required
@@ -136,6 +138,8 @@ def injectmanager_inject_edit(id):
             inject=inject,
             categories=categories
         )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
 
 
 @app.route("/injectmanager/inject/<id>/assign", methods=['GET', 'POST'])
@@ -162,12 +166,15 @@ def injectmanager_inject_assign(id):
         db.commit()
         return redirect(url_for('injectmanager_inject', id=id))
     inject = db.query(tables.Inject).filter(tables.Inject.id == id).first()
-    categories = db.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
-    events = db.query(tables.Event).filter(tables.Event.end == None)
-    return render_template(
-        'injectmanager/assigninject.html',
-        title="Assign Inject - " + inject.subject,
-        inject=inject,
-        categories=categories,
-        events=events
-    )
+    if inject:
+        categories = db.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
+        events = db.query(tables.Event).filter(tables.Event.end == None)
+        return render_template(
+            'injectmanager/assigninject.html',
+            title="Assign Inject - " + inject.subject,
+            inject=inject,
+            categories=categories,
+            events=events
+        )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)

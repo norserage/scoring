@@ -10,17 +10,17 @@
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" placeholder="Name" name="name"
-                           value="{{ dbuser.name }}">
+                           value="{{ dbuser.name }}" required>
                 </div>
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" class="form-control" id="username" placeholder="Username" name="username"
-                           value="{{ dbuser.username }}">
+                           value="{{ dbuser.username }}" required>
                 </div>
                 {% if dbuser.group < current_user.group or current_user.group == 5 or current_user.id == dbuser.id %}
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                        <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
                     </div>
                 {% endif %}
                 <div class="form-group">
@@ -75,4 +75,9 @@
             </div>
         </div>
     </form>
+{% endblock %}
+{% block scripts %}
+<script>
+    $("form").validate();
+</script>
 {% endblock %}

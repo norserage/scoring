@@ -95,11 +95,6 @@ def user(user):
                 message="You do not have permission to use this resource"
             )
     else:
-        return render_template(
-            'errors/404.html',
-            title='404 Not Found',
-            year=datetime.now().year,
-            dbuser=user,
-            message="We could not find the user you were looking for"
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 

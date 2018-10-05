@@ -100,9 +100,5 @@ def editservice(service):
                 service=service
             )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            message="We could not find the service that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)

@@ -69,11 +69,14 @@ def inject_score_event(event):
 def inject_score_event_inject(event, inject):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
-    return render_template(
-        'injectscore/inject.html',
-        title="Score " + inject.subject,
-        inject=inject
-    )
+    if inject:
+        return render_template(
+            'injectscore/inject.html',
+            title="Score " + inject.subject,
+            inject=inject
+        )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
 
 @app.route('/injectscore/<event>/inject/<inject>/response/<response>', methods=['GET', 'POST'])
 @login_required
@@ -82,16 +85,20 @@ def inject_score_event_inject(event, inject):
 def inject_score_event_inject_response(event, inject, response):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
-    resp = session.query(tables.TeamInjectSubmission).filter(tables.TeamInjectSubmission.id == response).first()
-    if request.method == 'POST':
-        resp.points = request.form['score']
-        session.commit()
-    return render_template(
-        'injectscore/score.html',
-        title="Score " + inject.subject,
-        inject=inject,
-        resp=resp
-    )
+    if inject:
+        resp = session.query(tables.TeamInjectSubmission).filter(tables.TeamInjectSubmission.id == response).first()
+        if resp:
+            if request.method == 'POST':
+                resp.points = request.form['score']
+                session.commit()
+            return render_template(
+                'injectscore/score.html',
+                title="Score " + inject.subject,
+                inject=inject,
+                resp=resp
+            )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
 
 @app.route('/file/<id>')
 @login_required
@@ -105,3 +112,5 @@ def file_download(id):
         r.headers['Content-Disposition'] = 'attachment; filename="' + f.filename + '"'
         r.mimetype='application/octet-stream'
         return r
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)

@@ -73,12 +73,8 @@ def adminuser(user):
             dbuser=user,
         )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 User Not Found',
-            year=datetime.now().year,
-            message="We could not find the user that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 @app.route('/admin/user/<user>/edit',methods=['GET','POST'])
 @login_required
@@ -108,9 +104,5 @@ def edituser(user):
                 teams=teams
             )
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 User Not Found',
-            year=datetime.now().year,
-            message="We could not find the user that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)

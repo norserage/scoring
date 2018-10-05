@@ -10,7 +10,7 @@
 
                 <div class="form-group">
                     <label for="name">Server Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Server Name" name="name">
+                    <input type="text" class="form-control" id="name" placeholder="Server Name" name="name" required>
                 </div>
                 <div class="form-group">
                     <label for="ip3">IP_3</label>
@@ -18,7 +18,7 @@
                 </div>
                 <div class="form-group">
                     <label for="ip4">IP_4</label>
-                    <input type="text" class="form-control" id="ip4" placeholder="10.255.{3}.{4}" name="ip4">
+                    <input type="text" class="form-control" id="ip4" placeholder="10.255.{3}.{4}" name="ip4" required>
                 </div>
                 <div class="checkbox">
                     <label>
@@ -33,4 +33,9 @@
             </div>
         </div>
     </form>
+{% endblock %}
+{% block scripts %}
+<script>
+    $("form").validate();
+</script>
 {% endblock %}
