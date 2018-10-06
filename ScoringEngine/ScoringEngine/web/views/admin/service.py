@@ -45,21 +45,24 @@ def services():
 def service(id):
     dbsession = getSession()
     service = dbsession.query(tables.ServiceType).filter(tables.ServiceType.id == id).first()
-    m=__import__(service.tester)
-    func = getattr(m, "options")
-    pp(func())
-    """Renders the home page."""
-    return render_template(
-        'admin/service/view.html',
-        title='Service Types',
-        year=datetime.now().year,
-        service=service,
-        options=func()
-    )
+    if service:
+        m=__import__(service.tester)
+        func = getattr(m, "options")
+        pp(func())
+        """Renders the home page."""
+        return render_template(
+            'admin/service/view.html',
+            title='Service Types',
+            year=datetime.now().year,
+            service=service,
+            options=func()
+        )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
 
 @app.route('/admin/service/add',methods=['GET','POST'])
 @login_required
-@require_group(4)
+@require_group(5)
 @db_user
 def addservice():
     if request.method == 'POST':
@@ -80,7 +83,7 @@ def addservice():
 
 @app.route('/admin/service/<service>/edit',methods=['GET','POST'])
 @login_required
-@require_group(4)
+@require_group(5)
 @db_user
 def editservice(service):
     dbsession = getSession()

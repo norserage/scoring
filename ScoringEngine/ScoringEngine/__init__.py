@@ -14,8 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from __future__ import print_function
+from os import environ
 VERSION = '4.0-ALPHA'
 VERSIONSTR = "Lepus ISE v%s" % (VERSION)
+
+BUILD = "non-ci-build"
+BRANCH = "unknown"
+
+if 'CI_BRANCH' in environ:
+    BRANCH = environ['CI_BRANCH']
+if 'CI_BUILD' in environ:
+    BUILD = environ['CI_BUILD']
 
 def arguments():
     import argparse

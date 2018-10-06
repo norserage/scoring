@@ -1,6 +1,5 @@
 FROM python:2
 
-
 # Handle nginx install
 ENV NGINX_VERSION 1.15.3-1~stretch
 ENV NJS_VERSION   1.15.3.0.2.3-1~stretch
@@ -101,6 +100,13 @@ RUN pip install --no-cache-dir -r /requirements.txt && \
     pip install --no-cache-dir uwsgi && \
     pip install --no-cache-dir supervisor && \
     pip install --no-cache-dir supervisor-stdout
+
+
+ARG BRANCH=unknown
+ARG BUILD=non-ci-build
+
+ENV CI_BRANCH=$BRANCH \
+    CI_BUILD=$BUILD
 
 COPY ScoringEngine /
 

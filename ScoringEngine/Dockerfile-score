@@ -10,6 +10,12 @@ COPY ScoringEngine/requirements.txt /requirements.txt
 
 RUN pip install --no-cache-dir -r /requirements.txt
 
+ARG BRANCH=unknown
+ARG BUILD=non-ci-build
+
+ENV CI_BRANCH=$BRANCH \
+    CI_BUILD=$BUILD
+
 COPY ScoringEngine /
 
 CMD ["/runner.sh", "score"]
