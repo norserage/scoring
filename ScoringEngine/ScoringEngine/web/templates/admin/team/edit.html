@@ -19,13 +19,7 @@
                            value="{{ team.network }}" required>
                 </div>
                 <div class="checkbox">
-                    <label>
-                        {% if team.enabled %}
-                            <input type="checkbox" name="enabled" checked>Enabled
-                        {% else %}
-                            <input type="checkbox" name="enabled">Enabled
-                        {% endif %}
-                    </label>
+                        <input type="checkbox" class="form-control" id="enabled" name="enabled" data-toggle="toggle" data-on="Enabled" data-off="Disabled" {{ "checked" if team.enabled }}>
                 </div>
             </div>
             <div class="card-footer">
@@ -37,8 +31,14 @@
     </form>
 {% endblock %}
 
+
+{% block styles %}
+    <link href="/static/plugins/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
 {% block scripts %}
-<script>
+    <script src="/static/plugins/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <script>
+        $("#enabled").bootstrapToggle();
     $("form").validate();
 </script>
 {% endblock %}
