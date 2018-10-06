@@ -1,5 +1,8 @@
 FROM python:2
 
+ARG BRANCH=unknown
+ARG BUILD=non-ci-build
+
 RUN apt-get update && \
     apt-get install -y \
     dnsutils \
@@ -9,6 +12,9 @@ RUN apt-get update && \
 COPY ScoringEngine/requirements.txt /requirements.txt
 
 RUN pip install --no-cache-dir -r /requirements.txt
+
+ENV CI_BRANCH=$BRANCH \
+    CI_BUILD=$BUILD
 
 COPY ScoringEngine /
 

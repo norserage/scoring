@@ -74,11 +74,11 @@ def inject_template_vars():
     def menu_open(str1, str2):
         return "menu-open" if str1 == str2 else ""
 
-    from ScoringEngine import VERSION
+    from ScoringEngine import VERSION, BUILD, BRANCH
     from ScoringEngine.core import config
     from flask import Markup
 
-    return dict(menu=menu, menu_open=menu_open, VERSION=VERSION, analytics=Markup(config.get_item("analytics/html")))
+    return dict(menu=menu, menu_open=menu_open, VERSION=VERSION, BUILD=BUILD, BRANCH=BRANCH, analytics=Markup(config.get_item("analytics/html")))
 
 @app.template_filter('localtime')
 def localtime(t):
