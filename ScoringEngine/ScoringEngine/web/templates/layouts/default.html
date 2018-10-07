@@ -229,7 +229,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item has-treeview">
+                        <li class="nav-item has-treeview {{ menu_open("reporting", base_menu) }}">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa fa-pie-chart"></i>
                                 <p>
@@ -238,9 +238,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="../charts/chartjs.html" class="nav-link">
+                                    <a href="{{ url_for("report_event_total_index") }}" class="nav-link {{ menu("event_total", sub_menu) }}">
                                         <i class="fa fa-circle-o nav-icon"></i>
-                                        <p>ChartJS</p>
+                                        <p>Event Total</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">

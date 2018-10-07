@@ -37,3 +37,5 @@ def reports():
             login='user' in session,
             message="You do not have permission to use this resource"
         )
+
+import ScoringEngine.web.views.report.event_total
