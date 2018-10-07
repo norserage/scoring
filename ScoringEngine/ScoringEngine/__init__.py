@@ -15,7 +15,7 @@ limitations under the License.
 """
 from __future__ import print_function
 from os import environ
-VERSION = '4.0-BETA'
+VERSION = '4.1-ALPHA'
 VERSIONSTR = "Lepus ISE v%s" % (VERSION)
 
 BUILD = "non-ci-build"
@@ -78,14 +78,15 @@ def arguments():
 def validate_env():
     import os, os.path
     from ScoringEngine.core import logger, config
-    from ScoringEngine.core.db import getSession, tables, closeSession
+    from ScoringEngine.core.db import Session, tables
     try:
+        s = Session()
         logger.debug("Checking if >0 users")
-        if getSession().query(tables.User).count() == 0:
+        if s.query(tables.User).count() == 0:
             # We should create the default admin user if there are no users.
             logger.warning("No users found creating default admin account")
-            getSession().add(tables.User.create("Administrator", "admin", u"admin", -1, 5))
-            getSession().commit()
+            s.add(tables.User.create("Administrator", "admin", u"admin", -1, 5))
+            s.commit()
 
         # refresh scoretype table
         logger.debug("Refreshing scoretypes")
@@ -94,15 +95,15 @@ def validate_env():
                 if os.path.isfile(os.path.join(d, f)):
                     p = f.split('.')
                     if len(p) > 1 and p[1] == "py":
-                        t = getSession().query(tables.ServiceType).filter(tables.ServiceType.tester == p[0]).first()
+                        t = s.query(tables.ServiceType).filter(tables.ServiceType.tester == p[0]).first()
                         if not t:
                             logger.debug("Adding type: %s" % p[0])
                             t = tables.ServiceType()
                             t.tester = p[0]
                             t.name = p[0].capitalize()
-                            getSession().add(t)
-        getSession().commit()
-        closeSession()
+                            s.add(t)
+        s.commit()
+        s.close()
     except Exception as e:
         import sys
         print(e)

@@ -6,13 +6,9 @@
             <h2>Injects</h2>
         </div>
         <div id="injects">
-            <ol>
-                {% for inject in injects %}
-                    {% if inject.should_show %}
-                        <li><a href="#">{{ inject.title }}</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ol>
+            <p>
+                Loading Injects
+            </p>
         </div>
 {% endblock %}
 
@@ -25,10 +21,10 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="/static/ise-inject-notifications.js"></script>
     <script>
         function refresh() {
-            $("#injects").load("{{ url_for('portal_injects') }}")
-            $("#score").load("{{ url_for('portal_score') }}");
+            //$("#injects").load("{{ url_for('portal_injects') }}")
         }
 
         $(function () {

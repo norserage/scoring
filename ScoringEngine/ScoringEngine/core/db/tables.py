@@ -367,6 +367,20 @@ class AssignedInject(Base):
     inject = relationship("Inject")
     event = relationship("Event", backref=backref('injects', order_by=when))
 
+    def json(self):
+        return {
+            "id": self.id,
+            "eventid": self.eventid,
+            "injectid": self.injectid,
+            "subject": self.subject,
+            "body": self.body,
+            "when": dump_datetime(self.when),
+            "duration": self.duration,
+            "allow_late": self.allowlate,
+            "points": self.points,
+            "end": dump_datetime(self.end)
+        }
+
 class TeamInjectSubmission(Base):
     __tablename__ = 'teaminjectsubmissions'
 

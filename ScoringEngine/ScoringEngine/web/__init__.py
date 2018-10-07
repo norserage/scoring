@@ -17,7 +17,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flaskext.markdown import Markdown
 from ScoringEngine.core import config
-from ScoringEngine.core.db import getSession, tables
+from ScoringEngine.core.db import session, tables
 from pydoc import locate
 import importlib
 
@@ -61,7 +61,7 @@ Markdown(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    user = getSession().query(tables.User).filter(tables.User.id == user_id).first()
+    user = session.query(tables.User).filter(tables.User.id == user_id).first()
     if user:
         return user
     return None
@@ -92,6 +92,9 @@ def localtime(t):
         tz = pytz.timezone(current_user.settings['timezone'])
     return t.replace(tzinfo=pytz.UTC).astimezone(tz)
 
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    session.remove()
 
 # Setup session provider
 
