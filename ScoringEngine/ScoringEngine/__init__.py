@@ -15,7 +15,7 @@ limitations under the License.
 """
 from __future__ import print_function
 from os import environ
-VERSION = '4.0-BETA'
+VERSION = '4.0'
 VERSIONSTR = "Lepus ISE v%s" % (VERSION)
 
 BUILD = "non-ci-build"
