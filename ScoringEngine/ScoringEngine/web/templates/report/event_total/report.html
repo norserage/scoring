@@ -16,7 +16,7 @@
         {% for row in data %}
             <tr>
                 <th>{{ row.team }}</th>
-                <td>{{ row.inject }} / {{ total.inject }} ({{ ((row.inject / total.inject) * 100) | round | int }}%)</td>
+                <td>{{ row.inject }} / {{ total.inject }} {% if total.inject > 0 %}({{ ((row.inject / total.inject) * 100) | round | int }}%){% endif %}</td>
                 <td>{{ row.uptime }} / {{ row.total_uptime }} {% if row.total_uptime > 0 %}({{ ((row.uptime / row.total_uptime) * 100) | round | int }}%){% endif %}</td>
             </tr>
         {% endfor %}

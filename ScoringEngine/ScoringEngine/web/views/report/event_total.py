@@ -43,10 +43,11 @@ def report_event_total_report(event):
             score = getSession().query(tables.func.max(tables.TeamInjectSubmission.points)).filter(tables.TeamInjectSubmission.teamid == team.id, tables.TeamInjectSubmission.assignedinjectid == inject.id).first()
             d['inject'] += score[0] if score[0] is not None else 0
 
-            uptime = getSession().query(tables.func.count(tables.ScoreEvent.id), tables.func.sum(tables.expression.case(value=tables.ScoreEvent.up, whens={True: 1, False: 0}))).filter(tables.ScoreEvent.eventid==event).join(tables.TeamServer).filter(tables.TeamServer.teamid==team.id).first()
+        uptime = getSession().query(tables.func.count(tables.ScoreEvent.id), tables.func.sum(tables.expression.case(value=tables.ScoreEvent.up, whens={True: 1, False: 0}))).filter(tables.ScoreEvent.eventid==event).join(tables.TeamServer).filter(tables.TeamServer.teamid==team.id).first()
 
-            d['uptime'] = uptime[1] if uptime[1] is not None else 0
-            d['total_uptime'] = uptime[0]
+        d['uptime'] = uptime[1] if uptime[1] is not None else 0
+        d['total_uptime'] = uptime[0]
+
         data.append(d)
 
     return render_template(
