@@ -1,0 +1,72 @@
+{% set base_menu='injectscore' %}{% extends "layouts/default.html" %}
+
+
+{% block content %}
+<div class="content-center">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Possible Points</th>
+            {% for team in teams %}
+            <th>{{ team.name }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for inject in injects %}
+        <tr>
+            <td>{{ inject.subject }}</td>
+            <td>{{ inject.points }}</td>
+            {% for team in teams %}
+                <td>
+                {{ get_max_score_for_team(team.id, inject.id) }}
+                </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Totals:</th>
+            <th></th>
+            {% for team in teams %}
+            <th></th>
+            {% endfor %}
+        </tr>
+    </tfoot>
+</table>
+</div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap4.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+    $(function () {
+       $('table').dataTable({
+           "footerCallback": function (row, data, start, end, display) {
+               var api = this.api(), data;
+
+               posstotal = api.column(1).data().reduce(function (a, b) {
+                   return parseInt(a) + parseInt(b)
+               }, 0)
+
+               $(api.column(1).footer()).html(posstotal);
+
+               {% for team in teams %}
+                   teamscore = api.column({{ 1 + loop.index }}).data().reduce(function (a,b) {
+                       return parseInt(a) + parseInt(b)
+                   }, 0);
+
+                   $(api.column({{ 1 + loop.index }}).footer()).html(teamscore);
+               {% endfor %}
+           }
+       });
+    });
+    </script>
+{% endblock %}

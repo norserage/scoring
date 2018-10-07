@@ -62,6 +62,29 @@ def inject_score_event(event):
         datetime=datetime
     )
 
+@app.route('/injectscore/<event>/report')
+@login_required
+@require_group(3)
+@db_user
+def inject_score_event_report(event):
+    session = getSession()
+    injects = session.query(tables.AssignedInject).filter(tables.AssignedInject.eventid == event)
+    teams = session.query(tables.Team).all()
+    def get_max_score_for_team(team, inject):
+        score = session.query(tables.TeamInjectSubmission).filter(tables.TeamInjectSubmission.teamid == team, tables.TeamInjectSubmission.assignedinjectid == inject).order_by(tables.TeamInjectSubmission.points.desc()).first()
+        if score:
+            return score.points
+        return 0
+
+    return render_template(
+        'injectscore/report.html',
+        title="Inject Scoring",
+        injects=injects,
+        teams=teams,
+        datetime=datetime,
+        get_max_score_for_team=get_max_score_for_team
+    )
+
 @app.route('/injectscore/<event>/inject/<inject>')
 @login_required
 @require_group(3)
