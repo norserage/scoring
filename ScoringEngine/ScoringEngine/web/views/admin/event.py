@@ -68,14 +68,17 @@ def event(event):
 
     if events.count() > 0:
         event = events[0]
-        scoredata = dbsession.execute(tables.text("select t.name, sum(case when se.up = true then 1 else 0 end), count(se.id), round((sum(case when se.up = true then 1.0 else 0.0 end)/count(se.id)) * 100.0, 2) from scoreevents se inner join teamservers ts on ts.id = se.teamserverid inner join teams t on ts.teamid = t.id where se.eventid = " + str(event.id) + " group by t.name order by t.name"))
+
+        sd = dbsession.query(tables.Team.name, tables.func.sum(tables.expression.case(value=tables.ScoreEvent.up, whens={True: 1, False: 0})), tables.func.count(tables.ScoreEvent.id)).select_from(tables.ScoreEvent).filter(tables.ScoreEvent.eventid == event.id).join(tables.TeamServer).join(tables.Team).group_by(tables.Team.name).order_by(tables.Team.name)
+
+        #scoredata = dbsession.execute(tables.text("select t.name, sum(case when se.up = true then 1 else 0 end), count(se.id), round((sum(case when se.up = true then 1.0 else 0.0 end)/count(se.id)) * 100.0, 2) from scoreevents se inner join teamservers ts on ts.id = se.teamserverid inner join teams t on ts.teamid = t.id where se.eventid = " + str(event.id) + " group by t.name order by t.name"))
 
         return render_template(
             'admin/event/view.html',
             title=event.name,
             year=datetime.now().year,
             event=event,
-            scoredata=scoredata
+            scoredata=sd
         )
     else:
         return render_template(

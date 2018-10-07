@@ -1,0 +1,40 @@
+{% set base_menu='reporting' %}{% set sub_menu='event_total' %}{% extends "layouts/default.html" %}
+
+
+{% block content %}
+<div class="content-center">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Team</th>
+            <th>Inject Score</th>
+            <th>Uptime Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+            <tr>
+                <th>{{ row.team }}</th>
+                <td>{{ row.inject }} / {{ total.inject }} {% if total.inject > 0 %}({{ ((row.inject / total.inject) * 100) | round | int }}%){% endif %}</td>
+                <td>{{ row.uptime }} / {{ row.total_uptime }} {% if row.total_uptime > 0 %}({{ ((row.uptime / row.total_uptime) * 100) | round | int }}%){% endif %}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap4.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+    $(function () {
+       $('table').dataTable();
+    });
+    </script>
+{% endblock %}

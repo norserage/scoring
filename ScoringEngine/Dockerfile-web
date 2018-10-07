@@ -101,13 +101,12 @@ RUN pip install --no-cache-dir -r /requirements.txt && \
     pip install --no-cache-dir supervisor && \
     pip install --no-cache-dir supervisor-stdout
 
-
 ARG BRANCH=unknown
 ARG BUILD=non-ci-build
 
+COPY ScoringEngine /
+
 ENV CI_BRANCH=$BRANCH \
     CI_BUILD=$BUILD
-
-COPY ScoringEngine /
 
 CMD ["/runner.sh", "web"]

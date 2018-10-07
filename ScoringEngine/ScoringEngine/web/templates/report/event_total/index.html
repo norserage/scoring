@@ -1,13 +1,9 @@
-{% set base_menu='injectscore' %}{% extends "layouts/default.html" %}
+{% set base_menu='reporting' %}{% set sub_menu='event_total' %}{% extends "layouts/default.html" %}
 
 
 {% block content %}
 <div class="content-center">
-<div class="btn-group">
-    <a href="{{ url_for('inject_score') }}" class="btn btn-default">Current/Future Events</a>
-    <a href="{{ url_for('inject_score_past') }}" class="btn btn-default">Past Events</a>
-</div>
-<p></p>
+
 <table class="table">
     <thead>
         <tr>
@@ -25,8 +21,7 @@
                 <td>{{ event.end }}</td>
                 <td>
                     <div class="btn-group">
-                        <a href="{{ url_for('inject_score_event', event=event.id) }}" class="btn btn-primary" ><i class="fa fa-eye"></i> </a>
-                        <a href="{{ url_for('inject_score_event_report', event=event.id) }}" class="btn btn-success" title="Report"><i class="fa fa-pie-chart"></i> </a>
+                        <a href="{{ url_for('report_event_total_report', event=event.id) }}" class="btn btn-primary" ><i class="fa fa-eye"></i> </a>
                     </div>
                 </td>
             </tr>
