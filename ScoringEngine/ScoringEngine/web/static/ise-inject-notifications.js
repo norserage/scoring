@@ -25,11 +25,17 @@ function inject_display(injects) {
     }
 }
 
-function inject_check_loop() {
+function get_inject_list(callback) {
     $.get("/portal/injects/json", function(t) {
+        callback(t)
+    });
+}
+
+function inject_check_loop() {
+    get_inject_list(function (t) {
         inject_notification(t);
         inject_display(t);
-    });
+    })
 }
 
 function send_notification(title, text, url, tag) {
@@ -83,6 +89,6 @@ var coolerInterval = function(func, interval, triggerOnceEvery) {
 
 $(function() {
     coolerInterval(inject_check_loop, 1000, 60)
-    inject_check_loop()
+    get_inject_list(inject_display)
     //setInterval(inject_check_loop, 60000);
 })
