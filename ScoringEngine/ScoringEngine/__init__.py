@@ -23,6 +23,12 @@ BRANCH = "unknown"
 
 if 'CI_BRANCH' in environ:
     BRANCH = environ['CI_BRANCH']
+else:
+    try:
+        import subprocess
+        BRANCH = subprocess.check_output(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])
+    except Exception:
+        pass
 if 'CI_BUILD' in environ:
     BUILD = environ['CI_BUILD']
 
@@ -112,6 +118,7 @@ def validate_env():
 
 def main():
     print(VERSIONSTR)
+    print("Running Build %s on Branch %s" % (BUILD, BRANCH))
     if arguments():
         validate_env()
         from ScoringEngine.web import app
