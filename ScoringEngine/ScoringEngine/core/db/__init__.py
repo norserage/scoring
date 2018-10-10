@@ -14,22 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from ScoringEngine.core import config
 
 engine = create_engine(config.get_item('database'))
 Session = sessionmaker(bind=engine)
-
-_session = None
+session = scoped_session(sessionmaker(autocommit=False,
+                                      autoflush=False,
+                                      bind=engine))
 
 def getSession():
-    global _session
-    if _session is None:
-        _session = Session()
-    return _session
-
-def closeSession():
-    global _session
-    if _session is not None:
-        _session.close()
-        _session = None
+    return session

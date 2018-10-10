@@ -37,8 +37,7 @@ def do_login(user):
 @db_user
 def login():
     if request.method == 'POST':
-        db = getSession()
-        users = db.query(tables.User).filter(tables.User.username == request.form['username'])
+        users = getSession().query(tables.User).filter(tables.User.username == request.form['username'])
         for user in users:
             if user.verify_password(request.form['password']):
                 logger.debug("Login for " + user.username)
@@ -69,8 +68,7 @@ def logout():
 @require_group(1)
 @db_user
 def user(user):
-    dbsession = getSession()
-    user = dbsession.query(tables.User).filter(tables.User.username.ilike(user)).first()
+    user = getSession().query(tables.User).filter(tables.User.username.ilike(user)).first()
     if user:
         if user.id == current_user.id or current_user.group >= 4:
             if request.method == "POST":
@@ -78,7 +76,7 @@ def user(user):
                     user.set_password(request.form['password'])
                 user.name = request.form['name']
                 user.set_user_setting("timezone", request.form['timezone'])
-                dbsession.commit()
+                getSession().commit()
             return render_template(
                 'user/view.html',
                 title='Home Page',
