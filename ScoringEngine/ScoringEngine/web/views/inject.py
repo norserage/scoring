@@ -61,6 +61,9 @@ def inject_respond(id):
                 f.filename = fi.filename
                 f.data = fi.read()
                 f.size = len(f.data)
+                if f.size > 25e7:
+                    # File is too big
+                    pass
                 session.add(f)
                 session.commit()
         return render_template(

@@ -22,6 +22,9 @@ from ScoringEngine.core.db import tables
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
 
+from pyclamd import ClamdNetworkSocket, ClamdUnixSocket, ConnectionError, BufferTooLongError
+from ScoringEngine.core import config, logger
+
 @app.route('/injectscore')
 @login_required
 @require_group(3)
@@ -131,6 +134,36 @@ def file_download(id):
     session = getSession()
     f = session.query(tables.TeamInjectSubmissionAttachment).filter(tables.TeamInjectSubmissionAttachment.id == id).first()
     if f:
+        if config.get_item("clam/enabled") and 'ignore_virus' not in request.args:
+            if config.get_item("clam/stream_limit") < f.size:
+                return render_template(
+                    "injectscore/virus_error.html",
+                )
+            try:
+                if config.has_item("clam/path"):
+                    cd = ClamdUnixSocket(config.get_item("clam/path"))
+                elif config.has_item("clam/address"):
+                    cd = ClamdNetworkSocket(config.get_item("clam/address").encode('ascii'), config.get_item("clam/port"))
+                cd.ping()
+                logger.debug(cd.version())
+                virus_info = cd.scan_stream(f.data)
+                logger.debug(virus_info)
+                if virus_info is not None:
+                    return render_template(
+                        "injectscore/virus.html",
+                        virus_info=virus_info,
+                        title="Virus Found"
+                    )
+            except ConnectionError as ce:
+                logger.error(ce.message)
+                return render_template(
+                    "injectscore/virus_error.html",
+                )
+            except BufferTooLongError as btle:
+                logger.error(btle.message)
+                return render_template(
+                    "injectscore/virus_error.html",
+                )
         r = make_response(f.data)
         r.headers['Content-Disposition'] = 'attachment; filename="' + f.filename + '"'
         r.mimetype='application/octet-stream'

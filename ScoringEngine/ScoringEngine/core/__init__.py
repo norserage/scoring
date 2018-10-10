@@ -19,12 +19,14 @@ _default_config = {
     "database": "",
     "tests": ['testers'],
     "debug": True,  # TODO this should default to false in production
-    "secret": "fakesecret",  # TODO this should not be staticly set
+    "secret": "fakesecret",  # TODO this should not be staticly set,
+    "max_content_length": 25 * 1024 * 1024,
     "clam": {
         "enabled": False,
         "path": None,
         "address": None,
-        "port": None
+        "port": None,
+        "stream_limit": 2.5e7,
     },
     "engine": {
         "min": 60,

@@ -26,6 +26,8 @@ app = Flask(__name__)
 app.debug = config.get_item("debug")
 app.secret_key = config.get_item("secret")
 
+app.config['MAX_CONTENT_LENGTH'] = config.get_item('max_content_length')
+
 class AnonymousUser:
     @property
     def is_active(self):
@@ -78,7 +80,7 @@ def inject_template_vars():
     from ScoringEngine.core import config
     from flask import Markup
 
-    return dict(menu=menu, menu_open=menu_open, VERSION=VERSION, BUILD=BUILD, BRANCH=BRANCH, analytics=Markup(config.get_item("analytics/html")))
+    return dict(menu=menu, menu_open=menu_open, VERSION=VERSION, BUILD=BUILD, BRANCH=BRANCH, analytics=Markup(config.get_item("analytics/html")), UPLOAD_LIMIT=config.get_item("max_content_length"))
 
 @app.template_filter('localtime')
 def localtime(t):
@@ -91,6 +93,14 @@ def localtime(t):
     if "timezone" in current_user.settings:
         tz = pytz.timezone(current_user.settings['timezone'])
     return t.replace(tzinfo=pytz.UTC).astimezone(tz)
+
+@app.template_filter('bsize')
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['','Ki','Mi','Gi','Ti','Pi','Ei','Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):

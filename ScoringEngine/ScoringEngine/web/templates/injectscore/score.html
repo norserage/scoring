@@ -27,7 +27,7 @@
         <ul>
             {% for file in resp.files %}
             <li>
-                <a href="{{ url_for('file_download', id=file.id) }}">{{ file.filename }}</a> ({{ file.size }})
+                <a href="{{ url_for('file_download', id=file.id) }}" target="_blank">{{ file.filename }}</a> ({{ file.size | bsize }})
             </li>
             {% endfor %}
         </ul>
