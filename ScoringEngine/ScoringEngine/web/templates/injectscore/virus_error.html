@@ -1,0 +1,20 @@
+{% extends "layouts/default.html" %}
+
+{% block content %}
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Virus Scanning Error</h3>
+            </div>
+            <div class="card-body">
+                We were unable to check this file for viruses. Please use caution when opening this file.
+            </div>
+            <div class="card-footer">
+                <div class="pull-left">
+                    <a href="?ignore_virus=yes" class="btn btn-danger">Download Anyway</a>
+                </div>
+                <div class="pull-right">
+                    <a href="javascript:window.close()" class="btn btn-default">Make Me Safe</a>
+                </div>
+            </div>
+        </div>
+{% endblock %}

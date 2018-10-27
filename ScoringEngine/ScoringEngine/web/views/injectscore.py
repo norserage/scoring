@@ -17,7 +17,6 @@ from datetime import datetime
 from flask import render_template, make_response, request
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
-from ScoringEngine.core.db import tables
 
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
@@ -123,17 +122,3 @@ def inject_score_event_inject_response(event, inject, response):
     from ScoringEngine.web.views.errors import page_not_found
     return page_not_found(None)
 
-@app.route('/file/<id>')
-@login_required
-@require_group(3)
-@db_user
-def file_download(id):
-    session = getSession()
-    f = session.query(tables.TeamInjectSubmissionAttachment).filter(tables.TeamInjectSubmissionAttachment.id == id).first()
-    if f:
-        r = make_response(f.data)
-        r.headers['Content-Disposition'] = 'attachment; filename="' + f.filename + '"'
-        r.mimetype='application/octet-stream'
-        return r
-    from ScoringEngine.web.views.errors import page_not_found
-    return page_not_found(None)

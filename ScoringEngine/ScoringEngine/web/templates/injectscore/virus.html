@@ -1,0 +1,20 @@
+{% extends "layouts/default.html" %}
+
+{% block content %}
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Detected Virus</h3>
+            </div>
+            <div class="card-body">
+                We have detected this file as a virus with signiture "{{ virus_info['stream'][1] }}". We hold no responsibility if you continue to download and open this file.
+            </div>
+            <div class="card-footer">
+                <div class="pull-left">
+                    <a href="?ignore_virus=yes" class="btn btn-danger">Download Anyway</a>
+                </div>
+                <div class="pull-right">
+                    <a href="javascript:window.close()" class="btn btn-default">Make Me Safe</a>
+                </div>
+            </div>
+        </div>
+{% endblock %}

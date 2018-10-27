@@ -17,6 +17,8 @@ from sqlalchemy import *
 from sqlalchemy.sql import expression
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
+from .customTypes import GUID
+from uuid import uuid4
 metadata = MetaData()
 Base = declarative_base()
 
@@ -408,8 +410,21 @@ class TeamInjectSubmissionAttachment(Base):
 
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
     teaminjectid = Column(Integer, ForeignKey("teaminjectsubmissions.id"))
-    filename = Column(String(255), nullable=False)
-    size = Column(Integer, nullable=False)
-    data = Column(LargeBinary, nullable=False)
+    attachment_id = Column(GUID, ForeignKey('attachments.id'))
+
 
     inject = relationship("TeamInjectSubmission", backref=backref('files'))
+    attachment = relationship("Attachment")
+
+
+class Attachment(Base):
+    __tablename__ = 'attachments'
+
+    id = Column(GUID, primary_key=True, unique=True, autoincrement=False, index=True)
+    filename = Column(String(255), nullable=False)
+    size = Column(Integer, nullable=False)
+    ignore_virus = Column(Boolean, default=False, nullable=False)
+    data = Column(LargeBinary, nullable=False)
+
+    def __init__(self):
+        self.id = uuid4()
