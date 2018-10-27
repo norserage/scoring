@@ -56,15 +56,15 @@ def inject_respond(id):
             session.commit()
             if 'file' in request.files and request.files['file'].filename != '':
                 fi = request.files['file']
-                f = tables.TeamInjectSubmissionAttachment()
-                f.teaminjectid = sub.id
+                a = tables.TeamInjectSubmissionAttachment()
+                f = tables.Attachment()
+                a.teaminjectid = sub.id
+                a.attachment_id = f.id
                 f.filename = fi.filename
                 f.data = fi.read()
                 f.size = len(f.data)
-                if f.size > 25e7:
-                    # File is too big
-                    pass
                 session.add(f)
+                session.add(a)
                 session.commit()
         return render_template(
             'inject/respond.html',

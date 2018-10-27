@@ -56,7 +56,7 @@ def file_download(id):
                     "injectscore/virus_error.html"
                 )
         r = make_response(f.data)
-        r.headers['Content-Disposition'] = 'attachment; filename="' + f.filename + '"'
+        r.headers['Content-Disposition'] = 'inline; filename="' + f.filename + '"'
         ty, _ = guess_type(f.filename)
         if ty:
             r.mimetype = ty
