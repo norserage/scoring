@@ -18,6 +18,7 @@ from flask import render_template, request
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
 from ScoringEngine.core.db import tables
+from ScoringEngine.web.views.errors import page_not_found
 
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
@@ -30,12 +31,14 @@ def inject(id):
     session = getSession()
     #select * from assignedinjects where when < now()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == id).first()
-    return render_template(
-        'inject/view.html',
-        title=inject.subject,
-        year=datetime.now().year,
-        inject=inject
-    )
+    if inject and not inject.should_show:
+        return render_template(
+            'inject/view.html',
+            title=inject.subject,
+            year=datetime.now().year,
+            inject=inject
+        )
+    return page_not_found(None)
 
 @app.route('/inject/<id>/respond', methods=['GET', 'POST'])
 @login_required
@@ -44,7 +47,7 @@ def inject(id):
 def inject_respond(id):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == id).first()
-    if inject:
+    if inject and not inject.should_show:
         if request.method == "POST":
             sub = tables.TeamInjectSubmission()
             sub.assignedinjectid = id
@@ -72,5 +75,4 @@ def inject_respond(id):
             year=datetime.now().year,
             inject=inject
         )
-    from ScoringEngine.web.views.errors import page_not_found
     return page_not_found(None)
