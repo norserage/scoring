@@ -39,7 +39,7 @@
 
                 <div class="form-group">
                     <label for="group">Group</label>
-                    <select class="form-control" name="group" {{ "disabled" if dbuser.group > current_user.group }}>
+                    <select class="form-control" name="group" {{ "disabled" if dbuser.group >= current_user.group }}>
                         {% if dbuser.group == 1 %}
                             <option value="1" selected>User</option>
                         {% else %}
@@ -55,15 +55,19 @@
                         {% else %}
                             <option value="3">Judge</option>
                         {% endif %}
-                        {% if dbuser.group == 4 %}
-                            <option value="4" selected>Manager</option>
-                        {% else %}
-                            <option value="4">Manager</option>
+                        {% if dbuser.id == current_user.id or current_user.id == 5 %}
+                            {% if dbuser.group == 4 %}
+                                <option value="4" selected>Manager</option>
+                            {% else %}
+                                <option value="4">Manager</option>
+                            {% endif %}
                         {% endif %}
-                        {% if dbuser.group == 5 %}
-                            <option value="5" selected>Admin</option>
-                        {% else %}
-                            <option value="5">Admin</option>
+                        {% if current_user.group == 5 %}
+                            {% if dbuser.group == 5 %}
+                                <option value="5" selected>Admin</option>
+                            {% else %}
+                                <option value="5">Admin</option>
+                            {% endif %}
                         {% endif %}
                     </select>
                 </div>
