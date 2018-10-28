@@ -1,5 +1,15 @@
 {% set base_menu='injectscore' %}{% extends "layouts/default.html" %}
 
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('inject_score') }}">Inject Scoring</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Report
+        </li>
+    </ol>
+{% endblock %}
 
 {% block content %}
 <div class="content-center">

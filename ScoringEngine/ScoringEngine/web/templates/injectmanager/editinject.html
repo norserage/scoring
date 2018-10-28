@@ -7,6 +7,19 @@
     {% endfor %}
 {% endmacro %}
 
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('injectmanager') }}#{{ inject.categoryid }}">Inject Database</a>
+        </li>
+        <li class="breadcrumb-item active">
+            <a href="{{ url_for('injectmanager_inject', id=inject.id) }}">{{ inject.subject }}</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Edit
+        </li>
+    </ol>
+{% endblock %}
 
 {% block content %}
     <form method="post">

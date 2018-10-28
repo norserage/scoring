@@ -107,7 +107,7 @@ def editteam(team):
         return page_not_found(None)
 
 
-@app.route('/admin/team/<team>/addserver',methods=['GET','POST'])
+@app.route('/admin/team/<team>/server/add',methods=['GET','POST'])
 @login_required
 @require_group(4)
 @db_user
@@ -122,7 +122,7 @@ def teamaddserver(team):
             s.teamid = team.id
             dbsession.add(s)
             dbsession.commit()
-            return redirect(url_for('team',team=team.name))
+            return redirect(url_for('team', team=team.name))
         else:
             servers = dbsession.query(tables.Server).filter(~tables.Server.teams.any(
                 tables.TeamServer.teamid == team.id))
@@ -199,5 +199,6 @@ def teamserverservice(teamid, serverid, serviceid):
                 year=datetime.now().year,
                 options=func(),
                 conf=conf,
-                service=service
+                service=service,
+                team=team
             )

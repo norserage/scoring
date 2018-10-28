@@ -1,7 +1,17 @@
 {% set base_menu='score_portal' %}{% extends "layouts/default.html" %}
 
-{% block content %}
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('portal') }}">Portal</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Scoreboard
+        </li>
+    </ol>
+{% endblock %}
 
+{% block content %}
     <div class="page-header">
         <h2>Scores</h2>
     </div>
