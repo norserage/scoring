@@ -23,13 +23,13 @@ from ScoringEngine.web.views.errors import page_not_found
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
 
+
 @app.route('/inject/<id>')
 @login_required
 @require_group(1)
 @db_user
 def inject(id):
     session = getSession()
-    #select * from assignedinjects where when < now()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == id).first()
     if inject and not inject.should_show:
         return render_template(
@@ -39,6 +39,7 @@ def inject(id):
             inject=inject
         )
     return page_not_found(None)
+
 
 @app.route('/inject/<id>/respond', methods=['GET', 'POST'])
 @login_required
