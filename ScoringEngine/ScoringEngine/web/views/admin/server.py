@@ -110,7 +110,7 @@ def editserver(server):
         from ScoringEngine.web.views.errors import page_not_found
         return page_not_found(None)
 
-@app.route('/admin/server/<server>/addservice',methods=['GET','POST'])
+@app.route('/admin/server/<server>/service/add',methods=['GET','POST'])
 @login_required
 @require_group(4)
 @db_user
@@ -143,14 +143,15 @@ def serveraddservice(server):
         from ScoringEngine.web.views.errors import page_not_found
         return page_not_found(None)
 
-@app.route('/admin/server/<server>/editservice/<service>',methods=['GET','POST'])
+@app.route('/admin/server/<server>/service/<service>/edit',methods=['GET','POST'])
 @login_required
 @require_group(4)
 @db_user
 def servereditservice(server,service):
     dbsession = getSession()
+    server = dbsession.query(tables.Server).filter(tables.Server.id == server).first()
     services = dbsession.query(tables.Service).filter(tables.Service.id == service)
-    if services.count() > 0:
+    if server and services.count() > 0:
         service = services[0]
         if request.method == 'POST':
             service.name = request.form['name']
@@ -167,8 +168,8 @@ def servereditservice(server,service):
                 title='Edit Server',
                 year=datetime.now().year,
                 types=types,
-                service=service
+                service=service,
+                server=server
             )
-    else:
-        from ScoringEngine.web.views.errors import page_not_found
-        return page_not_found(None)
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
