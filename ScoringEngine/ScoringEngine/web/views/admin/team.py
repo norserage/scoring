@@ -24,6 +24,8 @@ import json
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import login_required
 
+from ScoringEngine.web.views.errors import page_not_found
+
 
 @app.route('/admin/team')
 @login_required
@@ -144,16 +146,19 @@ def teamaddserver(team):
 @db_user
 def teamserver(teamid, serverid):
     dbsession = getSession()
-    team = dbsession.query(tables.Team).filter(tables.Team.name.ilike(teamid)).first()
-    server = dbsession.query(tables.TeamServer).filter(
-        tables.and_(tables.TeamServer.teamid == team.id, tables.TeamServer.serverid == serverid)).first()
-    return render_template(
-        'admin/team/server.html',
-            title='Server',
-            year=datetime.now().year,
-            team=team,
-            server=server
-        )
+    team = dbsession.query(tables.Team).filter(tables.Team.name == teamid).first()
+    if team:
+        server = dbsession.query(tables.TeamServer).filter(
+            tables.and_(tables.TeamServer.teamid == team.id, tables.TeamServer.serverid == serverid)).first()
+        if server:
+            return render_template(
+                'admin/team/server.html',
+                    title='Server',
+                    year=datetime.now().year,
+                    team=team,
+                    server=server
+                )
+    return page_not_found(None)
 
 @app.route('/admin/team/<teamid>/server/<serverid>/service/<serviceid>',methods=['GET','POST'])
 @login_required
