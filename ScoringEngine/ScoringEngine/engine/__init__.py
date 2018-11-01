@@ -45,6 +45,6 @@ def score():
                     tables.and_(tables.Service.serverid == server.server.id, tables.Service.enabled == True)):
                 m = __import__(service.type.tester)
                 func = getattr(m, "test")
-                logger.debug("Score: %s(<%s>, <%s>, <%i>)" % (server.server.name, service.name, event))
+                logger.debug("Score: %s(<%s>, <%s>, <%i>)" % (service.type.tester, server.server.name, service.name, event))
                 threading.Thread(target=func, args=[server, service, event]).start()
     session.close()
