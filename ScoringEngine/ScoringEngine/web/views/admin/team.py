@@ -26,6 +26,8 @@ from flask_login import login_required
 
 from ScoringEngine.web.views.errors import page_not_found
 
+from ScoringEngine.core import logger
+
 
 @app.route('/admin/team')
 @login_required
@@ -146,6 +148,7 @@ def teamaddserver(team):
 @db_user
 def teamserver(teamid, serverid):
     dbsession = getSession()
+    logger.debug("teamid: %s" % teamid)
     team = dbsession.query(tables.Team).filter(tables.Team.name == teamid).first()
     if team:
         server = dbsession.query(tables.TeamServer).filter(
