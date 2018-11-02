@@ -38,7 +38,7 @@ def score():
     events = session.query(tables.Event).filter(tables.Event.current == True)
     if events.count() > 0:
         event = events[0].id
-        logger.info("Score Event: %i" % events[0].name)
+        logger.info("Score Event: %s" % events[0].name)
     for server in session.query(tables.TeamServer).all():
         if server.server.enabled and server.team.enabled:
             for service in session.query(tables.Service).filter(
