@@ -1,25 +1,27 @@
 ﻿{% set base_menu='injectmanager' %}{% extends "layouts/default.html" %}
 
 {% macro tree(list) -%}
-    <ul>
-        <li>
-            <a href="javascript:tree(-1)">All Injects</a>
-        </li>
-        {% for item in list %}
-        <li>
-            <a href="javascript:tree({{ item.id }})">{{ item.name }}</a>
-            {% if item.children.count() > 0 %}
+    {% for item in list %}
+    <li>
+        <a href="javascript:tree({{ item.id }})">{{ item.name }}</a>
+        {% if item.children.count() > 0 %}
+            <ul>
                 {{ tree(item.children) }}
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
+            </ul>
+        {% endif %}
+    </li>
+    {% endfor %}
 {%- endmacro %}
 
 {% block content %}
 <div class="row" style="margin: 0 15px; ">
     <div class="col-md-2">
-        {{ tree(categories) }}
+        <ul>
+            <li>
+                <a href="javascript:tree(-1)">All Injects</a>
+            </li>
+            {{ tree(categories) }}
+        </ul>
         <a id="btn_new_category" href="{{ url_for('injectmanager_addcategory') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Category</a>
     </div>
     <div class="col-md-10" id="inject_list">
