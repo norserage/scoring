@@ -8,7 +8,7 @@
         </tr>
     </thead>
     <tbody>
-        {% if injects.count() == 0 %}
+        {% if injects and injects.count() == 0 %}
             <tr>
                 <td>
                 There are currently no injects in this category
@@ -38,7 +38,7 @@
     <tfoot>
         <tr>
             <td colspan="4">
-                <a href="{{ url_for('injectmanager_addinject') }}{{ "?id=" + (request.args['id'] | string) if 'id' in request.args}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Inject</a>
+                <a href="{{ url_for('injectmanager_addinject') }}{{ "?id=" + (request.args['id'] | string) if 'id' in request.args and request.args['id'] != '-1'}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Inject</a>
             </td>
         </tr>
     </tfoot>

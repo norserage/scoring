@@ -41,7 +41,11 @@
 function tree(id) {
     location.hash = "#" + id;
     $("#inject_list").load("{{ url_for('ajax_injectmanager_list') }}?id="+id);
-    $("#btn_new_category").attr("href", "{{ url_for('injectmanager_addcategory') }}?id=" + id)
+    if (id === -1) {
+        $("#btn_new_category").attr("href", "{{ url_for('injectmanager_addcategory') }}")
+    } else {
+        $("#btn_new_category").attr("href", "{{ url_for('injectmanager_addcategory') }}?id=" + id)
+    }
 }
 
 $(function () {
