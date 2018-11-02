@@ -92,7 +92,10 @@ def injectmanager_addinject():
 def ajax_injectmanager_list():
     if 'id' in request.args:
         db = getSession()
-        injects = db.query(tables.Inject).filter(tables.Inject.categoryid == request.args['id'])
+        if int(request.args['id'] == -1):
+            injects = db.query(tables.Inject).all()
+        else:
+            injects = db.query(tables.Inject).filter(tables.Inject.categoryid == request.args['id'])
         return render_template(
             'injectmanager/injectlist.html',
             injects=injects
