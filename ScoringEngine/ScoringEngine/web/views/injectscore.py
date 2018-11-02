@@ -14,13 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from datetime import datetime
-from flask import render_template, make_response, request
+from flask import render_template, make_response, request, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
 from ScoringEngine.core.db import tables
 
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
+
+from ScoringEngine.web.views.errors import page_not_found
 
 @app.route('/injectscore')
 @login_required
@@ -99,6 +101,24 @@ def inject_score_event_inject(event, inject):
             inject=inject
         )
     from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
+
+@app.route('/injectscore/<event>/inject/<inject>/delete', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+def inject_score_event_inject_remove(event, inject):
+    session = getSession()
+    inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    if inject:
+        if request.method == "POST":
+            session.delete(inject)
+            session.commit()
+            return redirect(url_for('inject_score_event', event=event))
+        return render_template(
+            "injectscore/delete_inject.html",
+            inject=inject,
+            event=event
+        )
     return page_not_found(None)
 
 @app.route('/injectscore/<event>/inject/<inject>/response/<response>', methods=['GET', 'POST'])
