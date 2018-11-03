@@ -199,7 +199,7 @@ def teamserverservice(teamid, serverid, serviceid):
                 tables.and_(tables.ServiceArg.serviceid == service.id, tables.ServiceArg.key == 'conf', tables.ServiceArg.serverid == server.id)).first()
             confpair.value = json.dumps(conf)
         dbsession.commit()
-        return redirect(url_for('teamserver', teamid=team.name, serverid=server.id))
+        return redirect(url_for('teamserver', teamid=team.name, serverid=serverid))
     else:
         return render_template(
             'admin/team/service.html',
