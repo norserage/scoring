@@ -27,7 +27,7 @@ def getRandomUser(session, passwd_db):
     user = []
     passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name == passwd_db).first()
     for usr in passwddb.entries:
-        user.append({'user':usr.user,'pass':usr.password,'domain':usr.domain,'email':usr.email})
+        user.append({'user':usr.user,'pass':usr.password,'domain':usr.passdb.domain,'email':usr.email})
         
     #outuser = user[random.randint(0,user.count - 1)]
     outuser = random.choice(user)

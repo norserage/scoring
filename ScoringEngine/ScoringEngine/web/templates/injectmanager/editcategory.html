@@ -1,0 +1,45 @@
+{% set base_menu='injectmanager' %}{% extends "layouts/default.html" %}
+
+{% macro cat(item, prefix="") %}
+    <option value="{{ item.id }}" {{ "selected" if item.id == category.parentid }}>{{ prefix }}{{ item.name }}</option>
+    {% for i in item.children %}
+        {{ cat(i, prefix + item.name + "/") }}
+    {% endfor %}
+{% endmacro %}
+
+{% block content %}
+    <form method="post">
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Edit Category</h3>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="team">Category</label>
+                    <select class="form-control" name="category">
+                        <option value="-1">Root (No Category)</option>
+                        {% for c in categories %}
+                            {{ cat(c) }}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Name" name="name" required value="{{ category.name }}">
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $("form").validate();
+</script>
+{% endblock %}

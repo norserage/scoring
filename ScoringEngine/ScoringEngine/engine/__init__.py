@@ -38,13 +38,13 @@ def score():
     events = session.query(tables.Event).filter(tables.Event.current == True)
     if events.count() > 0:
         event = events[0].id
-        logger.info("Score Event: %i" % events[0].name)
+        logger.info("Score Event: %s" % events[0].name)
     for server in session.query(tables.TeamServer).all():
         if server.server.enabled and server.team.enabled:
             for service in session.query(tables.Service).filter(
                     tables.and_(tables.Service.serverid == server.server.id, tables.Service.enabled == True)):
                 m = __import__(service.type.tester)
                 func = getattr(m, "test")
-                logger.debug("Score: %s(<%s>, <%s>, <%i>)" % (server.server.name, service.name, event))
+                logger.debug("Score: %s(<%s>, <%s>, <%s>, <%s>)" % (service.type.tester, server.team.name, server.server.name, service.name, event))
                 threading.Thread(target=func, args=[server, service, event]).start()
     session.close()
