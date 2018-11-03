@@ -1,0 +1,46 @@
+{% set base_menu='reporting' %}{% set sub_menu='event_total' %}{% extends "layouts/default.html" %}
+
+
+{% block content %}
+<div class="content-center">
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Event Name</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for event in events %}
+            <tr>
+                <td>{{ event.name }}</td>
+                <td>{{ event.start }}</td>
+                <td>{{ event.end }}</td>
+                <td>
+                    <div class="btn-group">
+                        <a href="{{ url_for('report_event_total_report', event=event.id) }}" class="btn btn-primary" ><i class="fa fa-eye"></i> </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/plugins/datatables/dataTables.bootstrap4.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/dataTables.bootstrap4.js"></script>
+    <script>
+    $(function () {
+       $('table').dataTable();
+    });
+    </script>
+{% endblock %}

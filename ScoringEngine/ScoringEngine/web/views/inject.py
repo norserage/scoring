@@ -44,27 +44,30 @@ def inject(id):
 def inject_respond(id):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == id).first()
-    if request.method == "POST":
-        sub = tables.TeamInjectSubmission()
-        sub.assignedinjectid = id
-        sub.when = datetime.now()
-        sub.body = request.form['body']
-        sub.points = 0
-        sub.teamid = current_user.team
-        session.add(sub)
-        session.commit()
-        if 'file' in request.files and request.files['file'].filename != '':
-            fi = request.files['file']
-            f = tables.TeamInjectSubmissionAttachment()
-            f.teaminjectid = sub.id
-            f.filename = fi.filename
-            f.data = fi.read()
-            f.size = len(f.data)
-            session.add(f)
+    if inject:
+        if request.method == "POST":
+            sub = tables.TeamInjectSubmission()
+            sub.assignedinjectid = id
+            sub.when = datetime.now()
+            sub.body = request.form['body']
+            sub.points = 0
+            sub.teamid = current_user.team
+            session.add(sub)
             session.commit()
-    return render_template(
-        'inject/respond.html',
-        title=inject.subject,
-        year=datetime.now().year,
-        inject=inject
-    )
+            if 'file' in request.files and request.files['file'].filename != '':
+                fi = request.files['file']
+                f = tables.TeamInjectSubmissionAttachment()
+                f.teaminjectid = sub.id
+                f.filename = fi.filename
+                f.data = fi.read()
+                f.size = len(f.data)
+                session.add(f)
+                session.commit()
+        return render_template(
+            'inject/respond.html',
+            title=inject.subject,
+            year=datetime.now().year,
+            inject=inject
+        )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)

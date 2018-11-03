@@ -229,7 +229,7 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item has-treeview">
+                        <li class="nav-item has-treeview {{ menu_open("reporting", base_menu) }}">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fa fa-pie-chart"></i>
                                 <p>
@@ -238,9 +238,9 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="../charts/chartjs.html" class="nav-link">
+                                    <a href="{{ url_for("report_event_total_index") }}" class="nav-link {{ menu("event_total", sub_menu) }}">
                                         <i class="fa fa-circle-o nav-icon"></i>
-                                        <p>ChartJS</p>
+                                        <p>Event Total</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -347,10 +347,10 @@
     <!-- /.content-wrapper -->
 
     <footer class="main-footer">
-        <div class="float-right d-none d-sm-block">
-            <b>Version</b> 4.0.0-alpha
+        <div id="version" class="float-right d-none d-sm-block" data-toggle="tooltip" data-placement="top" data-html="true" title="<table><tr><th>Build:</th><td><em>{{ BUILD }}</em></td></tr><tr><th>Branch:</th><td><em>{{ BRANCH }}</em></td></tr></table>">
+            <b>Version</b> {{ VERSION }}
         </div>
-        <strong>Copyright &copy; 2015-2018 <a href="http://thebmw.tech">thebmw</a>.</strong> All rights
+        <strong>Copyright &copy; 2015-2018 <a href="https://www.youtube.com/watch?v=4U_RvUYINpo">thebmw</a>.</strong> All rights
         reserved.
     </footer>
 
@@ -371,8 +371,18 @@
 {#<!-- FastClick -->#}
 {#<script src="../../plugins/fastclick/fastclick.js"></script>#}
 <!-- AdminLTE App -->
-<script src="/static/plugins/adminlte/js/adminlte.min.js"></script>
+<script src="/static/plugins/adminlte/js/adminlte.js"></script>
+<!-- jQuery Validate -->
+<script src="/static/plugins/jquery-validate/js/jquery.validate.min.js"></script>
+
+<script>
+    $(function() {
+        $("#version").tooltip()
+    })
+</script>
 
 {% block scripts %}{% endblock %}
+
+{{ analytics }}
 </body>
 </html>

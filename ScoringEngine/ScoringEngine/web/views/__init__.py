@@ -30,3 +30,5 @@ import ScoringEngine.web.views.admin.service
 import ScoringEngine.web.views.injectmanager
 
 import ScoringEngine.web.views.injectscore
+
+import ScoringEngine.web.views.report

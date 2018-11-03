@@ -37,29 +37,7 @@ def admin():
         'admin/index.html',
         title='Admin',
         year=datetime.now().year,
-        enginestatus=ScoringEngine.engine.running,
         driver=str(engine.driver),
         event=event
     )
-
-
-@app.route('/admin/scoring/<flag>')
-def adminscoringswitch(flag):
-    if 'user' in session and session['user']['group'] >= 4:
-        if flag == "true":
-            ScoringEngine.engine.running = True
-            ScoringEngine.engine.start()
-            return ""
-        else:
-            ScoringEngine.engine.running = False
-            return ""
-    else:
-        return render_template(
-            'errors/403.html',
-            title='403 Access Denied',
-            year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="You do not have permission to use this resource"
-        )
 

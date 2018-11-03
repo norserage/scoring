@@ -42,6 +42,9 @@ class configreader(object):
                 raise Exception("Missing parameter \"%s\"" % path)
         return c
 
+    def has_item(self, path):
+        return self.get_item(path) is not None
+
     def put_item(self, path, value):
         raise NotImplementedError()
 

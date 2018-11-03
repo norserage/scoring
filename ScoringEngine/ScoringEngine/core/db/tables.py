@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from sqlalchemy import *
+from sqlalchemy.sql import expression
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 metadata = MetaData()
@@ -227,6 +228,10 @@ class User(Base):
         elif self.group == 5:
             return "Admin"
 
+    @property
+    def settings(self):
+        return dict([(s.key, s.value) for s in self.db_settings])
+
     ##################
     # Static Helpers #
     ##################
@@ -239,6 +244,29 @@ class User(Base):
         u.group = group
         u.set_password(new_password)
         return u
+
+    ####################
+    # Helper Functions #
+    ####################
+    def set_user_setting(self, setting, value):
+        from ScoringEngine.core.db import getSession
+        s = getSession().query(UserSetting).filter(UserSetting.userid == self.id and UserSetting.key == setting).first()
+        if not s:
+            s = UserSetting()
+            s.userid = self.id
+            s.key = setting
+            getSession().add(s)
+        s.value = value
+
+
+class UserSetting(Base):
+    __tablename__ = 'usersettings'
+
+    userid = Column(Integer, ForeignKey('users.id'), primary_key=True, index=True, autoincrement=False)
+    key = Column(String(30), primary_key=True, index=True)
+    value = Column(String(100))
+
+    user = relationship("User", backref=backref('db_settings'))
 
 class Log(Base):
     __tablename__ = 'log'
@@ -322,7 +350,7 @@ class AssignedInject(Base):
     @property
     def should_show(self):
         from datetime import datetime, timedelta
-        if self.event.current and datetime.now() >= self.when and (datetime.now() <= (self.when + timedelta(minutes=self.duration)) or self.allowlate):
+        if self.event.current and datetime.utcnow() >= self.when and (datetime.utcnow() <= (self.when + timedelta(minutes=self.duration)) or self.allowlate):
             return True
         return False
 
@@ -330,6 +358,11 @@ class AssignedInject(Base):
     def end(self):
         from datetime import timedelta
         return self.when + timedelta(minutes=self.duration)
+
+    @property
+    def due_in(self):
+        from datetime import datetime
+        return self.end - datetime.utcnow()
 
     inject = relationship("Inject")
     event = relationship("Event", backref=backref('injects', order_by=when))

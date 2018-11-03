@@ -18,6 +18,8 @@ from flask_login import LoginManager
 from flaskext.markdown import Markdown
 from ScoringEngine.core import config
 from ScoringEngine.core.db import getSession, tables
+from pydoc import locate
+import importlib
 
 app = Flask(__name__)
 
@@ -39,11 +41,15 @@ class AnonymousUser:
 
     @property
     def name(self):
-        return "Anon"
+        return "(=^_^=)"
 
     @property
     def group(self):
         return 0
+
+    @property
+    def settings(self):
+        return {}
 
 
 login_manager = LoginManager()
@@ -67,7 +73,35 @@ def inject_template_vars():
 
     def menu_open(str1, str2):
         return "menu-open" if str1 == str2 else ""
-    return dict(menu=menu, menu_open=menu_open)
+
+    from ScoringEngine import VERSION, BUILD, BRANCH
+    from ScoringEngine.core import config
+    from flask import Markup
+
+    return dict(menu=menu, menu_open=menu_open, VERSION=VERSION, BUILD=BUILD, BRANCH=BRANCH, analytics=Markup(config.get_item("analytics/html")))
+
+@app.template_filter('localtime')
+def localtime(t):
+    if t is None:
+        return None
+    import datetime
+    import pytz
+    from flask_login import current_user
+    tz = pytz.timezone(config.get_item("default_timezone"))
+    if "timezone" in current_user.settings:
+        tz = pytz.timezone(current_user.settings['timezone'])
+    return t.replace(tzinfo=pytz.UTC).astimezone(tz)
+
+
+# Setup session provider
+
+def _get_class_from_string(s):
+    module_name, class_name = s.rsplit(".", 1)
+    module = importlib.import_module(module_name)
+    return getattr(module, class_name)
+
+
+app.session_interface = _get_class_from_string(config.get_item("session_provider"))()
 
 
 import ScoringEngine.web.views

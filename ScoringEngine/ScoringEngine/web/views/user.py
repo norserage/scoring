@@ -17,9 +17,10 @@ from datetime import datetime
 from flask import render_template, request, session, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
-from ScoringEngine.logger import logger
 from flask_login import login_user, logout_user, current_user, login_required
 from ScoringEngine.web.flask_utils import db_user, require_group
+from ScoringEngine.core import logger, config
+import pytz
 
 
 def do_login(user):
@@ -40,10 +41,10 @@ def login():
         users = db.query(tables.User).filter(tables.User.username == request.form['username'])
         for user in users:
             if user.verify_password(request.form['password']):
-                logger.logDebug("User", "Login for " + user.username)
+                logger.debug("Login for " + user.username)
                 return do_login(user)
             else:
-                logger.logDebug("User", "Incorrect Password for " + user.username)
+                logger.warning("Incorrect password for " + user.username)
         return render_template(
             'user/login.html',
             title='Home Page',
@@ -63,7 +64,7 @@ def logout():
     return redirect("/")
 
 
-@app.route('/user/<user>')
+@app.route('/user/<user>', methods=['GET', 'POST'])
 @login_required
 @require_group(1)
 @db_user
@@ -72,11 +73,19 @@ def user(user):
     user = dbsession.query(tables.User).filter(tables.User.username.ilike(user)).first()
     if user:
         if user.id == current_user.id or current_user.group >= 4:
+            if request.method == "POST":
+                if request.form['password'] != "":
+                    user.set_password(request.form['password'])
+                user.name = request.form['name']
+                user.set_user_setting("timezone", request.form['timezone'])
+                dbsession.commit()
             return render_template(
                 'user/view.html',
                 title='Home Page',
                 year=datetime.now().year,
                 dbuser=user,
+                timezones=pytz.common_timezones,
+                config=config
             )
         else:
             return render_template(
@@ -86,63 +95,6 @@ def user(user):
                 message="You do not have permission to use this resource"
             )
     else:
-        return render_template(
-            'errors/404.html',
-            title='404 Not Found',
-            year=datetime.now().year,
-            dbuser=user,
-            message="We could not find the user you were looking for"
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
-
-@app.route('/user/<user>/changepass', methods=['GET', 'POST'])
-@login_required
-@require_group(1)
-@db_user
-def changeuserpassword(user):
-    dbsession = getSession()
-    user = dbsession.query(tables.User).filter(tables.User.username.ilike(user)).first()
-    if user:
-        if user.id == session['user']['id'] or session['user']['group'] >= 4:
-            if request.method == "POST":
-                if request.form['password'] == request.form['password2']:
-                    user.set_password(request.form['password'])
-                    return redirect(url_for("user", user=user.username))
-                else:
-                    return render_template(
-                        'user/changepass.html',
-                        title='Home Page',
-                        year=datetime.now().year,
-                        user=session['user'],
-                        dbuser=user,
-                        login='user' in session,
-                        error="Passwords do not match."
-                    )
-            else:
-                return render_template(
-                    'user/changepass.html',
-                    title='Home Page',
-                    year=datetime.now().year,
-                    user=session['user'],
-                    dbuser=user,
-                    login='user' in session,
-                )
-        else:
-            return render_template(
-                'errors/403.html',
-                title='403 Access Denied',
-                year=datetime.now().year,
-                user=session['user'],
-                login='user' in session,
-                message="You do not have permission to use this resource"
-            )
-    else:
-        return render_template(
-            'errors/404.html',
-            title='404 Not Found',
-            year=datetime.now().year,
-            user=session['user'],
-            dbuser=user,
-            login='user' in session,
-            message="We could not find the user you were looking for"
-        )

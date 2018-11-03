@@ -1,6 +1,7 @@
 Flask
 flask-login
 flask-markdown
+flask-babel
 mechanize
 SQLAlchemy
 pycrypto
@@ -8,3 +9,8 @@ psycopg2
 enum34
 paramiko
 bcrypt
+redis
+pytz
+pysmb
+
+alembic

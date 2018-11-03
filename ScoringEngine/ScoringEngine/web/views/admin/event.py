@@ -68,14 +68,17 @@ def event(event):
 
     if events.count() > 0:
         event = events[0]
-        scoredata = dbsession.execute(tables.text("select t.name, sum(case when se.up = true then 1 else 0 end), count(se.id), round((sum(case when se.up = true then 1.0 else 0.0 end)/count(se.id)) * 100.0, 2) from scoreevents se inner join teamservers ts on ts.id = se.teamserverid inner join teams t on ts.teamid = t.id where se.eventid = " + str(event.id) + " group by t.name order by t.name"))
+
+        sd = dbsession.query(tables.Team.name, tables.func.sum(tables.expression.case(value=tables.ScoreEvent.up, whens={True: 1, False: 0})), tables.func.count(tables.ScoreEvent.id)).select_from(tables.ScoreEvent).filter(tables.ScoreEvent.eventid == event.id).join(tables.TeamServer).join(tables.Team).group_by(tables.Team.name).order_by(tables.Team.name)
+
+        #scoredata = dbsession.execute(tables.text("select t.name, sum(case when se.up = true then 1 else 0 end), count(se.id), round((sum(case when se.up = true then 1.0 else 0.0 end)/count(se.id)) * 100.0, 2) from scoreevents se inner join teamservers ts on ts.id = se.teamserverid inner join teams t on ts.teamid = t.id where se.eventid = " + str(event.id) + " group by t.name order by t.name"))
 
         return render_template(
             'admin/event/view.html',
             title=event.name,
             year=datetime.now().year,
             event=event,
-            scoredata=scoredata
+            scoredata=sd
         )
     else:
         return render_template(
@@ -91,33 +94,20 @@ def event(event):
 @db_user
 def editevent(event):
     dbsession = getSession()
-    servers = dbsession.query(tables.Server).filter(tables.Server.id == event)
-    if servers.count() > 0:
-        server = servers[0]
-        if request.method == 'POST':
-            server.name = request.form['name']
-            if request.form['ip3'].strip() == "":
-                server.ip_3 = None
-            else:
-                server.ip_3 = request.form['ip3']
-            server.ip_4 = request.form['ip4']
-            server.enabled = 'enabled' in request.form
+    event = dbsession.query(tables.Event).filter(tables.Event.id == event).first()
+    if event:
+        if request.method == "POST":
+            event.name = request.form['name']
             dbsession.commit()
-            return redirect(url_for('server', server=server.id))
-        else:
-            return render_template(
-                'admin/server/edit.html',
-                title='Edit Team',
-                year=datetime.now().year,
-                server=server
-            )
-    else:
+            return redirect(url_for('events'))
         return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            message="We could not find the server that you were looking for."
+            "admin/event/edit.html",
+            title="Edit Event " + str(event.id),
+            event=event
         )
+    else:
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 
 @app.route('/admin/event/<event>/start')
@@ -134,18 +124,14 @@ def startevent(event):
             for e in events:
                 e.current = False
                 if e.end == None:
-                    e.end = datetime.now()
+                    e.end = datetime.utcnow()
         event.current = True
-        event.start = datetime.now()
+        event.start = datetime.utcnow()
         dbsession.commit()
         return redirect(url_for("events"))
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            message="We could not find the server that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)
 
 @app.route('/admin/event/<event>/stop')
 @login_required
@@ -157,15 +143,9 @@ def stopevent(event):
     if events.count() > 0:
         event = events[0]
         event.current = False
-        event.end = datetime.now()
+        event.end = datetime.utcnow()
         dbsession.commit()
         return redirect(url_for("events"))
     else:
-        return render_template(
-            'admin/404.html',
-            title='404 Server Not Found',
-            year=datetime.now().year,
-            user=session['user'],
-            login='user' in session,
-            message="We could not find the server that you were looking for."
-        )
+        from ScoringEngine.web.views.errors import page_not_found
+        return page_not_found(None)

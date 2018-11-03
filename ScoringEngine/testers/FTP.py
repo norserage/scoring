@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import ftplib
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
+from ScoringEngine.core.db import Session, tables
+from ScoringEngine.core import logger
 import ScoringEngine.utils as utils
 import ScoringEngine.engine.options
 from datetime import datetime
@@ -32,10 +32,14 @@ def test(server, service, event):
         #ftp = ftplib.FTP(server.getIP())
         ftp.connect(server.getIP())
         conf = ScoringEngine.utils.getServiceConfig(session, service, server)
+        if 'passdb' not in conf:
+            logger.warning("Service %i is not configured" % service.id)
+            session.close()
+            return
         user = utils.getRandomUser(session, conf['passdb'])
         ftp.login(user['user'],user['pass'])
         
-        if conf.has_key('mode') and conf['mode'] != 'connect':
+        if 'mode' in conf and conf['mode'] != 'connect':
             path = conf['path']
             if conf['mode'] == 'chkfileexist':
                 pass

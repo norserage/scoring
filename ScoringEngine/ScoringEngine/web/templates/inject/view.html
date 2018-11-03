@@ -10,7 +10,7 @@
         </div>
         <div style="clear:both;"></div>
     </div>
-
+    <p>Due: {{ inject.end | localtime }} ({{ inject.due_in }})</p>
     <div>{{ inject.body | markdown }}</div>
     </div>
 

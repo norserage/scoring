@@ -14,14 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
+from ScoringEngine.core import config
+
 from ScoringEngine.core.db import getSession, tables
 from flask import render_template, session, redirect, url_for, request
 from ScoringEngine.web import app
 
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
+from ScoringEngine.web.views.errors import page_not_found
 
 from datetime import datetime
+import pytz
 
 @app.route('/injectmanager')
 @login_required
@@ -57,6 +61,47 @@ def injectmanager_addcategory():
         categories=categories
     )
 
+@app.route('/injectmanager/category/<id>/edit', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+@db_user
+def injectmanager_category_edit(id):
+    db = getSession()
+    cat = db.query(tables.InjectCategory).filter(tables.InjectCategory.id == id).first()
+    if cat:
+        if request.method == "POST":
+            if request.form['category'] != '-1':
+                cat.parentid = request.form['category']
+            cat.name = request.form['name']
+            db.commit()
+            return redirect(url_for('injectmanager')+"#"+str(cat.id))
+        categories = db.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
+        return render_template(
+            'injectmanager/editcategory.html',
+            title='Edit Category',
+            categories=categories,
+            category=cat
+        )
+    return page_not_found(None)
+
+@app.route('/injectmanager/category/<id>/delete', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+@db_user
+def injectmanager_category_delete(id):
+    db = getSession()
+    cat = db.query(tables.InjectCategory).filter(tables.InjectCategory.id == id).first()
+    if cat:
+        if request.method == "POST":
+            db.delete(cat)
+            db.commit()
+            return redirect(url_for('injectmanager'))
+        return render_template(
+            'injectmanager/delete_category.html',
+            title='Delete Category',
+            category=cat
+        )
+    return page_not_found(None)
 
 @app.route('/injectmanager/addinject', methods=['GET', 'POST'])
 @login_required
@@ -89,10 +134,17 @@ def injectmanager_addinject():
 def ajax_injectmanager_list():
     if 'id' in request.args:
         db = getSession()
-        injects = db.query(tables.Inject).filter(tables.Inject.categoryid == request.args['id'])
+        injects = None
+        cat = None
+        if int(request.args['id']) == -1:
+            injects = db.query(tables.Inject).filter(tables.Inject.duration > -1)
+        else:
+            injects = db.query(tables.Inject).filter(tables.Inject.categoryid == request.args['id'])
+            cat = db.query(tables.InjectCategory).filter(tables.InjectCategory.id == request.args['id']).first()
         return render_template(
             'injectmanager/injectlist.html',
-            injects=injects
+            injects=injects,
+            cat=cat
         )
     return ""
 
@@ -109,6 +161,8 @@ def injectmanager_inject(id):
             title="Inject - " + inject.subject,
             inject=inject
         )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
 
 @app.route("/injectmanager/inject/<id>/edit", methods=['GET', 'POST'])
 @login_required
@@ -133,6 +187,8 @@ def injectmanager_inject_edit(id):
             inject=inject,
             categories=categories
         )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
 
 
 @app.route("/injectmanager/inject/<id>/assign", methods=['GET', 'POST'])
@@ -144,7 +200,11 @@ def injectmanager_inject_assign(id):
     if request.method == "POST":
         ai = tables.AssignedInject()
         ai.injectid = id
-        ai.when = datetime.strptime(request.form['when'], '%Y-%m-%d %H:%M')
+        tz = pytz.timezone(config.get_item("default_timezone"))
+        if "timezone" in current_user.settings:
+            tz = pytz.timezone(current_user.settings['timezone'])
+        localwhen = tz.localize(datetime.strptime(request.form['when'], '%Y-%m-%d %H:%M'))
+        ai.when = localwhen.astimezone(pytz.UTC)
         ai.subject = request.form['subject']
         ai.duration = request.form['duration']
         ai.points = request.form['points']
@@ -155,12 +215,15 @@ def injectmanager_inject_assign(id):
         db.commit()
         return redirect(url_for('injectmanager_inject', id=id))
     inject = db.query(tables.Inject).filter(tables.Inject.id == id).first()
-    categories = db.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
-    events = db.query(tables.Event).filter(tables.Event.end == None)
-    return render_template(
-        'injectmanager/assigninject.html',
-        title="Assign Inject - " + inject.subject,
-        inject=inject,
-        categories=categories,
-        events=events
-    )
+    if inject:
+        categories = db.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
+        events = db.query(tables.Event).filter(tables.Event.end == None)
+        return render_template(
+            'injectmanager/assigninject.html',
+            title="Assign Inject - " + inject.subject,
+            inject=inject,
+            categories=categories,
+            events=events
+        )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)

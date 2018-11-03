@@ -11,7 +11,7 @@ COLOR_CYAN="\e[36m"
 
 
 function out {
-    echo "[$1$2$COLOR_DEFAULT] $3"
+    echo -e "[$1$2$COLOR_DEFAULT] $3"
 }
 
 function setup {
@@ -24,7 +24,13 @@ function setup {
         out $COLOR_MAGENTA "Setup" "Setting up database"
         python /runserver.py --gen-db
     fi
-    echo "Setup Complete"
+    out $COLOR_MAGENTA "Setup" "Setup Complete"
+}
+
+function update_db {
+    out $COLOR_CYAN "Database" "Upgrading database"
+    alembic upgrade head
+    out $COLOR_CYAN "Database" "Upgrade Complete"
 }
 
 function web_start {
@@ -36,6 +42,8 @@ function score_start {
 }
 
 setup
+
+update_db
 
 case "$1" in
     web)

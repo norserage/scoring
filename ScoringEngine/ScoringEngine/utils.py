@@ -20,13 +20,15 @@ import subprocess
 import re
 import json
 import pprint
+import pytz
+import datetime
 
 def getRandomUser(session, passwd_db):
     user = []
     passwddb = session.query(tables.PasswordDatabase).filter(tables.PasswordDatabase.name == passwd_db).first()
     for usr in passwddb.entries:
-        user.append({'user':usr.user,'pass':usr.password,'email':usr.email})
-        
+        user.append({'user':usr.user,'pass':usr.password,'domain':usr.passdb.domain,'email':usr.email})
+
     #outuser = user[random.randint(0,user.count - 1)]
     outuser = random.choice(user)
     return outuser
@@ -50,7 +52,7 @@ def Ping(hostname,timeout):
     matches=re.match('.*time=([0-9]+)ms.*', proccess.stdout.read(),re.DOTALL)
     if matches:
         return matches.group(1)
-    else: 
+    else:
         return False
 
 def getServiceConfig(session, service, teamserver):
@@ -63,5 +65,3 @@ def getServiceConfig(session, service, teamserver):
         return conf
     else:
         return {}
-
-

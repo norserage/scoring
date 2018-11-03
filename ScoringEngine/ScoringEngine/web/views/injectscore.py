@@ -14,13 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from datetime import datetime
-from flask import render_template, make_response, request
+from flask import render_template, make_response, request, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
 from ScoringEngine.core.db import tables
 
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
+
+from ScoringEngine.web.views.errors import page_not_found
 
 @app.route('/injectscore')
 @login_required
@@ -62,6 +64,29 @@ def inject_score_event(event):
         datetime=datetime
     )
 
+@app.route('/injectscore/<event>/report')
+@login_required
+@require_group(3)
+@db_user
+def inject_score_event_report(event):
+    session = getSession()
+    injects = session.query(tables.AssignedInject).filter(tables.AssignedInject.eventid == event)
+    teams = session.query(tables.Team).all()
+    def get_max_score_for_team(team, inject):
+        score = session.query(tables.TeamInjectSubmission).filter(tables.TeamInjectSubmission.teamid == team, tables.TeamInjectSubmission.assignedinjectid == inject).order_by(tables.TeamInjectSubmission.points.desc()).first()
+        if score:
+            return score.points
+        return 0
+
+    return render_template(
+        'injectscore/report.html',
+        title="Inject Scoring",
+        injects=injects,
+        teams=teams,
+        datetime=datetime,
+        get_max_score_for_team=get_max_score_for_team
+    )
+
 @app.route('/injectscore/<event>/inject/<inject>')
 @login_required
 @require_group(3)
@@ -69,11 +94,32 @@ def inject_score_event(event):
 def inject_score_event_inject(event, inject):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
-    return render_template(
-        'injectscore/inject.html',
-        title="Score " + inject.subject,
-        inject=inject
-    )
+    if inject:
+        return render_template(
+            'injectscore/inject.html',
+            title="Score " + inject.subject,
+            inject=inject
+        )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
+
+@app.route('/injectscore/<event>/inject/<inject>/delete', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+def inject_score_event_inject_remove(event, inject):
+    session = getSession()
+    inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    if inject:
+        if request.method == "POST":
+            session.delete(inject)
+            session.commit()
+            return redirect(url_for('inject_score_event', event=event))
+        return render_template(
+            "injectscore/delete_inject.html",
+            inject=inject,
+            event=event
+        )
+    return page_not_found(None)
 
 @app.route('/injectscore/<event>/inject/<inject>/response/<response>', methods=['GET', 'POST'])
 @login_required
@@ -82,16 +128,20 @@ def inject_score_event_inject(event, inject):
 def inject_score_event_inject_response(event, inject, response):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
-    resp = session.query(tables.TeamInjectSubmission).filter(tables.TeamInjectSubmission.id == response).first()
-    if request.method == 'POST':
-        resp.points = request.form['score']
-        session.commit()
-    return render_template(
-        'injectscore/score.html',
-        title="Score " + inject.subject,
-        inject=inject,
-        resp=resp
-    )
+    if inject:
+        resp = session.query(tables.TeamInjectSubmission).filter(tables.TeamInjectSubmission.id == response).first()
+        if resp:
+            if request.method == 'POST':
+                resp.points = request.form['score']
+                session.commit()
+            return render_template(
+                'injectscore/score.html',
+                title="Score " + inject.subject,
+                inject=inject,
+                resp=resp
+            )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
 
 @app.route('/file/<id>')
 @login_required
@@ -105,3 +155,5 @@ def file_download(id):
         r.headers['Content-Disposition'] = 'attachment; filename="' + f.filename + '"'
         r.mimetype='application/octet-stream'
         return r
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)

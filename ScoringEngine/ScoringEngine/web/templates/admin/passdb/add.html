@@ -10,7 +10,7 @@
 
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Name" name="name">
+                    <input type="text" class="form-control" id="name" placeholder="Name" name="name" required>
                 </div>
                 <div class="form-group">
                     <label for="domain">Domain</label>
@@ -25,4 +25,10 @@
             </div>
         </div>
     </form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $("form").validate();
+</script>
 {% endblock %}

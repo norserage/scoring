@@ -14,8 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from __future__ import print_function
+from os import environ
 VERSION = '4.0'
-VERSIONSTR = "Lepus ISE v%s DEV" % (VERSION)
+VERSIONSTR = "Lepus ISE v%s" % (VERSION)
+
+BUILD = "non-ci-build"
+BRANCH = "unknown"
+
+if 'CI_BRANCH' in environ:
+    BRANCH = environ['CI_BRANCH']
+if 'CI_BUILD' in environ:
+    BUILD = environ['CI_BUILD']
 
 def arguments():
     import argparse
@@ -24,14 +33,10 @@ def arguments():
     parser.add_argument('--make-config', help='Generates a new default config file', required=False)
     parser.add_argument('--gen-db', help='Imports the schema into a database', required=False, action='store_true')
     parser.add_argument('--print-config', help='Prints the current configuration', required=False, action='store_true')
-    parser.add_argument('-v','--version', help='Generates a new default config file', required=False, action='store_true')
     
     args = parser.parse_args()
 
-    if args.version:
-        print(VERSIONSTR)
-        return False
-    elif args.gen_config:
+    if args.gen_config:
         from ScoringEngine.core import config
         config.save_default("config.json")
         return False
@@ -70,10 +75,44 @@ def arguments():
 
     return True
 
+def validate_env():
+    import os, os.path
+    from ScoringEngine.core import logger, config
+    from ScoringEngine.core.db import getSession, tables, closeSession
+    try:
+        logger.debug("Checking if >0 users")
+        if getSession().query(tables.User).count() == 0:
+            # We should create the default admin user if there are no users.
+            logger.warning("No users found creating default admin account")
+            getSession().add(tables.User.create("Administrator", "admin", u"admin", -1, 5))
+            getSession().commit()
 
+        # refresh scoretype table
+        logger.debug("Refreshing scoretypes")
+        for d in config.get_item("tests"):
+            for f in os.listdir(d):
+                if os.path.isfile(os.path.join(d, f)):
+                    p = f.split('.')
+                    if len(p) > 1 and p[1] == "py":
+                        t = getSession().query(tables.ServiceType).filter(tables.ServiceType.tester == p[0]).first()
+                        if not t:
+                            logger.debug("Adding type: %s" % p[0])
+                            t = tables.ServiceType()
+                            t.tester = p[0]
+                            t.name = p[0].capitalize()
+                            getSession().add(t)
+        getSession().commit()
+        closeSession()
+    except Exception as e:
+        import sys
+        print(e)
+        print(e.message)
+        sys.exit(1)
 
 def main():
+    print(VERSIONSTR)
     if arguments():
+        validate_env()
         from ScoringEngine.web import app
         app.run('127.0.0.1', 5080)
         print("hello")

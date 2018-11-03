@@ -16,6 +16,7 @@ limitations under the License.
 import imaplib
 import ScoringEngine.core.db.tables as tables
 from ScoringEngine.core.db import Session
+from ScoringEngine.core import logger
 import ScoringEngine.utils as utils
 import ScoringEngine.engine.options
 from datetime import datetime
@@ -31,8 +32,12 @@ def test(server, service, event):
     try:
         imap = imaplib.IMAP4(server.getIP)
         conf = utils.getServiceConfig(session, service, server)
+        if 'passdb' not in conf:
+            logger.warning("Service %i is not configured" % service.id)
+            session.close()
+            return
         user = utils.getRandomUser(session, conf['passdb'])
-        r = imap.login(user['user'],user['pass'])
+        r = imap.login(user['user'], user['pass'])
         if r[0] == 'OK':
             se.up = True
         else:

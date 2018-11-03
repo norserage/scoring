@@ -29,7 +29,53 @@ _default_config = {
     "engine": {
         "min": 60,
         "max": 120
-    }
+    },
+    "logging": {
+        "version": 1,
+        "formatters": {
+            "default": {
+                "format": "%(message)s"
+            },
+            "simple": {
+                "format": "%(asctime)s - %(module)s.%(funcName)s - %(levelname)s - %(message)s"
+            }
+        },
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "level": "DEBUG",
+                "formatter": "simple",
+                "stream": "ext://sys.stdout"
+            },
+            "defaultconsole": {
+                "class": "logging.StreamHandler",
+                "level": "DEBUG",
+                "formatter": "default",
+                "stream": "ext://sys.stdout"
+            }
+        },
+        "loggers": {
+            "ise": {
+                "level": "DEBUG",
+                "propagate": False,
+                "handlers": [
+                    "console"
+                ]
+            }
+        },
+        "root": {
+            "level": "DEBUG",
+            "handlers": [
+                "defaultconsole"
+            ]
+        }
+    },
+    "analytics": {
+        "html": ""
+    },
+    "session_provider": "flask.sessions.SecureCookieSessionInterface",
+    "session_redis": None,
+    "default_timezone": "UTC"
 }
 
 config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], _default_config)
@@ -38,3 +84,10 @@ if len(config.get_item("tests")) > 0:
     import sys
     for l in config.get_item("tests"):
         sys.path.append(l)
+
+import logging
+import logging.config
+
+logging.config.dictConfig(config.get_item("logging"))
+
+logger = logging.getLogger('ise')
