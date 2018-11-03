@@ -40,11 +40,25 @@ def test(server, service, event):
         user = ScoringEngine.utils.getRandomUser(session, conf['passdb'])
         conn = SMBConnection(user['user'].encode('ascii', 'ignore'), user['pass'].encode('ascii', 'ignore'), 'LepusISE'.encode('ascii', 'ignore'), conf['remote_name'].encode('ascii', 'ignore'), user['domain'].encode('ascii', 'ignore'), is_direct_tcp=service.port==445)
         if conn.connect(server.getIP().encode('ascii', 'ignore'), service.port):
-            files = conn.listPath(conf['share'], conf['path'])
-            for file in files:
-                if file.filename == conf['file']:
+            if 'regex' not in conf or conf['regex'].strip() == "":
+                files = conn.listPath(conf['share'], conf['path'])
+                for file in files:
+                    if file.filename == conf['file']:
+                        se.up = True
+                        se.info = json.dumps([file.filename for file in files])
+                        break
+            else:
+                import re
+                import tempfile
+                file_obj = tempfile.NamedTemporaryFile()
+                file_attr, filesize = conn.retrieveFile(conf['share'], conf['path'] + "/" + conf['file'], file_obj)
+                file_obj.seek(0)
+                content = file_obj.read()
+                file_obj.close()
+                if re.search(conf['regex'], content) is None:
+                    se.up = False
+                else:
                     se.up = True
-                    se.info = json.dumps([file.filename for file in files])
         else:
             se.up = False
         conn.close()
@@ -61,5 +75,6 @@ def options():
         'remote_name': ScoringEngine.engine.options.String(),
         'share': ScoringEngine.engine.options.String(),
         'path': ScoringEngine.engine.options.String(),
-        'file': ScoringEngine.engine.options.String()
+        'file': ScoringEngine.engine.options.String(),
+        'regex': ScoringEngine.engine.options.String()
         }
