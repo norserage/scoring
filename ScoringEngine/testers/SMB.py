@@ -38,8 +38,8 @@ def test(server, service, event):
             session.close()
             return
         user = ScoringEngine.utils.getRandomUser(session, conf['passdb'])
-        conn = SMBConnection(user['user'], user['pass'], 'LepusISE', conf['remote_name'], user['domain'], is_direct_tcp=service.port==445)
-        if conn.connect(server.getIP(), service.port):
+        conn = SMBConnection(user['user'].encode('ascii', 'ignore'), user['pass'].encode('ascii', 'ignore'), 'LepusISE'.encode('ascii', 'ignore'), conf['remote_name'].encode('ascii', 'ignore'), user['domain'].encode('ascii', 'ignore'), is_direct_tcp=service.port==445)
+        if conn.connect(server.getIP().encode('ascii', 'ignore'), service.port):
             files = conn.listPath(conf['share'], conf['path'])
             for file in files:
                 if file.filename == conf['file']:
