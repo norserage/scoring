@@ -1,5 +1,19 @@
 {% set base_menu='admin' %}{% set sub_menu='server' %}{% extends "layouts/default.html" %}
 
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('admin') }}">Admin</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('servers') }}">Servers</a>
+        </li>
+        <li class="breadcrumb-item active">
+            {{ server.name }}
+        </li>
+    </ol>
+{% endblock %}
+
 {% block content %}
 <div class="content-center">
     <div class="page-header">

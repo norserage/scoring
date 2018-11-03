@@ -10,6 +10,14 @@ def page_not_found(e):
     ), 404
 
 
+@app.errorhandler(413)
+def max_upload_exceded(e):
+    return render_template(
+        "errors/413.html",
+        title="Max Upload Exceeded"
+    ), 413
+
+
 @app.errorhandler(500)
 def server_error(e):
     return render_template(

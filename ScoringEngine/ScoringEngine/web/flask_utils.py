@@ -1,8 +1,6 @@
 from flask_login import current_user
 from functools import wraps
 from flask import render_template
-from ScoringEngine.core.db import closeSession
-from flask import render_template
 
 
 
@@ -23,6 +21,5 @@ def db_user(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
         res = func(*args, **kwargs)
-        closeSession()
         return res
     return decorated_view

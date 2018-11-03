@@ -1,5 +1,22 @@
 {% extends "layouts/default.html" %}
 
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('portal') }}">Portal</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('inject_portal') }}">Injects</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('inject', id=inject.id) }}">{{ inject.subject }}</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Respond
+        </li>
+    </ol>
+{% endblock %}
+
 {% block content %}
     <div class="content-center">
     <div class="page-header">
@@ -16,7 +33,7 @@
     </div>
 
     <div class="form-group">
-        <label for="file">File</label>
+        <label for="file">File (Max Size: {{ UPLOAD_LIMIT | bsize }})</label>
         <input type="file" class="form-control" name="file" id="file">
     </div>
 

@@ -1,5 +1,22 @@
 {% set base_menu='admin' %}{% set sub_menu='users' %}{% extends "layouts/default.html" %}
 
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('admin') }}">Admin</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('users') }}">Users</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('adminuser', user=dbuser.username) }}">{{ dbuser.name }}</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Edit
+        </li>
+    </ol>
+{% endblock %}
+
 {% block content %}
     <form method="post">
         <div class="card card-primary card-center">
@@ -39,7 +56,7 @@
 
                 <div class="form-group">
                     <label for="group">Group</label>
-                    <select class="form-control" name="group" {{ "disabled" if dbuser.group > current_user.group }}>
+                    <select class="form-control" name="group" {{ "disabled" if dbuser.group >= current_user.group }}>
                         {% if dbuser.group == 1 %}
                             <option value="1" selected>User</option>
                         {% else %}
@@ -55,15 +72,19 @@
                         {% else %}
                             <option value="3">Judge</option>
                         {% endif %}
-                        {% if dbuser.group == 4 %}
-                            <option value="4" selected>Manager</option>
-                        {% else %}
-                            <option value="4">Manager</option>
+                        {% if dbuser.id == current_user.id or current_user.id == 5 %}
+                            {% if dbuser.group == 4 %}
+                                <option value="4" selected>Manager</option>
+                            {% else %}
+                                <option value="4">Manager</option>
+                            {% endif %}
                         {% endif %}
-                        {% if dbuser.group == 5 %}
-                            <option value="5" selected>Admin</option>
-                        {% else %}
-                            <option value="5">Admin</option>
+                        {% if current_user.group == 5 %}
+                            {% if dbuser.group == 5 %}
+                                <option value="5" selected>Admin</option>
+                            {% else %}
+                                <option value="5">Admin</option>
+                            {% endif %}
                         {% endif %}
                     </select>
                 </div>

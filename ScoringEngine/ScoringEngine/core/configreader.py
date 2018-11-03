@@ -38,8 +38,6 @@ class configreader(object):
         c = self._get_item_from_array(path, self._config)
         if c is None:
             c = self._get_item_from_array(path, self._default)
-            if c is None:
-                raise Exception("Missing parameter \"%s\"" % path)
         return c
 
     def has_item(self, path):

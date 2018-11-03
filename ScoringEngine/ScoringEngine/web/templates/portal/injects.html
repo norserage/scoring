@@ -1,18 +1,24 @@
 {% set base_menu='inject_portal' %}{% extends "layouts/default.html" %}
 
-{% block content %}
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('portal') }}">Portal</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Injects
+        </li>
+    </ol>
+{% endblock %}
 
+{% block content %}
         <div class="page-header">
             <h2>Injects</h2>
         </div>
         <div id="injects">
-            <ol>
-                {% for inject in injects %}
-                    {% if inject.should_show %}
-                        <li><a href="#">{{ inject.title }}</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ol>
+            <p>
+                Loading Injects
+            </p>
         </div>
 {% endblock %}
 
@@ -25,10 +31,10 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="/static/ise-inject-notifications.js"></script>
     <script>
         function refresh() {
-            $("#injects").load("{{ url_for('portal_injects') }}")
-            $("#score").load("{{ url_for('portal_score') }}");
+            //$("#injects").load("{{ url_for('portal_injects') }}")
         }
 
         $(function () {
