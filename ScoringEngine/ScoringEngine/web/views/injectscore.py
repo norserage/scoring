@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from datetime import datetime
-from flask import render_template, make_response, request
+from flask import render_template, make_response, request, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
 from ScoringEngine.web.views.errors import page_not_found
@@ -22,6 +22,7 @@ from ScoringEngine.web.views.errors import page_not_found
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
 
+from ScoringEngine.web.views.errors import page_not_found
 
 @app.route('/injectscore')
 @login_required
@@ -101,10 +102,47 @@ def inject_score_event_report(event):
 @db_user
 def inject_score_event_inject(event, inject):
     session = getSession()
-    event = session.query(tables.Event).filter(tables.Event.id == event).first()
-    if event:
-        inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
-        if inject:
+    inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    if inject:
+        return render_template(
+            'injectscore/inject.html',
+            title="Score " + inject.subject,
+            inject=inject
+        )
+    from ScoringEngine.web.views.errors import page_not_found
+    return page_not_found(None)
+
+@app.route('/injectscore/<event>/inject/<inject>/delete', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+def inject_score_event_inject_remove(event, inject):
+    session = getSession()
+    inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    if inject:
+        if request.method == "POST":
+            session.delete(inject)
+            session.commit()
+            return redirect(url_for('inject_score_event', event=event))
+        return render_template(
+            "injectscore/delete_inject.html",
+            inject=inject,
+            event=event
+        )
+    return page_not_found(None)
+
+@app.route('/injectscore/<event>/inject/<inject>/response/<response>', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+@db_user
+def inject_score_event_inject_response(event, inject, response):
+    session = getSession()
+    inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    if inject:
+        resp = session.query(tables.TeamInjectSubmission).filter(tables.TeamInjectSubmission.id == response).first()
+        if resp:
+            if request.method == 'POST':
+                resp.points = request.form['score']
+                session.commit()
             return render_template(
                 'injectscore/inject.html',
                 title="Score " + inject.subject,
@@ -137,4 +175,3 @@ def inject_score_event_inject_response(event, inject, response):
                     event=event
                 )
     return page_not_found(None)
-

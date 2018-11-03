@@ -1,3 +1,8 @@
+{% if cat %}
+<h3>{{ cat.name }}</h3>
+{% else %}
+<h3>All Injects</h3>
+{% endif %}
 <table class="table">
     <thead>
         <tr>
@@ -8,7 +13,7 @@
         </tr>
     </thead>
     <tbody>
-        {% if injects.count() == 0 %}
+        {% if injects and injects.count() == 0 %}
             <tr>
                 <td>
                 There are currently no injects in this category
@@ -38,7 +43,11 @@
     <tfoot>
         <tr>
             <td colspan="4">
-                <a href="{{ url_for('injectmanager_addinject') }}{{ "?id=" + (request.args['id'] | string) if 'id' in request.args}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Inject</a>
+                <a href="{{ url_for('injectmanager_addinject') }}{{ "?id=" + (request.args['id'] | string) if 'id' in request.args and request.args['id'] != '-1'}}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Inject</a>
+                {% if 'id' in request.args and request.args['id'] != '-1' %}
+                    <a href="{{ url_for('injectmanager_category_edit', id=request.args['id']) }}" class="btn btn-warning"><i class="fa fa-edit"></i> Edit Category</a>
+                    <a href="{{ url_for('injectmanager_category_delete', id=request.args['id']) }}" class="btn btn-danger"><i class="fa fa-trash"></i> Delete Category</a>
+                {% endif %}
             </td>
         </tr>
     </tfoot>

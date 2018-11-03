@@ -36,7 +36,7 @@ def test(server, service, event):
         br.set_handle_robots(False)
         res = br.open(url)
         contents = res.read()
-        if "regex" in conf and conf['regex'].trim() != "":
+        if "regex" in conf and conf['regex'].strip() != "":
             import re
             if re.search(conf['regex'], contents) is None:
                 se.up = False

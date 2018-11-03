@@ -11,6 +11,7 @@ paramiko
 bcrypt
 redis
 pytz
+pysmb
 pyclamd
 
 alembic

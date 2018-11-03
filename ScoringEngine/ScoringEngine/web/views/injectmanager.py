@@ -22,6 +22,7 @@ from ScoringEngine.web import app
 
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
+from ScoringEngine.web.views.errors import page_not_found
 
 from datetime import datetime
 import pytz
@@ -60,6 +61,47 @@ def injectmanager_addcategory():
         categories=categories
     )
 
+@app.route('/injectmanager/category/<id>/edit', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+@db_user
+def injectmanager_category_edit(id):
+    db = getSession()
+    cat = db.query(tables.InjectCategory).filter(tables.InjectCategory.id == id).first()
+    if cat:
+        if request.method == "POST":
+            if request.form['category'] != '-1':
+                cat.parentid = request.form['category']
+            cat.name = request.form['name']
+            db.commit()
+            return redirect(url_for('injectmanager')+"#"+str(cat.id))
+        categories = db.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
+        return render_template(
+            'injectmanager/editcategory.html',
+            title='Edit Category',
+            categories=categories,
+            category=cat
+        )
+    return page_not_found(None)
+
+@app.route('/injectmanager/category/<id>/delete', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+@db_user
+def injectmanager_category_delete(id):
+    db = getSession()
+    cat = db.query(tables.InjectCategory).filter(tables.InjectCategory.id == id).first()
+    if cat:
+        if request.method == "POST":
+            db.delete(cat)
+            db.commit()
+            return redirect(url_for('injectmanager'))
+        return render_template(
+            'injectmanager/delete_category.html',
+            title='Delete Category',
+            category=cat
+        )
+    return page_not_found(None)
 
 @app.route('/injectmanager/addinject', methods=['GET', 'POST'])
 @login_required
@@ -92,10 +134,17 @@ def injectmanager_addinject():
 def ajax_injectmanager_list():
     if 'id' in request.args:
         db = getSession()
-        injects = db.query(tables.Inject).filter(tables.Inject.categoryid == request.args['id'])
+        injects = None
+        cat = None
+        if int(request.args['id']) == -1:
+            injects = db.query(tables.Inject).filter(tables.Inject.duration > -1)
+        else:
+            injects = db.query(tables.Inject).filter(tables.Inject.categoryid == request.args['id'])
+            cat = db.query(tables.InjectCategory).filter(tables.InjectCategory.id == request.args['id']).first()
         return render_template(
             'injectmanager/injectlist.html',
-            injects=injects
+            injects=injects,
+            cat=cat
         )
     return ""
 

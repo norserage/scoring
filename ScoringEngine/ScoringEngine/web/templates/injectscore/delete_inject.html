@@ -1,0 +1,22 @@
+{% extends "layouts/default.html" %}
+
+{% block content %}
+    <form method="post">
+        <div class="card card-primary card-center">
+            <div class="card-header">
+                <h3 class="card-title">Delete Inject "{{ inject.subject }}"</h3>
+            </div>
+            <div class="card-body">
+                Are you sure you want to delete this inject.
+            </div>
+            <div class="card-footer">
+                <div class="pull-left">
+                    <button type="submit" class="btn btn-danger">YES, delete</button>
+                </div>
+                <div class="pull-right">
+                    <a href="{{ url_for('inject_score_event', event=event) }}" class="btn btn-default">No Keep It</a>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

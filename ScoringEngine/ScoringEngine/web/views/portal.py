@@ -104,7 +104,7 @@ def portal_score():
 def portal_injects():
     event = tables.Event.current_event()
     if event:
-        injects = session.query(tables.AssignedInject).filter(tables.AssignedInject.eventid == event.id)
+        injects = dbsession.query(tables.AssignedInject).filter(tables.AssignedInject.eventid == event.id).order_by(tables.AssignedInject.when.asc())
     else:
         injects = []
 

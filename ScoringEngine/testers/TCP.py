@@ -30,7 +30,7 @@ def test(server, service, event):
     try:
         s.connect((server.getIP(), service.port))
         se.up = True
-        se.info = s.recv(1024)
+        #se.info = s.recv(1024)
     except Exception as e:
         se.info = e.message
         se.up = False

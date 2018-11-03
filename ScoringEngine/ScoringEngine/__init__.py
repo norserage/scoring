@@ -15,7 +15,11 @@ limitations under the License.
 """
 from __future__ import print_function
 from os import environ
+<<<<<<< ScoringEngine/ScoringEngine/__init__.py
+VERSION = '4.0'
+=======
 VERSION = '4.1-ALPHA'
+>>>>>>> ScoringEngine/ScoringEngine/__init__.py
 VERSIONSTR = "Lepus ISE v%s" % (VERSION)
 
 BUILD = "non-ci-build"

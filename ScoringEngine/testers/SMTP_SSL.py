@@ -26,7 +26,7 @@ def test(server, service, event):
         to_email = utils.getRandomEmail(session, conf['passdb'])
         smtp.sendmail(user['email'], to_email, "This is the test ")
         se.up = True
-        
+
         #se.info = smtp.ehlo_msg
     except Exception as ep:
         se.info = ep.message
