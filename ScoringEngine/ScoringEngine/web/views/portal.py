@@ -111,7 +111,7 @@ def portal_injects():
     dbsession = getSession()
     event = tables.Event.current_event()
     if event:
-        injects = dbsession.query(tables.AssignedInject).filter(tables.AssignedInject.eventid == event.id)
+        injects = dbsession.query(tables.AssignedInject).filter(tables.AssignedInject.eventid == event.id).order_by(tables.AssignedInject.when.asc())
     else:
         injects = []
 

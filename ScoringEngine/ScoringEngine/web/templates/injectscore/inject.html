@@ -24,7 +24,7 @@
             {% for sub in inject.submissions %}
                 <tr>
                     <td>{{ sub.team.name }}</td>
-                    <td>{{ sub.when }}</td>
+                    <td>{{ sub.when | localtime }}</td>
                     <td>{{ sub.points }} / {{ inject.points }}</td>
                     <td>
                         <a class="btn btn-primary" href="{{ url_for('inject_score_event_inject_response', event=inject.eventid, inject=inject.id, response = sub.id) }}"><i class="fa fa-eye"></i> </a>
