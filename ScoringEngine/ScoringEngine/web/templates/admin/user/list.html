@@ -35,8 +35,8 @@
                 <td>{{ user.team_name }}</td>
                 <td>
                     <div class="btn-group">
-                        <a href="{{ url_for('adminuser', user=user.name) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                        <a href="{{ url_for('edituser', user=user.name) }}" class="btn btn-secondary"><i class="fa fa-edit"></i></a>
+                        <a href="{{ url_for('adminuser', user=user.name) }}" class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="View"><i class="fa fa-eye"></i></a>
+                        <a href="{{ url_for('edituser', user=user.name) }}" class="btn btn-secondary" data-toggle="tooltip" data-placement="left" title="Edit"><i class="fa fa-edit"></i></a>
                     </div>
             </tr>
             {% endfor %}
