@@ -195,6 +195,7 @@ ModelManifest.xml
 .settings/
 
 venv/
+venv3/
 /ScoringEngine/env/
 /ScoringEngine/config.json
 /ScoringEngine/.idea

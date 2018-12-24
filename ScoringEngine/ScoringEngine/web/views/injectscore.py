@@ -156,7 +156,7 @@ def inject_score_event_inject_response(event, inject, response):
 @login_required
 @require_group(3)
 @db_user
-def inject_score_event_inject_response(event, inject, response):
+def inject_score_event_inject_response2(event, inject, response):
     session = getSession()
     event = session.query(tables.Event).filter(tables.Event.id == event).first()
     if event:
