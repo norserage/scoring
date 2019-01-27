@@ -83,6 +83,7 @@ _default_config = {
         "image/png",
         "image/jpeg",
         "image/gif",
+        "text/plain"
     ]
 }
 
