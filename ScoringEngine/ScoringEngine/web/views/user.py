@@ -22,6 +22,8 @@ from ScoringEngine.web.flask_utils import db_user, require_group
 from ScoringEngine.core import logger, config
 import pytz
 
+from ScoringEngine import VERSION
+
 
 def do_login(user):
     login_user(user)
@@ -48,12 +50,13 @@ def login():
             'user/login.html',
             title='Home Page',
             year=datetime.now().year,
-            error="User/Password Incorrect"
+            error="User/Password Incorrect",
         )
     return render_template(
         'user/login.html',
         title='Home Page',
         year=datetime.now().year,
+        VERSIONSTR=VERSION,
     )
 
 

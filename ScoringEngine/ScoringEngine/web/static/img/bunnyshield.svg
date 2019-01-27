@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="148.59174pt"
+   height="202.67278pt"
+   viewBox="0 0 148.59174 202.67278"
+   preserveAspectRatio="xMidYMid meet"
+   id="svg3336"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="bunnyshield.svg"
+   inkscape:export-filename="C:\Users\user\Desktop\scalable vector bunny.png"
+   inkscape:export-xdpi="120.07534"
+   inkscape:export-ydpi="120.07534">
+  <defs
+     id="defs3400" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     id="namedview3398"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="474.95061"
+     inkscape:cy="93.344337"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer5"
+     inkscape:measure-start="460.062,294.937"
+     inkscape:measure-end="460.125,296.25"
+     inkscape:snap-global="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <metadata
+     id="metadata3338">
+Created by potrace 1.12, written by Peter Selinger 2001-2015
+<rdf:RDF>
+  <cc:Work
+     rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type
+       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+    <dc:title></dc:title>
+  </cc:Work>
+</rdf:RDF>
+</metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Shield 2"
+     transform="translate(-1.8179986,-1.0700665)">
+    <path
+       style="display:inline;fill:#50508e;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:5.55149984;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 4.5937485,29.187493 75.984378,4.0156179 147.63399,29.637888 V 145.9707 c -11.00811,18.95508 -28.03319,37.57589 -70.571492,54.77929 -28.40726,-11.41714 -54.58444,-26.4024 -72.4687495,-54.65625 z"
+       id="path5140"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       inkscape:export-filename="C:\Users\kevin\Desktop\bunnyshield.png"
+       inkscape:export-xdpi="120.07534"
+       inkscape:export-ydpi="120.07534" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer1"
+     inkscape:label="Bunny"
+     style="display:inline"
+     transform="translate(-1.8179986,-1.0700665)">
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.25;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 121.85018,44.205769 c 2.2,2.2 2,6.8 -0.9,14.9 -1.4,3.8 -2.5,7.5 -2.5,8.2 0,0.6 1.3,2.4 2.8,4 2.3,2.3 3,4.1 3.6,9 0.4,3.4 1.1,6.5 1.6,6.8 1.6,1.000001 1.1,7.100001 -0.7,9.400001 -1.3,1.5 -3.4,2.3 -7.2,2.8 -5.1,0.6 -5.4,0.7 -7.2,5 -1,2.5 -1.9,5.1 -1.9,6 0,1.8 -3.2,6.6 -7.3,10.9 -2.500002,2.8 -2.700002,3.5 -1.7,5.4 1.5,2.8 0.3,4.2 -5.400002,5.9 -2.6,0.7 -4.8,1.7 -5.1,2.1 -0.2,0.4 0,2.4 0.6,4.5 1.4,5 0.2,5.8 -8.1,5.1 -8.1,-0.7 -10,-2.6 -10,-9.7 0,-5.9 -1.8,-7.4 -9.9,-8.2 -5.2,-0.6 -5.5,-0.5 -8.8,3.1 -1.9,2 -6,6.3 -9.1,9.5 l -5.7,5.9 -7.2,-0.4 c -4,-0.2 -7.7,-0.8 -8.2,-1.3 -0.7,-0.7 0.1,-2.4 2.5,-5 1.9,-2.2 4.9,-6.4 6.6,-9.3 2.9,-5.1 2.9,-5.4 1.7,-10.2 -1.2,-4.5 -1.1,-6 1,-14.2 3.4,-13.8 5.8,-17.400001 16.3,-25.200001 4.5,-3.4 14.4037,-6.807012 20.2,-6.6 2.18305,0.07797 6.03024,-0.22016 9.6,-1.4 4.04597,-0.454032 7.10846,-1.091545 10.3,-0.7 2.6,0.5 5,0.5 5.2,0.1 0.3,-0.5 -0.7,-3.4 -2.2,-6.6 -2.8,-6.1 -2.77106,-19.732098 -0.67187,-19.790625 2.50754,-0.06991 10.171872,12.590625 11.871872,16.690625 2.6,6.2 3.6,5.2 7.9,-7.7 3.6,-10.7 4.9,-12.2 8,-9 z"
+       id="path3342"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccsccccccsccccccscccccscccccsccccsccc"
+       inkscape:export-filename="C:\Users\kevin\Desktop\bunnyshield.png"
+       inkscape:export-xdpi="120.07534"
+       inkscape:export-ydpi="120.07534" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Shadow"
+     style="opacity:0.09800002"
+     transform="translate(-1.8179986,-1.0700665)">
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.75px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 75.984368,4.0156179 1.07813,196.7343721 40.687502,-21.375 25.875,-26.25 4.00899,-7.15429 V 29.637888 Z"
+       id="path5156"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\kevin\Desktop\bunnyshield.png"
+       inkscape:export-xdpi="120.07534"
+       inkscape:export-ydpi="120.07534" />
+  </g>
+</svg>

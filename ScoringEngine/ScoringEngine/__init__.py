@@ -15,8 +15,7 @@ limitations under the License.
 """
 from os import environ
 
-VERSION = '4.1-ALPHA'
-VERSIONSTR = "Lepus ISE v%s" % (VERSION)
+
 
 BUILD = "non-ci-build"
 BRANCH = "unknown"
@@ -31,6 +30,11 @@ else:
         pass
 if 'CI_BUILD' in environ:
     BUILD = environ['CI_BUILD']
+else:
+    BUILD = '0'
+
+VERSION = '4.1.' + BUILD + '-ALPHA'
+VERSIONSTR = "Lepus ISE v%s" % (VERSION)
 
 def arguments():
     import argparse

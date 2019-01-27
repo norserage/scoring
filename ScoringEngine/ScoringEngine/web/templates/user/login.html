@@ -21,7 +21,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-      <img src="/static/img/bunnyshield.png">
+      <img src="/static/img/bunnyshield.svg" style="display: block; margin: 0 auto;">
     <a href="/"><b>Lepus</b>ISE</a>
   </div>
   <!-- /.login-logo -->
@@ -53,6 +53,9 @@
   </div>
 </div>
 <!-- /.login-box -->
+<div class="version" style="position: absolute;bottom: 0px;right: 0px;padding: 3px;margin: 10px;/*! background: primary; */border-radius: 10px;color: #fff;">
+    {{ VERSIONSTR }}
+</div>
 
 <!-- jQuery -->
 <script src="/static/plugins/jquery/jquery.min.js"></script>
