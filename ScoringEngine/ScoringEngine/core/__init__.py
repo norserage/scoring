@@ -77,7 +77,13 @@ _default_config = {
     },
     "session_provider": "flask.sessions.SecureCookieSessionInterface",
     "session_redis": None,
-    "default_timezone": "UTC"
+    "default_timezone": "UTC",
+    "allowed_types": [
+        "application/pdf",
+        "image/png",
+        "image/jpeg",
+        "image/gif",
+    ]
 }
 
 config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], _default_config)

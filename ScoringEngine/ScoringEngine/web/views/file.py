@@ -56,12 +56,16 @@ def file_download(id):
                     "injectscore/virus_error.html"
                 )
         r = make_response(f.data)
-        r.headers['Content-Disposition'] = 'inline; filename="' + f.filename + '"'
         ty, _ = guess_type(f.filename)
         if ty:
             r.mimetype = ty
+            if ty in config.get_item("allowed_types"):
+                r.headers['Content-Disposition'] = 'inline; filename="' + f.filename + '"'
+            else:
+                r.headers['Content-Disposition'] = 'download; filename="' + f.filename + '"'
         else:
-            r.mimetype='application/octet-stream'
+            r.mimetype = 'application/octet-stream'
+            r.headers['Content-Disposition'] = 'download; filename="' + f.filename + '"'
         return r
     from ScoringEngine.web.views.errors import page_not_found
     return page_not_found(None)
