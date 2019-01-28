@@ -1,7 +1,11 @@
+stages:
+  - build
+
 variables:
   CI_REGISTRY_IMAGE: 'registry.thebmw.com/norserage/scoring'
 
 dev_docker_build:
+  stage: build
   except:
     - master
   before_script:
@@ -18,6 +22,7 @@ dev_docker_build:
     - docker-build
 
 release_docker_build:
+  stage: build
   only:
     - master
   before_script:
