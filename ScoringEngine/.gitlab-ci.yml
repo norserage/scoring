@@ -16,8 +16,8 @@ dev_docker_build:
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
     - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME" -f ScoringEngine/Dockerfile-web .
     - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME" -f ScoringEngine/Dockerfile-score .
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-web"
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME-score"
+    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
+    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME"
   tags:
     - docker-build
 
@@ -33,8 +33,8 @@ release_docker_build:
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
     - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web" -f ScoringEngine/Dockerfile-web .
     - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score" -f ScoringEngine/Dockerfile-score .
-    - docker push "$CI_REGISTRY_IMAGE:web"
-    - docker push "$CI_REGISTRY_IMAGE:score"
+    - docker push "$CI_REGISTRY_IMAGE/web"
+    - docker push "$CI_REGISTRY_IMAGE/score"
   tags:
     - docker-build
 
