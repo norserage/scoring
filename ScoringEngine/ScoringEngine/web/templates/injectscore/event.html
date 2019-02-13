@@ -37,6 +37,7 @@
             <td>
                 <div class="btn-group">
                     <a href="{{ url_for('inject_score_event_inject', event=inject.eventid, inject=inject.id) }}" class="btn btn-primary"><i class="fa fa-eye"></i> </a>
+                    <a href="{{ url_for('inject_score_event_inject_edit', event=inject.eventid, inject=inject.id) }}" class="btn btn-primary"><i class="fa fa-edit"></i> </a>
                     <a href="{{ url_for('inject_score_event_inject_remove', event=inject.eventid, inject=inject.id) }}" class="btn btn-danger"><i class="fa fa-trash"></i> </a>
                 </div>
             </td>

@@ -112,6 +112,25 @@ def inject_score_event_inject(event, inject):
     from ScoringEngine.web.views.errors import page_not_found
     return page_not_found(None)
 
+@app.route('/injectscore/<event>/inject/<inject>/edit', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+def inject_score_event_inject_edit(event, inject):
+    session = getSession()
+    inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    if inject:
+        if request.method == "POST":
+            
+            session.commit()
+            return redirect(url_for('inject_score_event', event=event))
+        return render_template(
+            "injectscore/edit_inject.html",
+            inject=inject,
+            event=event
+        )
+    return page_not_found(None)
+
+
 @app.route('/injectscore/<event>/inject/<inject>/delete', methods=['GET', 'POST'])
 @login_required
 @require_group(3)
@@ -129,6 +148,7 @@ def inject_score_event_inject_remove(event, inject):
             event=event
         )
     return page_not_found(None)
+
 
 @app.route('/injectscore/<event>/inject/<inject>/response/<response>', methods=['GET', 'POST'])
 @login_required
