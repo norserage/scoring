@@ -120,13 +120,17 @@ def inject_score_event_inject_edit(event, inject):
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
     if inject:
         if request.method == "POST":
-            
+            inject.subject = request.form['subject']
+            inject.duration = request.form['duration']
+            inject.points = request.form['points']
+            inject.body = request.form['body']
             session.commit()
-            return redirect(url_for('inject_score_event', event=event))
+        categories = session.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
         return render_template(
             "injectscore/edit_inject.html",
             inject=inject,
-            event=event
+            event=event,
+            categories=categories
         )
     return page_not_found(None)
 
