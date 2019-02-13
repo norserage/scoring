@@ -2,14 +2,15 @@ stages:
   - build
 
 variables:
-  CI_REGISTRY_IMAGE: 'registry.thebmw.com/norserage/scoring'
+  CI_REGISTRY_HOST: 'registry.gitsoul.net'
+  CI_REGISTRY_IMAGE: '$CI_REGISTRY_HOST/norserage/scoring'
 
 dev_docker_build:
   stage: build
   except:
     - master
   before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN registry.thebmw.com
+  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
@@ -26,7 +27,7 @@ release_docker_build:
   only:
     - master
   before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN registry.thebmw.com
+  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
