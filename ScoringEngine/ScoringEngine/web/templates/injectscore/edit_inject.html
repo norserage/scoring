@@ -10,10 +10,13 @@
 {% block breadcrumb %}
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
-            <a href="{{ url_for('injectmanager') }}#{{ inject.categoryid }}">Inject Database</a>
+            <a href="{{ url_for('inject_score') }}">Inject Scoring</a>
+        </li>
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('inject_score_event', event=event.id) }}">{{ event.name }}</a>
         </li>
         <li class="breadcrumb-item active">
-            <a href="{{ url_for('injectmanager_inject', id=inject.id) }}">{{ inject.subject }}</a>
+            <a href="{{ url_for('inject_score_event_inject', event=event.id, inject=inject.id) }}">{{ inject.subject }}</a>
         </li>
         <li class="breadcrumb-item active">
             Edit
