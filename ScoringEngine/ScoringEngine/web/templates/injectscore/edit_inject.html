@@ -36,7 +36,7 @@
                 </div>
                 <div class="form-group">
                     <label for="when">When</label>
-                    <input type="text" class="form-control" id="when" placeholder="When" name="when" value="{{ inject.when }}">
+                    <input type="text" class="form-control" id="when" placeholder="When" name="when" value="{{ inject.when | localtime }}">
                 </div>
                 <div class="form-group">
                     <label for="duration">Duration (Minutes)</label>

@@ -24,6 +24,10 @@ from flask_login import current_user, login_required
 
 from ScoringEngine.web.views.errors import page_not_found
 
+from ScoringEngine.core import config
+
+import pytz
+
 @app.route('/injectscore')
 @login_required
 @require_group(3)
@@ -123,6 +127,11 @@ def inject_score_event_inject_edit(event, inject):
         if request.method == "POST":
             inject.subject = request.form['subject']
             inject.duration = request.form['duration']
+            tz = pytz.timezone(config.get_item("default_timezone"))
+            if "timezone" in current_user.settings:
+                tz = pytz.timezone(current_user.settings['timezone'])
+            localwhen = tz.localize(datetime.strptime(request.form['when'], '%Y-%m-%d %H:%M'))
+            inject.when = localwhen.astimezone(pytz.UTC)
             inject.points = request.form['points']
             inject.body = request.form['body']
             session.commit()
