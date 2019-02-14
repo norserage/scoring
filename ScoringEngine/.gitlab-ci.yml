@@ -62,7 +62,7 @@ bug_deploy:
     - /^NS-[0-9]+$/
   image: thebmw/deployer
   script:
-    - sshpass -p "${DEV_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${DEV_SERVER_USER}@${DEV_SERVER_HOST} sudo /opt/deploy_ise.sh "$CI_COMMIT_REF_NAME" "CI_ENVIRONMENT_SLUG"
+    - sshpass -p "${DEV_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${DEV_SERVER_USER}@${DEV_SERVER_HOST} sudo /opt/deploy_ise.sh "$CI_COMMIT_REF_NAME" "$CI_ENVIRONMENT_SLUG"
   environment:
     name: bug/$CI_COMMIT_REF_NAME
     url: https://$CI_ENVIRONMENT_SLUG.ise.thebmw.tech
@@ -80,7 +80,7 @@ bug_deploy_stop:
   image: thebmw/deployer
   when: manual
   script:
-    - sshpass -p "${DEV_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${DEV_SERVER_USER}@${DEV_SERVER_HOST} sudo /opt/remove_ise.sh "CI_ENVIRONMENT_SLUG"
+    - sshpass -p "${DEV_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${DEV_SERVER_USER}@${DEV_SERVER_HOST} sudo /opt/remove_ise.sh "$CI_ENVIRONMENT_SLUG"
   environment:
     name: bug/$CI_COMMIT_REF_NAME
     action: stop
