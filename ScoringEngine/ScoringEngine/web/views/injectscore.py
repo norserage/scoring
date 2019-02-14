@@ -134,6 +134,7 @@ def inject_score_event_inject_edit(event, inject):
             inject.when = localwhen.astimezone(pytz.UTC)
             inject.points = request.form['points']
             inject.body = request.form['body']
+            inject.allowlate = 'late' in request.form
             session.commit()
         categories = session.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
         event = session.query(tables.Event).filter(tables.Event.id == event).first()

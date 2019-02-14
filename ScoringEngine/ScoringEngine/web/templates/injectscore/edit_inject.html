@@ -1,4 +1,4 @@
-{% set base_menu='injectmanager' %}{% set sub_menu='users' %}{% extends "layouts/default.html" %}
+{% set base_menu='injectscore' %}{% extends "layouts/default.html" %}
 
 {% block breadcrumb %}
     <ol class="breadcrumb float-sm-right">
@@ -21,7 +21,7 @@
     <form method="post">
         <div class="card card-primary card-center" style="max-width: 900px;">
             <div class="card-header">
-                <h3 class="card-title">Assign Inject</h3>
+                <h3 class="card-title">Edit Assigned Inject</h3>
             </div>
             <div class="card-body">
 
@@ -53,12 +53,12 @@
                     <textarea class="form-control" name="body" id="body" rows="15">{{ inject.body }}</textarea>
                 </div>
                 <div class="checkbox">
-                        <input type="checkbox" class="form-control" id="late" name="late" data-toggle="toggle" data-on="Allow Late" data-off="Don't Allow Late">
+                        <input type="checkbox" class="form-control" id="late" name="late" data-toggle="toggle" data-on="Allow Late" data-off="Don't Allow Late" {{ "checked" if inject.allowlate }}>
                 </div>
             </div>
             <div class="card-footer">
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-primary">Assign</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
