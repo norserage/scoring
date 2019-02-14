@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from datetime import datetime
+import calendar
 from flask import render_template, make_response, request, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
@@ -131,7 +132,7 @@ def inject_score_event_inject_edit(event, inject):
             if "timezone" in current_user.settings:
                 tz = pytz.timezone(current_user.settings['timezone'])
             localwhen = tz.localize(datetime.strptime(request.form['when'], '%Y-%m-%d %H:%M'))
-            inject.when = localwhen.astimezone(pytz.UTC)
+            inject.when = localwhen.astimezone(pytz.UTC).replace(tzinfo=None)
             inject.points = request.form['points']
             inject.body = request.form['body']
             inject.allowlate = 'late' in request.form
