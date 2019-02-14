@@ -103,13 +103,14 @@ def inject_score_event_report(event):
 def inject_score_event_inject(event, inject):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    event = session.query(tables.Event).filter(tables.Event.id == event).first()
     if inject:
         return render_template(
             'injectscore/inject.html',
             title="Score " + inject.subject,
-            inject=inject
+            inject=inject,
+            event=event
         )
-    from ScoringEngine.web.views.errors import page_not_found
     return page_not_found(None)
 
 @app.route('/injectscore/<event>/inject/<inject>/edit', methods=['GET', 'POST'])
