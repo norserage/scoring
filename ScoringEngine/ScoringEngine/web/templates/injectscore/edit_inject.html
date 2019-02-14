@@ -1,12 +1,5 @@
 {% set base_menu='injectmanager' %}{% set sub_menu='users' %}{% extends "layouts/default.html" %}
 
-{% macro cat(item, prefix="") %}
-    <option value="{{ item.id }}" {{ "selected" if item.id == inject.categoryid }}>{{ prefix }}{{ item.name }}</option>
-    {% for i in item.children %}
-        {{ cat(i, prefix + item.name + "/") }}
-    {% endfor %}
-{% endmacro %}
-
 {% block breadcrumb %}
     <ol class="breadcrumb float-sm-right">
         <li class="breadcrumb-item">
@@ -28,20 +21,22 @@
     <form method="post">
         <div class="card card-primary card-center" style="max-width: 900px;">
             <div class="card-header">
-                <h3 class="card-title">Edit Inject</h3>
+                <h3 class="card-title">Assign Inject</h3>
             </div>
             <div class="card-body">
+
                 <div class="form-group">
-                    <label for="team">Category</label>
-                    <select class="form-control" name="category" disabled>
-                        {% for c in categories %}
-                            {{ cat(c) }}
-                        {% endfor %}
-                    </select>
+                    <label for="event">Event</label>
+                    <input class="form-control" id="event" disabled type="text" value="{{ event.name }}" />
                 </div>
+
                 <div class="form-group">
                     <label for="subject">Subject</label>
                     <input type="text" class="form-control" id="subject" placeholder="Subject" name="subject" value="{{ inject.subject }}">
+                </div>
+                <div class="form-group">
+                    <label for="when">When</label>
+                    <input type="text" class="form-control" id="when" placeholder="When" name="when" value="{{ inject.when }}">
                 </div>
                 <div class="form-group">
                     <label for="duration">Duration (Minutes)</label>
@@ -51,16 +46,44 @@
                     <label for="points">Points Possible</label>
                     <input type="number" class="form-control" id="points" placeholder="Points" name="points" value="{{ inject.points }}">
                 </div>
+
+
                 <div class="form-group">
                     <label for="body">Body</label>
                     <textarea class="form-control" name="body" id="body" rows="15">{{ inject.body }}</textarea>
                 </div>
+                <div class="checkbox">
+                        <input type="checkbox" class="form-control" id="late" name="late" data-toggle="toggle" data-on="Allow Late" data-off="Don't Allow Late">
+                </div>
             </div>
             <div class="card-footer">
                 <div class="pull-right">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Assign</button>
                 </div>
             </div>
         </div>
     </form>
+{% endblock %}
+
+{% block styles %}
+<link href="/static/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/static/plugins/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/moment/moment.min.js"></script>
+    <script src="/static/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/plugins/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+<script>
+    $(function () {
+        $("form").validate();
+        $("#when").datetimepicker(
+            {
+                format: 'Y-MM-DD HH:mm'
+            }
+        )
+        $("#late").bootstrapToggle();
+    })
+
+</script>
 {% endblock %}
