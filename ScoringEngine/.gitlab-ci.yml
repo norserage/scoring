@@ -96,7 +96,7 @@ prod_deploy:
     - master
   image: thebmw/deployer
   script:
-    - sshpass -p "${PROD_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${PROD_SERVER_USER}@${PROD_SERVER_HOST} sudo /opt/deploy_ise_prod.sh
+    - sshpass -p "${PROD_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${PROD_SERVER_USER}@${PROD_SERVER_HOST} sudo /opt/deploy_ise_prod.sh latest
   environment:
     name: prod
     url: https://ise.norserage.com
