@@ -103,14 +103,39 @@ def inject_score_event_report(event):
 def inject_score_event_inject(event, inject):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    event = session.query(tables.Event).filter(tables.Event.id == event).first()
     if inject:
         return render_template(
             'injectscore/inject.html',
             title="Score " + inject.subject,
-            inject=inject
+            inject=inject,
+            event=event
         )
-    from ScoringEngine.web.views.errors import page_not_found
     return page_not_found(None)
+
+@app.route('/injectscore/<event>/inject/<inject>/edit', methods=['GET', 'POST'])
+@login_required
+@require_group(3)
+def inject_score_event_inject_edit(event, inject):
+    session = getSession()
+    inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
+    if inject:
+        if request.method == "POST":
+            inject.subject = request.form['subject']
+            inject.duration = request.form['duration']
+            inject.points = request.form['points']
+            inject.body = request.form['body']
+            session.commit()
+        categories = session.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
+        event = session.query(tables.Event).filter(tables.Event.id == event).first()
+        return render_template(
+            "injectscore/edit_inject.html",
+            inject=inject,
+            event=event,
+            categories=categories
+        )
+    return page_not_found(None)
+
 
 @app.route('/injectscore/<event>/inject/<inject>/delete', methods=['GET', 'POST'])
 @login_required
@@ -129,6 +154,7 @@ def inject_score_event_inject_remove(event, inject):
             event=event
         )
     return page_not_found(None)
+
 
 @app.route('/injectscore/<event>/inject/<inject>/response/<response>', methods=['GET', 'POST'])
 @login_required
