@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from datetime import datetime
+import calendar
 from flask import render_template, make_response, request, redirect, url_for
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables
@@ -23,6 +24,10 @@ from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required
 
 from ScoringEngine.web.views.errors import page_not_found
+
+from ScoringEngine.core import config
+
+import pytz
 
 @app.route('/injectscore')
 @login_required
@@ -123,8 +128,14 @@ def inject_score_event_inject_edit(event, inject):
         if request.method == "POST":
             inject.subject = request.form['subject']
             inject.duration = request.form['duration']
+            tz = pytz.timezone(config.get_item("default_timezone"))
+            if "timezone" in current_user.settings:
+                tz = pytz.timezone(current_user.settings['timezone'])
+            localwhen = tz.localize(datetime.strptime(request.form['when'], '%Y-%m-%d %H:%M'))
+            inject.when = localwhen.astimezone(pytz.UTC).replace(tzinfo=None)
             inject.points = request.form['points']
             inject.body = request.form['body']
+            inject.allowlate = 'late' in request.form
             session.commit()
         categories = session.query(tables.InjectCategory).filter(tables.InjectCategory.parentid == None)
         event = session.query(tables.Event).filter(tables.Event.id == event).first()
