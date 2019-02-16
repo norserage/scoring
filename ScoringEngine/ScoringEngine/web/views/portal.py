@@ -1,4 +1,4 @@
-﻿"""
+"""
 Copyright 2016 Brandon Warner
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -122,7 +122,7 @@ def portal_injects():
 def portal_injects_json():
     event = tables.Event.current_event()
     if event:
-        injects = session.query(tables.AssignedInject).filter(tables.AssignedInject.eventid == event.id)
+        injects = session.query(tables.AssignedInject).filter(tables.AssignedInject.eventid == event.id).order_by(tables.AssignedInject.when.asc())
     else:
         injects = []
 
