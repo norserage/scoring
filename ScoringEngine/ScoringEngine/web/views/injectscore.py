@@ -167,11 +167,11 @@ def inject_score_event_inject_remove(event, inject):
     return page_not_found(None)
 
 
-@app.route('/injectscore/<event>/inject/<inject>/response/<response>', methods=['GET', 'POST'])
+@app.route('/injectscore/<event>/inject/<inject>/response2/<response>', methods=['GET', 'POST'])
 @login_required
 @require_group(3)
 @db_user
-def inject_score_event_inject_response(event, inject, response):
+def inject_score_event_inject_response2(event, inject, response):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == inject).first()
     if inject:
@@ -193,7 +193,7 @@ def inject_score_event_inject_response(event, inject, response):
 @login_required
 @require_group(3)
 @db_user
-def inject_score_event_inject_response2(event, inject, response):
+def inject_score_event_inject_response(event, inject, response):
     session = getSession()
     event = session.query(tables.Event).filter(tables.Event.id == event).first()
     if event:
