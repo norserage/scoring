@@ -181,7 +181,7 @@ def inject_score_event_inject_response(event, inject, response):
                 resp.points = request.form['score']
                 session.commit()
             return render_template(
-                'injectscore/inject.html',
+                'injectscore/score.html',
                 title="Score " + inject.subject,
                 inject=inject,
                 event=event
