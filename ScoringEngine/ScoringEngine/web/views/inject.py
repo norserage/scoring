@@ -1,4 +1,4 @@
-﻿"""
+"""
 Copyright 2016 Brandon Warner
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ from flask_login import current_user, login_required
 def inject(id):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == id).first()
-    if inject and not inject.should_show:
+    if inject:
         return render_template(
             'inject/view.html',
             title=inject.subject,
