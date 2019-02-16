@@ -48,7 +48,7 @@ def inject(id):
 def inject_respond(id):
     session = getSession()
     inject = session.query(tables.AssignedInject).filter(tables.AssignedInject.id == id).first()
-    if inject and not inject.should_show:
+    if inject:
         if request.method == "POST":
             sub = tables.TeamInjectSubmission()
             sub.assignedinjectid = id
