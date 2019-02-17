@@ -160,7 +160,7 @@ def servereditservice(server,service):
                 service.port = request.form['port']
             service.enabled = 'enabled' in request.form
             dbsession.commit()
-            return redirect(url_for('server',server=server))
+            return redirect(url_for('server', server=server.id))
         else:
             types = dbsession.query(tables.ServiceType).order_by(tables.ServiceType.name.asc()).all()
             return render_template(
