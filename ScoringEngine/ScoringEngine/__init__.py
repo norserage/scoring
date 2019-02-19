@@ -85,7 +85,7 @@ def arguments():
 
     return True
 
-def validate_env():
+def validate_env(engine=False):
     import os, os.path
     from ScoringEngine.core import logger, config
     from ScoringEngine.core.db import Session, tables
@@ -112,6 +112,20 @@ def validate_env():
                             t.tester = p[0]
                             t.name = p[0].capitalize()
                             s.add(t)
+
+        logger.debug("Checking for engines")
+        if s.query(tables.Engine).count() == 0:
+            if not engine:
+                logger.warning("No Engines Defined")
+            else:
+                from datetime import datetime
+                engine_id = config.get_item("engine/id")
+                logger.debug("Adding Default Engine")
+                engine = tables.Engine()
+                engine.id = engine_id
+                engine.name = "Default"
+                engine.last_checkin = datetime.now()
+                s.add(engine)
         s.commit()
         s.close()
     except Exception as e:

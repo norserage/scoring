@@ -21,6 +21,26 @@ from ScoringEngine.core.db import Session, tables
 from ScoringEngine.core import config, logger
 
 
+class EngineHelperCommon:
+    def get_engine_services(self, engine_id):
+        raise NotImplementedError()
+
+    def save_new_service_status(self, service_id, status, extra_info):
+        raise NotImplementedError()
+
+
+
+
+class APIEngineHelper(EngineHelperCommon):
+    pass
+
+
+class DBEngineHelper(EngineHelperCommon):
+    pass
+
+
+helper = EngineHelperCommon()
+
 def thread_start():
     while True:
         logger.info("Score Loop Starting")
@@ -34,6 +54,9 @@ def thread_start():
 
 def score():
     session = Session()
+    engine = session.query(tables.Engine).filter(tables.Engine.id == config.get_item("engine/id")).first()
+    if engine:
+        engine.last_checkin = datetime.datetime.now()
     event = None
     events = session.query(tables.Event).filter(tables.Event.current == True)
     if events.count() > 0:
@@ -48,3 +71,5 @@ def score():
                 logger.debug("Score: %s(<%s>, <%s>, <%s>, <%s>)" % (service.type.tester, server.team.name, server.server.name, service.name, event))
                 threading.Thread(target=func, args=[server, service, event]).start()
     session.close()
+
+

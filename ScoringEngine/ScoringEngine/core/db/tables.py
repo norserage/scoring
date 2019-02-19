@@ -66,6 +66,7 @@ class Server(Base):
     __tablename__ = 'servers'
 
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    engine_id = Column(Integer, ForeignKey("engines.id"), nullable=False, default=0)
     name = Column(String(25), nullable=False)
     enabled = Column(Boolean, nullable=False)
     ip_3 = Column(String(3))
@@ -117,6 +118,14 @@ class TeamServer(Base):
         else:
             return self.team.network.replace("{3}",self.server.ip_3).replace("{4}",self.server.ip_4)
 
+class Engine(Base):
+    __tablename__ = 'engines'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    name = Column(String(25), nullable=False)
+    last_checkin = Column(DateTime, nullable=True)
+
+
 class ScoreEvent(Base):
     __tablename__ = 'scoreevents'
 
@@ -124,6 +133,7 @@ class ScoreEvent(Base):
     eventid = Column(Integer, ForeignKey('events.id'), index=True, unique=False)
     teamserverid = Column(Integer, ForeignKey('teamservers.id'), index=True, unique=False)
     serviceid = Column(Integer, ForeignKey('services.id'), index=True, unique=False)
+    engineid = Column(Integer, ForeignKey('engines.id'), index=True)
     scoretime = Column(DateTime, nullable=False, index=True, unique=False)
     up = Column(Boolean, nullable=False)
     info = Column(Text)
