@@ -18,52 +18,46 @@ from ScoringEngine.core.db import Session
 from ScoringEngine.core import logger
 import json
 import ScoringEngine.utils
+from ScoringEngine.engine import helper
 import ScoringEngine.engine.options
 import subprocess
 import random
 from datetime import datetime
 
-def test(server, service, event):
-    session = Session()
-    se = tables.ScoreEvent()
-    se.serviceid = service.id;
-    se.teamserverid = server.id;
-    se.scoretime = datetime.now()
-    se.eventid = event
-    try:
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server)
-        if 'servers' not in conf:
-            logger.warning("No servers configured for service %i" % service.id)
-            session.close()
-            return
-        servers = conf['servers']
-        ser = random.choice(servers)
-        dnsentry = ser['dns']
-        ip = ser['ip']
-        sp = subprocess.Popen(["nslookup",dnsentry,server.getIP()],stdout=subprocess.PIPE)
-        lines = sp.stdout
-        sp.wait()
-        l = lines.readlines()
 
-        for line in l[2:]:
-            if ip in line:
-                print line
-                se.up = True
-                break
-            else:
-                se.up = False
-        se.info = json.dumps(l)
+
+def test(event, service):
+
+    service_config = helper.get_service_config_old(service['team_server_id'], service['service_id'])
+
+    if 'servers' not in service_config:
+        logger.error("Service configuration error with service (%i,%i)." % (service['team_server_id'], service['service_id']))
+        return
+
+    try:
+        server = random.choice(service_config['servers'])
+        sp = subprocess.Popen(["nslookup", server['dns'], service['ip']], stdout=subprocess.PIPE)
+        sp.wait()
+        output = sp.stdout.readlines()
+
+        logger.debug(json.dumps(output))
+
+        helper.save_new_service_status(
+            event=event['id'],
+            service=service,
+            status=any([server['ip'] in line for line in output]),
+            extra_info=output
+        )
     except Exception as e:
-        se.info = e.message
-        se.up = False    
-    finally:
-        if not se.up:
-            se.up = False
-    session.add(se)
-    session.commit()
-    session.close()
+        helper.save_new_service_status(
+            event=event['id'],
+            service=service,
+            status=False,
+            extra_info=output
+        )
 
 def options():
     return {
         'servers': ScoringEngine.engine.options.JSON()
         }
+

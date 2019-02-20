@@ -26,13 +26,16 @@ class EngineHelperCommon:
     def get_engine_services(self, engine_id):
         raise NotImplementedError()
 
-    def save_new_service_status(self, team_server_id, service_id, event, status, extra_info):
+    def save_new_service_status(self, event, service, status, extra_info):
         raise NotImplementedError()
 
     def get_current_event(self):
         raise NotImplementedError()
 
     def get_random_user(self, password_database):
+        raise NotImplementedError()
+
+    def get_service_config_old(self, team_server_id, service_id):
         raise NotImplementedError()
 
 
@@ -65,10 +68,11 @@ class DBEngineHelper(EngineHelperCommon):
                 s['ip'] = server.getIP()
                 s['server_name'] = server.server.name
                 s['port'] = service.port
-                s['service'] = service.id
+                s['service_id'] = service.id
                 s['service_name'] = service.name
-                s['team'] = server.team.id
+                s['team_id'] = server.team.id
                 s['team_name'] = server.team.name
+                s['team_server_id'] = server.id
                 services.append(s)
         session.close()
         return services
@@ -83,16 +87,28 @@ class DBEngineHelper(EngineHelperCommon):
         session.close()
         return outuser
 
-    def save_new_service_status(self, team_server_id, service_id, event, status, extra_info):
+    def save_new_service_status(self, event, service, status, extra_info):
         session = Session()
         se = tables.ScoreEvent()
         se.engineid = config.get_item("engine/id")
-        se.eventid = event['id']
-        se.teamserverid = team_server_id
-        se.serviceid = service_id
+        se.eventid = event['id'] if event is not None else None
+        se.teamserverid = service['team_server_id']
+        se.serviceid = service['service_id']
         se.up = status
         se.info = json.dumps(extra_info)
         session.close()
+
+    def get_service_config_old(self, team_server_id, service_id):
+        session = Session()
+        confpair = session.query(tables.ServiceArg).filter(
+            tables.and_(tables.ServiceArg.serviceid == service_id, tables.ServiceArg.key == 'conf',
+                        tables.ServiceArg.serverid == team_server_id))
+        session.close()
+        if confpair.count() > 0:
+            conf = json.loads(confpair[0].value)
+            return conf
+        else:
+            return {}
 
 
 helper = EngineHelperCommon()
