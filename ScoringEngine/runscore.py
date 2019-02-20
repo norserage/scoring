@@ -1,8 +1,8 @@
-from ScoringEngine.engine import thread_start, helper, DBEngineHelper
+from ScoringEngine.engine import thread_start, setup_helper, DBEngineHelper
 from ScoringEngine import validate_env
 
 validate_env(engine=True)
 
-helper = DBEngineHelper()
+setup_helper(db=True)
 
 thread_start()
