@@ -41,14 +41,30 @@ function api_score_start {
     python /runapiscore.py
 }
 
-function score_start {
+function db_score_start {
+    update_db
     python /runscore.py
 }
 
+function score_start {
+    if [[ -z "${SCORE_MODE}" ]]; then
+        db_score_start
+    else
+        case "${SCORE_MODE}" in
+            api)
+                api_score_start
+                ;;
+            db)
+                db_score_start
+                ;;
+            *)
+                echo "Invalid SCORE_MODE=${SCORE_MODE}"
+                ;;
+        esac
+    fi
+}
 
 setup
-
-
 
 case "$1" in
     web)
@@ -56,8 +72,10 @@ case "$1" in
         web_start
         ;;
     score)
-        update_db
         score_start
+        ;;
+    db-score)
+        db_score_start
         ;;
     api-score)
         api_score_start
