@@ -37,20 +37,30 @@ function web_start {
     /usr/local/bin/supervisord -n -c /setup/supervisord.conf
 }
 
+function api_score_start {
+    python /runapiscore.py
+}
+
 function score_start {
     python /runscore.py
 }
 
+
 setup
 
-update_db
+
 
 case "$1" in
     web)
+        update_db
         web_start
         ;;
     score)
+        update_db
         score_start
+        ;;
+    api-score)
+        api_score_start
         ;;
     *)
         echo $"Usage: $0 {web|score}"

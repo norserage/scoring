@@ -34,3 +34,5 @@ import ScoringEngine.web.views.injectscore
 import ScoringEngine.web.views.report
 
 import ScoringEngine.web.views.file
+
+import ScoringEngine.web.views.api.api0

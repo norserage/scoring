@@ -66,7 +66,6 @@ class Server(Base):
     __tablename__ = 'servers'
 
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
-    engine_id = Column(Integer, ForeignKey("engines.id"), nullable=False, default=0)
     name = Column(String(25), nullable=False)
     enabled = Column(Boolean, nullable=False)
     ip_3 = Column(String(3))
@@ -106,8 +105,10 @@ class TeamServer(Base):
     __tablename__ = 'teamservers'
     
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    engine_id = Column(Integer, ForeignKey("engines.id"), nullable=False, default=0)
     teamid = Column(Integer, ForeignKey('teams.id'))
     serverid = Column(Integer, ForeignKey('servers.id'))
+
 
     team = relationship("Team", backref=backref('servers', order_by=serverid))
     server = relationship("Server", backref=backref('teams', order_by=teamid))

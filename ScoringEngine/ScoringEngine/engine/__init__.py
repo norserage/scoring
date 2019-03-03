@@ -40,7 +40,37 @@ class EngineHelperCommon:
 
 
 class APIEngineHelper(EngineHelperCommon):
-    pass
+    def __init__(self):
+        import requests
+        self.req = requests
+        self.headers = {'Authorization': "Bearer %s" % config.get_item("engine/psk")}
+
+    def _build_url(self, path):
+        return "%s/%s" % (config.get_item("engine/api_url"), path)
+
+    def _get(self, url):
+        return self.req.get(url, headers=self.headers)
+
+    def _post(self, url, data):
+        return self.req.post(url, json=data, headers=self.headers)
+
+    def get_current_event(self):
+        return self._get(self._build_url("event/current")).json()
+
+    def get_random_user(self, password_database):
+        return self._get(self._build_url("password_db/%s/user/random" % password_database)).json()
+
+    def get_engine_services(self, engine_id):
+        return self._get(self._build_url("engine/%d/services" % engine_id)).json()
+
+    def get_service_config_old(self, team_server_id, service_id):
+        return self._get(self._build_url("teamserver/%s/service/%s/config_legacy" % (team_server_id, service_id))).json()
+
+    def save_new_service_status(self, event, service, status, extra_info):
+        self._post(self._build_url("event/%s/teamserver/%s/service/%s/status" % (event['id'], service['team_server_id'], service['service_id'])), {
+            "status": status,
+            "info": extra_info
+        })
 
 
 class DBEngineHelper(EngineHelperCommon):
@@ -61,8 +91,8 @@ class DBEngineHelper(EngineHelperCommon):
         if engine:
             engine.last_checkin = datetime.datetime.utcnow()
         session.commit()
-        for server in session.query(tables.TeamServer).filter(tables.Team.enabled == True and tables.Server.enabled == True):
-            for service in session.query(tables.Service).filter(tables.Service.serverid == server.server.id and tables.Service.enabled == True):
+        for server in session.query(tables.TeamServer).filter(tables.and_(tables.Team.enabled == True, tables.Server.enabled == True, tables.TeamServer.engine_id == engine_id)):
+            for service in session.query(tables.Service).filter(tables.and_(tables.Service.serverid == server.server.id,tables.Service.enabled == True)):
                 s = {}
                 s['test'] = service.type.tester
                 s['ip'] = server.getIP()
@@ -87,10 +117,10 @@ class DBEngineHelper(EngineHelperCommon):
         session.close()
         return outuser
 
-    def save_new_service_status(self, event, service, status, extra_info):
+    def save_new_service_status(self, event, service, status, extra_info, engine=None):
         session = Session()
         se = tables.ScoreEvent()
-        se.engineid = config.get_item("engine/id")
+        se.engineid = config.get_item("engine/id") if engine is None else engine
         se.eventid = event['id'] if event is not None else None
         se.teamserverid = service['team_server_id']
         se.serviceid = service['service_id']
