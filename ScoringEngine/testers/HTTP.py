@@ -15,16 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import requests
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
 from ScoringEngine.engine import helper
 import ScoringEngine.utils
 import ScoringEngine.engine.options
-from datetime import datetime
 import re
 
 def test(event, service):
-
     service_config = helper.get_service_config_old(service['team_server_id'], service['service_id'])
 
     try:
@@ -46,13 +42,14 @@ def test(event, service):
             service=service,
             status=True,
             extra_info=res.content
+
         )
     except Exception as e:
         helper.save_new_service_status(
             event=event,
             service=service,
             status=False,
-            extra_info=e.message
+            extra_info=str(e.message)
         )
 
 def options():

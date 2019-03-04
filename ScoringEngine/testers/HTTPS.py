@@ -13,45 +13,43 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import mechanize
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
-import ScoringEngine.engine.options
+import requests
+from ScoringEngine.engine import helper
 import ScoringEngine.utils
-from datetime import datetime
+import ScoringEngine.engine.options
+import re
 
-def test(server, service, event):
-    session=Session()
-    se = tables.ScoreEvent()
-    se.serviceid = service.id
-    se.teamserverid = server.id
-    se.scoretime = datetime.now()
-    se.eventid = event
-    br = mechanize.Browser()
+def test(event, service):
+    service_config = helper.get_service_config_old(service['team_server_id'], service['service_id'])
+
     try:
-        url = "https://"+server.getIP()
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server)
-        if "url" in conf:
-            url += conf['url']
-        br.set_handle_robots(False)
-        res = br.open(url)
-        contents = res.read()
-        if "regex" in conf and conf['regex'].strip() != "":
-            import re
-            if re.search(conf['regex'], contents) is None:
-                se.up = False
-            else:
-                se.up = True
-        else:
-            se.up = True
+        url = "https://%s:%d" % (service['ip'], service['port'])
+        if 'url' in service_config:
+            url += service_config['url']
+        res = requests.get(url)
+        if 'regex' in service_config and service_config['regex'].strip() != "":
+            if re.search(service_config['regex'], res.content) is None:
+                helper.save_new_service_status(
+                    event=event,
+                    service=service,
+                    status=False,
+                    extra_info=res.content
+                )
+                return
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=True,
+            extra_info=res.content
+
+        )
     except Exception as e:
-        se.info = e.message
-        se.up = False
-    finally:
-        br.close()
-    session.add(se)
-    session.commit()
-    session.close()
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=False,
+            extra_info=str(e.message)
+        )
 
 def options():
     return {

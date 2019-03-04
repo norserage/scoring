@@ -45,7 +45,7 @@ class APIEngineHelper(EngineHelperCommon):
         self.req = requests
         self.headers = {
             'Authorization': "Bearer %s" % config.get_item("engine/psk"),
-            'X-ENGINE-ID': config.get_item("engine/id")
+            'X-ENGINE-ID': str(config.get_item("engine/id"))
         }
 
     def _build_url(self, path):
@@ -176,7 +176,7 @@ def score():
         m = __import__(service['test'])
         func = getattr(m, "test")
         logger.debug("Score: %s(<%s>, <%s>, <%s>, <%s>)" % (service['test'], service['ip'], service['port'], service['service_name'], event['name'] if 'name' in event else None))
-        threading.Thread(target=func, args=[event, service])
+        threading.Thread(target=func, args=[event, service]).start()
 
     # for server in session.query(tables.TeamServer).all():
     #     if server.server.enabled and server.team.enabled:
