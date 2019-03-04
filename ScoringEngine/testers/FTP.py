@@ -25,7 +25,7 @@ def test(event, service):
 
     service_config = helper.get_service_config_old(service['team_server_id'], service['service_id'])
 
-    if 'passdb' in service_config:
+    if 'passdb' not in service_config:
         logger.error(
             "Service configuration error with service (%i,%i)." % (service['team_server_id'], service['service_id']))
         return
