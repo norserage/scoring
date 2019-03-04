@@ -38,11 +38,13 @@ function web_start {
 }
 
 function api_score_start {
+    out $COLOR_YELLOW "SCORE" "Starting in API mode"
     python /runapiscore.py
 }
 
 function db_score_start {
     update_db
+    out $COLOR_YELLOW "SCORE" "Starting in DB mode"
     python /runscore.py
 }
 

@@ -43,7 +43,10 @@ class APIEngineHelper(EngineHelperCommon):
     def __init__(self):
         import requests
         self.req = requests
-        self.headers = {'Authorization': "Bearer %s" % config.get_item("engine/psk")}
+        self.headers = {
+            'Authorization': "Bearer %s" % config.get_item("engine/psk"),
+            'X-ENGINE-ID': config.get_item("engine/id")
+        }
 
     def _build_url(self, path):
         return "%s/%s" % (config.get_item("engine/api_url"), path)
