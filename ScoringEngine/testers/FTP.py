@@ -14,12 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import ftplib
-from ScoringEngine.core.db import Session, tables
 from ScoringEngine.core import logger
-import ScoringEngine.utils as utils
 from ScoringEngine.engine import helper
 import ScoringEngine.engine.options
-from datetime import datetime
 
 def test(event, service):
 

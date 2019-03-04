@@ -14,13 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import imaplib
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
 from ScoringEngine.core import logger
 from ScoringEngine.engine import helper
-import ScoringEngine.utils as utils
 import ScoringEngine.engine.options
-from datetime import datetime
 
 def test(event, service):
 

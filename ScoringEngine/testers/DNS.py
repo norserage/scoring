@@ -13,8 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
 from ScoringEngine.core import logger
 import json
 import ScoringEngine.utils
@@ -22,8 +20,6 @@ from ScoringEngine.engine import helper
 import ScoringEngine.engine.options
 import subprocess
 import random
-from datetime import datetime
-
 
 
 def test(event, service):
