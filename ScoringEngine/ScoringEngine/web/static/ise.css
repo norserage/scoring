@@ -13,3 +13,7 @@
     padding-left: 5px;
     padding-right: 5px;
 }
+
+.nav-treeview > li {
+    padding-left: 15px;
+}

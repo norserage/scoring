@@ -269,14 +269,20 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="{{ url_for('admin') }}" class="nav-link {{ menu("dashboard", sub_menu) }}">
-                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <i class="fa fa-dashboard nav-icon"></i>
                                         <p>Admin Dashboard</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url_for('users') }}" class="nav-link {{ menu("users", sub_menu) }}">
-                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <i class="fa fa-users nav-icon"></i>
                                         <p>Users</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url_for('events') }}" class="nav-link {{ menu("engines", sub_menu) }}">
+                                        <i class="fa fa-cogs nav-icon"></i>
+                                        <p>Engines</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -306,7 +312,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ url_for('passdbs') }}" class="nav-link {{ menu("passdb", sub_menu) }}">
-                                        <i class="fa fa-circle-o nav-icon"></i>
+                                        <i class="fa fa-user-secret nav-icon"></i>
                                         <p>Password Databases</p>
                                     </a>
                                 </li>
@@ -350,7 +356,7 @@
         <div id="version" class="float-right d-none d-sm-block" data-toggle="tooltip" data-placement="top" data-html="true" title="<table><tr><th>Build:</th><td><em>{{ BUILD }}</em></td></tr><tr><th>Branch:</th><td><em>{{ BRANCH }}</em></td></tr></table>">
             <b>Version</b> {{ VERSION }}
         </div>
-        <strong>Copyright &copy; 2015-2018 <a href="https://www.youtube.com/watch?v=4U_RvUYINpo">thebmw</a>.</strong> All rights
+        <strong>Copyright &copy; 2015-2019 <a href="https://www.youtube.com/watch?v=4U_RvUYINpo">thebmw</a>.</strong> All rights
         reserved.
     </footer>
 
