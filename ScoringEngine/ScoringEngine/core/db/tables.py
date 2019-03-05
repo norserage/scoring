@@ -126,6 +126,18 @@ class Engine(Base):
     name = Column(String(25), nullable=False)
     last_checkin = Column(DateTime, nullable=True)
 
+    @property
+    def status(self):
+        import datetime
+        if self.last_checkin is None:
+            return 0
+        elif self.last_checkin > (datetime.datetime.utcnow() - datetime.timedelta(minutes=5)):
+            return 1
+        elif self.last_checkin > (datetime.datetime.utcnow() - datetime.timedelta(minutes=15)):
+            return 2
+        else:
+            return 3
+
 
 class ScoreEvent(Base):
     __tablename__ = 'scoreevents'

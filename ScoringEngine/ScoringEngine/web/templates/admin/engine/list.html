@@ -1,0 +1,73 @@
+{% set base_menu='admin' %}{% set sub_menu='engines' %}{% extends "layouts/default.html" %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('admin') }}">Admin</a>
+        </li>
+        <li class="breadcrumb-item active">
+            Engines
+        </li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+<div class="content-center">
+    <div class="page-header">
+        <h1>Engines</h1>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Last Checkin</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for engine in engines %}
+            <tr>
+                <td>
+                    {% if engine.status == 0 %}
+                        <span class="label label-default label-round">&nbsp;&nbsp;&nbsp;</span>
+                    {% elif engine.status == 1 %}
+                        <span class="label label-success label-round">&nbsp;&nbsp;&nbsp;</span>
+                    {% elif engine.status == 2 %}
+                        <span class="label label-warning label-round">&nbsp;&nbsp;&nbsp;</span>
+                    {% else %}
+                        <span class="label label-danger label-round">&nbsp;&nbsp;&nbsp;</span>
+                    {% endif %}
+                </td>
+                <td>{{ engine.name }}</td>
+                <td>{{ engine.last_checkin | localtime }}</td>
+                <td>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td><a href="{{ url_for('addevent') }}" class="btn btn-default">Add</a></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/plugins/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="/static/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+    $(function () {
+       $('table').dataTable({
+           "order": [[ 1, "desc" ]]
+       });
+    });
+    </script>
+{% endblock %}

@@ -26,6 +26,7 @@ import ScoringEngine.web.views.admin.event
 import ScoringEngine.web.views.admin.passdb
 import ScoringEngine.web.views.admin.server
 import ScoringEngine.web.views.admin.service
+import ScoringEngine.web.views.admin.engine
 
 import ScoringEngine.web.views.injectmanager
 
