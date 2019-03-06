@@ -1,29 +1,63 @@
 stages:
   - build
+  - build-manifest
   - deploy
 
 variables:
   CI_REGISTRY_HOST: 'registry.gitsoul.net'
   CI_REGISTRY_IMAGE: '$CI_REGISTRY_HOST/norserage/scoring'
 
-dev_docker_build:
+dev_amd64_docker_build:
   stage: build
   except:
     - master
   before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
+    - printenv
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME" -f ScoringEngine/Dockerfile-web .
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME" -f ScoringEngine/Dockerfile-score .
-    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
-    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME"
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64" -f ScoringEngine/Dockerfile-web .
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64" -f ScoringEngine/Dockerfile-score .
+    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64"
+    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64"
+  tags:
+    - docker-build-amd64
+
+dev_arm64_docker_build:
+  stage: build
+  except:
+    - master
+  before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
+  script:
+    - printenv
+    - chmod 775 ScoringEngine/runner.sh
+    - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
+    - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-web .
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-score .
+    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64"
+    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64"
+  tags:
+    - docker-build-arm64
+
+dev_manifest_docker_build:
+  stage: build-manifest
+  except:
+    - master
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
+  script:
+    - docker manifest create -a $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64
+    - docker manifest create -a $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64
+    - docker manifest push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
+    - docker manifest push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME"
   tags:
     - docker-build
 
-release_docker_build:
+release_amd64_docker_build:
   stage: build
   only:
     - master
@@ -33,10 +67,41 @@ release_docker_build:
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web" -f ScoringEngine/Dockerfile-web .
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score" -f ScoringEngine/Dockerfile-score .
-    - docker push "$CI_REGISTRY_IMAGE/web"
-    - docker push "$CI_REGISTRY_IMAGE/score"
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:amd64" -f ScoringEngine/Dockerfile-web .
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:amd64" -f ScoringEngine/Dockerfile-score .
+    - docker push "$CI_REGISTRY_IMAGE/web:amd64"
+    - docker push "$CI_REGISTRY_IMAGE/score:amd64"
+  tags:
+    - docker-build
+
+release_arm64_docker_build:
+  stage: build
+  only:
+    - master
+  before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
+  script:
+    - chmod 775 ScoringEngine/runner.sh
+    - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
+    - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:arm64" -f ScoringEngine/Dockerfile-web .
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:arm64" -f ScoringEngine/Dockerfile-score .
+    - docker push "$CI_REGISTRY_IMAGE/web:arm64"
+    - docker push "$CI_REGISTRY_IMAGE/score:arm64"
+  tags:
+    - docker-build
+
+release_manifest_docker_build:
+  stage: build-manifest
+  only:
+    - master
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
+  script:
+    - docker manifest create -a $CI_REGISTRY_IMAGE/web $CI_REGISTRY_IMAGE/web:amd64 $CI_REGISTRY_IMAGE/web:arm64
+    - docker manifest create -a $CI_REGISTRY_IMAGE/score $CI_REGISTRY_IMAGE/score:amd64 $CI_REGISTRY_IMAGE/score:arm64
+    - docker manifest push "$CI_REGISTRY_IMAGE/web"
+    - docker manifest push "$CI_REGISTRY_IMAGE/score"
   tags:
     - docker-build
 
