@@ -50,10 +50,10 @@ dev_manifest_docker_build:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
-    - docker manifest create $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64
-    - docker manifest create $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64
-    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
-    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME"
+    - docker manifest create -a $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64
+    - docker manifest create -a $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64
+    - docker manifest push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
+    - docker manifest push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME"
   tags:
     - docker-build
 
@@ -98,10 +98,10 @@ release_manifest_docker_build:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
-    - docker manifest create $CI_REGISTRY_IMAGE/web $CI_REGISTRY_IMAGE/web:amd64 $CI_REGISTRY_IMAGE/web:arm64
-    - docker manifest create $CI_REGISTRY_IMAGE/score $CI_REGISTRY_IMAGE/score:amd64 $CI_REGISTRY_IMAGE/score:arm64
-    - docker push "$CI_REGISTRY_IMAGE/web"
-    - docker push "$CI_REGISTRY_IMAGE/score"
+    - docker manifest create -a $CI_REGISTRY_IMAGE/web $CI_REGISTRY_IMAGE/web:amd64 $CI_REGISTRY_IMAGE/web:arm64
+    - docker manifest create -a $CI_REGISTRY_IMAGE/score $CI_REGISTRY_IMAGE/score:amd64 $CI_REGISTRY_IMAGE/score:arm64
+    - docker manifest push "$CI_REGISTRY_IMAGE/web"
+    - docker manifest push "$CI_REGISTRY_IMAGE/score"
   tags:
     - docker-build
 
