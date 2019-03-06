@@ -22,7 +22,25 @@ dev_amd64_docker_build:
     - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
     - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME"
   tags:
-    - docker-build
+    - docker-build-amd64
+
+dev_arm64_docker_build:
+  stage: build
+  except:
+    - master
+  before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
+  script:
+    - printenv
+    - chmod 775 ScoringEngine/runner.sh
+    - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
+    - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-web .
+    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-score .
+    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64"
+    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64"
+  tags:
+    - docker-build-arm64
 
 release_docker_build:
   stage: build
