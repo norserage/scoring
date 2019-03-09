@@ -124,7 +124,7 @@ def validate_env(engine=False):
                 engine = tables.Engine()
                 engine.id = engine_id
                 engine.name = "Default"
-                engine.last_checkin = datetime.now()
+                engine.last_checkin = datetime.utcnow()
                 s.add(engine)
         s.commit()
         s.close()

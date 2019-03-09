@@ -52,7 +52,7 @@ def inject_respond(id):
         if request.method == "POST":
             sub = tables.TeamInjectSubmission()
             sub.assignedinjectid = id
-            sub.when = datetime.now()
+            sub.when = datetime.utcnow()
             sub.body = request.form['body']
             sub.points = 0
             sub.teamid = current_user.team

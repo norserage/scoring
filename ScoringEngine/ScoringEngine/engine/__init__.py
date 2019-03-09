@@ -127,6 +127,7 @@ class DBEngineHelper(EngineHelperCommon):
         se.eventid = event['id'] if event is not None else None
         se.teamserverid = service['team_server_id']
         se.serviceid = service['service_id']
+        se.scoretime = datetime.datetime.utcnow()
         se.up = status
         se.info = json.dumps(extra_info)
         session.close()
@@ -153,6 +154,11 @@ def setup_helper(db=False):
     else:
         helper = APIEngineHelper()
 
+def set_helper(new_helper):
+    global helper
+    if new_helper is not None:
+        helper = new_helper
+
 def thread_start():
     while True:
         logger.info("Score Loop Starting")
@@ -170,6 +176,8 @@ def score():
     # if engine:
     #     engine.last_checkin = datetime.datetime.now()
     event = helper.get_current_event()
+    if event is not None:
+        logger.debug("Event: '%s' Round: %d" % (event['name'], event['round']))
     services = helper.get_engine_services(config.get_item("engine/id"))
 
     for service in services:

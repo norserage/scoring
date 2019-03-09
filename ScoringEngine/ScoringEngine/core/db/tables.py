@@ -19,6 +19,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from .customTypes import GUID
 from uuid import uuid4
+import datetime
 metadata = MetaData()
 Base = declarative_base()
 
@@ -37,13 +38,18 @@ class Event(Base):
     start = Column(DateTime, index=True, unique=False)
     end = Column(DateTime, index=True, unique=False)
 
+    @property
+    def round(self):
+        return int((datetime.datetime.utcnow() - self.start).total_seconds() / 60)
+
     def seralize(self):
         return {
             'id':self.id,
             'name':self.name,
             'current': self.current,
             'start':dump_datetime(self.start),
-            'end':dump_datetime(self.end)
+            'end':dump_datetime(self.end),
+            'round': self.round
             }
 
     @staticmethod

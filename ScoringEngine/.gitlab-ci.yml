@@ -1,6 +1,8 @@
 stages:
   - build
+  - unit-test
   - deploy
+  - ui-test
 
 variables:
   CI_REGISTRY_HOST: 'registry.gitsoul.net'
@@ -39,6 +41,21 @@ release_docker_build:
     - docker push "$CI_REGISTRY_IMAGE/score"
   tags:
     - docker-build
+
+
+dev_unit_tests:
+  stage: unit-test
+  image: $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME
+  except:
+    - master
+  script:
+    - python tests/all_test.py
+  tags:
+    - docker
+    - linux
+  allow_failure: true
+
+
 
 dev_deploy:
   stage: deploy
