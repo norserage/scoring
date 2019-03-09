@@ -156,8 +156,13 @@ def setup_helper(db=False):
 
 def set_helper(new_helper):
     global helper
+    print(helper)
     if new_helper is not None:
         helper = new_helper
+    print(helper)
+
+def get_helper():
+    return helper
 
 def thread_start():
     while True:

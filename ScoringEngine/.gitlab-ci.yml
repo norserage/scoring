@@ -54,8 +54,6 @@ dev_unit_tests:
   tags:
     - docker
     - linux
-  allow_failure: true
-
 
 
 dev_deploy:
