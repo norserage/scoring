@@ -47,11 +47,10 @@ def Ping(hostname,timeout):
     if platform.system() == "Windows":
         command="ping "+hostname+" -n 1 -w "+str(timeout*1000)
     else:
-        command="/bin/ping -i "+str(timeout)+" -c 1 " + hostname
+        command=["ping", "-i", str(timeout), "-c", "1", hostname]
     proccess = subprocess.Popen(command, stdout=subprocess.PIPE)
     o = proccess.stdout.read()
-    print(o)
-    matches=re.match('.*time=([0-9]+)\w*ms.*', o,re.DOTALL)
+    matches=re.match('.*time=([0-9.]+) ?ms.*', o, re.DOTALL)
     if matches:
         return matches.group(1)
     else:
