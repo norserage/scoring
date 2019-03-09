@@ -49,6 +49,7 @@ dev_unit_tests:
   except:
     - master
   script:
+    - cd ScoringEngine
     - python tests/all_test.py
   tags:
     - docker
