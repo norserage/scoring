@@ -16,7 +16,7 @@ limitations under the License.
 from ScoringEngine.core.configreader import configreader
 
 _default_config = {
-    "database": "",
+    "database": "sqlite:///se.db",
     "tests": ['testers'],
     "debug": True,  # TODO this should default to false in production
     "secret": "fakesecret",  # TODO this should not be staticly set,
