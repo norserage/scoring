@@ -22,7 +22,7 @@ class MockEngineHelperBase(EngineHelperCommon):
         return []
 
     def get_random_user(self, password_database):
-        pass
+        return {}
 
     def save_new_service_status(self, event, service, status, extra_info):
         self.status = status
