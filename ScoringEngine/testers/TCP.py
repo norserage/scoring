@@ -13,32 +13,30 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
-from datetime import datetime
 import socket
+from ScoringEngine.engine import helper
 
-def test(server, service, event):
-    #raise NotImplementedError();
-    session=Session()
-    se = tables.ScoreEvent()
-    se.serviceid = service.id;
-    se.teamserverid = server.id;
-    se.scoretime = datetime.now()
-    se.eventid = event
+
+def test(event, service):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        s.connect((server.getIP(), service.port))
-        se.up = True
-        #se.info = s.recv(1024)
+        s.connect((service['ip'], service['port']))
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=True,
+            extra_info=None
+        )
     except Exception as e:
-        se.info = e.message
-        se.up = False
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=False,
+            extra_info=str(e.message)
+        )
     finally:
         s.close()
-    session.add(se)
-    session.commit()
-    session.close()
+
 
 def options():
     return {
