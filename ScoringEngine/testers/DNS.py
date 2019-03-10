@@ -39,14 +39,14 @@ def test(event, service):
         logger.debug(json.dumps(output))
 
         helper.save_new_service_status(
-            event=event['id'],
+            event=event,
             service=service,
             status=any([server['ip'] in line for line in output]),
             extra_info=output
         )
     except Exception as e:
         helper.save_new_service_status(
-            event=event['id'],
+            event=event,
             service=service,
             status=False,
             extra_info=output

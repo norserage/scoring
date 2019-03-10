@@ -2,14 +2,7 @@ import unittest
 
 import helpers
 
-from ScoringEngine.engine import helper, set_helper
-
-class HTTPHelper(helpers.MockEngineHelperBase):
-    def get_service_config_old(self, team_server_id, service_id):
-        return {
-            'url': '/test',
-            'regex': '404'
-        }
+from ScoringEngine.engine import helper
 
 class HTTPTest(unittest.TestCase):
     def testBasic(self):

@@ -17,6 +17,10 @@ class MockEngineHelperBase(EngineHelperCommon):
             return {}
         elif team_server_id == 2:
             return {'url': '/test', 'regex': '404'}
+        elif team_server_id == 3:
+            return {'servers': [{'dns': 'norserage.com', 'ip': '98.102.100.194'}]}
+        else:
+            return {}
 
     def get_engine_services(self, engine_id):
         return []
