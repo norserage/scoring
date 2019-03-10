@@ -33,6 +33,7 @@ dev_arm64_docker_build:
   stage: build
   except:
     - master
+    - +9
   before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
@@ -56,8 +57,8 @@ dev_manifest_docker_build:
   script:
     - docker manifest create -a $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64
     - docker manifest create -a $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64
-    - docker manifest push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
-    - docker manifest push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME"
+    - docker manifest push --purge "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
+    - docker manifest push --purge "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME"
   tags:
     - docker-build
 
@@ -104,8 +105,8 @@ release_manifest_docker_build:
   script:
     - docker manifest create -a $CI_REGISTRY_IMAGE/web $CI_REGISTRY_IMAGE/web:amd64 $CI_REGISTRY_IMAGE/web:arm64
     - docker manifest create -a $CI_REGISTRY_IMAGE/score $CI_REGISTRY_IMAGE/score:amd64 $CI_REGISTRY_IMAGE/score:arm64
-    - docker manifest push "$CI_REGISTRY_IMAGE/web"
-    - docker manifest push "$CI_REGISTRY_IMAGE/score"
+    - docker manifest push --purge "$CI_REGISTRY_IMAGE/web"
+    - docker manifest push --purge "$CI_REGISTRY_IMAGE/score"
   tags:
     - docker-build
 
