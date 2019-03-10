@@ -33,7 +33,6 @@ dev_arm64_docker_build:
   stage: build
   except:
     - master
-    - +9
   before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
