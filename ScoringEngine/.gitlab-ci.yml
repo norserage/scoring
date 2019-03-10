@@ -125,7 +125,7 @@ dev_unit_tests:
 release_unit_tests:
   stage: unit-test
   image: $CI_REGISTRY_IMAGE/score
-  except:
+  only:
     - master
   script:
     - cd ScoringEngine
