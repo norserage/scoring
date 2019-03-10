@@ -8,6 +8,7 @@ stages:
 variables:
   CI_REGISTRY_HOST: 'registry.gitsoul.net'
   CI_REGISTRY_IMAGE: '$CI_REGISTRY_HOST/norserage/scoring'
+  DOCKER_BASE_CMD: 'docker build --pull --build-arg BUILD=$CI_PIPELINE_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME'
 
 
 dev_amd64_docker_build:
@@ -21,8 +22,8 @@ dev_amd64_docker_build:
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64" -f ScoringEngine/Dockerfile-web .
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64" -f ScoringEngine/Dockerfile-score .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64" -f ScoringEngine/Dockerfile-web .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64" -f ScoringEngine/Dockerfile-score .
     - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64"
     - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64"
   tags:
@@ -39,8 +40,8 @@ dev_arm64_docker_build:
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-web .
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-score .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-web .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-score .
     - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64"
     - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64"
   tags:
@@ -70,8 +71,8 @@ release_amd64_docker_build:
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:amd64" -f ScoringEngine/Dockerfile-web .
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:amd64" -f ScoringEngine/Dockerfile-score .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/web:amd64" -f ScoringEngine/Dockerfile-web .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/score:amd64" -f ScoringEngine/Dockerfile-score .
     - docker push "$CI_REGISTRY_IMAGE/web:amd64"
     - docker push "$CI_REGISTRY_IMAGE/score:amd64"
   tags:
@@ -87,8 +88,8 @@ release_arm64_docker_build:
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/web:arm64" -f ScoringEngine/Dockerfile-web .
-    - docker build --pull --build-arg BUILD=$CI_JOB_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME -t "$CI_REGISTRY_IMAGE/score:arm64" -f ScoringEngine/Dockerfile-score .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/web:arm64" -f ScoringEngine/Dockerfile-web .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/score:arm64" -f ScoringEngine/Dockerfile-score .
     - docker push "$CI_REGISTRY_IMAGE/web:arm64"
     - docker push "$CI_REGISTRY_IMAGE/score:arm64"
   tags:
@@ -112,6 +113,18 @@ release_manifest_docker_build:
 dev_unit_tests:
   stage: unit-test
   image: $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME
+  except:
+    - master
+  script:
+    - cd ScoringEngine
+    - python tests/all_test.py
+  tags:
+    - docker
+    - linux
+
+release_unit_tests:
+  stage: unit-test
+  image: $CI_REGISTRY_IMAGE/score
   except:
     - master
   script:
