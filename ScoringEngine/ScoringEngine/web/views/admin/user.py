@@ -89,7 +89,8 @@ def edituser(user):
             dbuser.name = request.form["name"]
             dbuser.username = request.form["username"]
             dbuser.team = request.form["team"]
-            dbuser.group = request.form["group"]
+            if "group" in request.form:
+                dbuser.group = request.form["group"]
             if str(request.form["password"]).strip() != "":
                dbuser.set_password(request.form['password'])
             dbsession.commit()
