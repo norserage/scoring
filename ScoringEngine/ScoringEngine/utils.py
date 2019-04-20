@@ -42,18 +42,19 @@ def getRandomEmail(session, passwd_db):
     outuser = random.choice(user)
     return outuser
 
-# This way we don't have to run as root
 def Ping(hostname,timeout):
     if platform.system() == "Windows":
         command="ping "+hostname+" -n 1 -w "+str(timeout*1000)
     else:
         command=["ping", "-i", str(timeout), "-c", "1", hostname]
     proccess = subprocess.Popen(command, stdout=subprocess.PIPE)
+    o = proccess.stdout.read()
     matches=re.match('.*time=([0-9.]+) ?ms.*', o, re.DOTALL)
     if matches:
         return matches.group(1)
     else:
         return False
+
 
 def getServiceConfig(session, service, teamserver):
     # TODO change how this is done to be easier to manage from the web interface
