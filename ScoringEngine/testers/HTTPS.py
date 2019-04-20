@@ -32,10 +32,10 @@ def test(server, service, event):
         conf = ScoringEngine.utils.getServiceConfig(session, service, server)
         if "url" in conf:
             url += conf['url']
-        contents = requests.get(url, verify=False)
+        res = requests.get(url, verify=False)
         if "regex" in conf and conf['regex'].strip() != "":
             import re
-            if re.search(conf['regex'], contents) is None:
+            if re.search(conf['regex'], res.content) is None:
                 se.up = False
             else:
                 se.up = True
