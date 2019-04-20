@@ -1,4 +1,4 @@
-﻿"""
+"""
 Copyright 2016 Brandon Warner
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ def Ping(hostname,timeout):
     if platform.system() == "Windows":
         command="ping "+hostname+" -n 1 -w "+str(timeout*1000)
     else:
-        command="ping -i "+str(timeout)+" -c 1 " + hostname
+        command=["ping", "-i", str(timeout), "-c", "1", hostname]
     proccess = subprocess.Popen(command, stdout=subprocess.PIPE)
     matches=re.match('.*time=([0-9]+)ms.*', proccess.stdout.read(),re.DOTALL)
     if matches:
