@@ -49,7 +49,7 @@ def Ping(hostname,timeout):
     else:
         command=["ping", "-i", str(timeout), "-c", "1", hostname]
     proccess = subprocess.Popen(command, stdout=subprocess.PIPE)
-    matches=re.match('.*time=([0-9]+)ms.*', proccess.stdout.read(),re.DOTALL)
+    matches=re.match('.*time=([0-9.]+) ?ms.*', o, re.DOTALL)
     if matches:
         return matches.group(1)
     else:
