@@ -44,8 +44,6 @@ def test(server, service, event):
     except Exception as e:
         se.info = e.message
         se.up = False
-    finally:
-        br.close()
     session.add(se)
     session.commit()
     session.close()
