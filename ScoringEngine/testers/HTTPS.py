@@ -1,4 +1,4 @@
-﻿"""
+"""
 Copyright 2016 Brandon Warner
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import mechanize
+import requests
 import ScoringEngine.core.db.tables as tables
 from ScoringEngine.core.db import Session
 import ScoringEngine.engine.options
@@ -27,15 +27,12 @@ def test(server, service, event):
     se.teamserverid = server.id
     se.scoretime = datetime.now()
     se.eventid = event
-    br = mechanize.Browser()
     try:
         url = "https://"+server.getIP()
         conf = ScoringEngine.utils.getServiceConfig(session, service, server)
         if "url" in conf:
             url += conf['url']
-        br.set_handle_robots(False)
-        res = br.open(url)
-        contents = res.read()
+        contents = requests.get(url, verify=False)
         if "regex" in conf and conf['regex'].strip() != "":
             import re
             if re.search(conf['regex'], contents) is None:
