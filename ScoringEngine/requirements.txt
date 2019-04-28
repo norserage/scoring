@@ -12,6 +12,7 @@ redis
 pytz
 pysmb
 pyclamd
+requests
 
 alembic
 requests
