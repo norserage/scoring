@@ -19,6 +19,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 from .customTypes import GUID
 from uuid import uuid4
+import datetime
 metadata = MetaData()
 Base = declarative_base()
 
@@ -37,13 +38,18 @@ class Event(Base):
     start = Column(DateTime, index=True, unique=False)
     end = Column(DateTime, index=True, unique=False)
 
+    @property
+    def round(self):
+        return int((datetime.datetime.utcnow() - self.start).total_seconds() / 60)
+
     def seralize(self):
         return {
             'id':self.id,
             'name':self.name,
             'current': self.current,
             'start':dump_datetime(self.start),
-            'end':dump_datetime(self.end)
+            'end':dump_datetime(self.end),
+            'round': self.round
             }
 
     @staticmethod
@@ -105,8 +111,10 @@ class TeamServer(Base):
     __tablename__ = 'teamservers'
     
     id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    engine_id = Column(Integer, ForeignKey("engines.id"), nullable=False, default=0)
     teamid = Column(Integer, ForeignKey('teams.id'))
     serverid = Column(Integer, ForeignKey('servers.id'))
+
 
     team = relationship("Team", backref=backref('servers', order_by=serverid))
     server = relationship("Server", backref=backref('teams', order_by=teamid))
@@ -117,6 +125,26 @@ class TeamServer(Base):
         else:
             return self.team.network.replace("{3}",self.server.ip_3).replace("{4}",self.server.ip_4)
 
+class Engine(Base):
+    __tablename__ = 'engines'
+
+    id = Column(Integer, primary_key=True, index=True, unique=True, autoincrement=True)
+    name = Column(String(25), nullable=False)
+    last_checkin = Column(DateTime, nullable=True)
+
+    @property
+    def status(self):
+        import datetime
+        if self.last_checkin is None:
+            return 0
+        elif self.last_checkin > (datetime.datetime.utcnow() - datetime.timedelta(minutes=5)):
+            return 1
+        elif self.last_checkin > (datetime.datetime.utcnow() - datetime.timedelta(minutes=15)):
+            return 2
+        else:
+            return 3
+
+
 class ScoreEvent(Base):
     __tablename__ = 'scoreevents'
 
@@ -124,6 +152,7 @@ class ScoreEvent(Base):
     eventid = Column(Integer, ForeignKey('events.id'), index=True, unique=False)
     teamserverid = Column(Integer, ForeignKey('teamservers.id'), index=True, unique=False)
     serviceid = Column(Integer, ForeignKey('services.id'), index=True, unique=False)
+    engineid = Column(Integer, ForeignKey('engines.id'), index=True)
     scoretime = Column(DateTime, nullable=False, index=True, unique=False)
     up = Column(Boolean, nullable=False)
     info = Column(Text)

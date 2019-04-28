@@ -31,7 +31,7 @@ def about():
         'about.html',
         title='About',
         year=datetime.now().year,
-        message='Norser@g3 Inject Scoring Engine',
+        message='Lepus Inject Scoring Engine',
     )
 
 @app.route('/favicon.ico')

@@ -2,7 +2,6 @@ Flask
 flask-login
 flask-markdown
 flask-babel
-mechanize
 SQLAlchemy
 pycrypto
 psycopg2
@@ -16,3 +15,4 @@ pyclamd
 requests
 
 alembic
+requests

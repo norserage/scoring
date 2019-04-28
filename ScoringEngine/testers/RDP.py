@@ -1,33 +1,44 @@
-import ScoringEngine.db.tables as tables
-from ScoringEngine.db import Session
-import ScoringEngine.utils as utils
-import ScoringEngine.options
-import json
-from datetime import datetime
-import socket
+"""
+Copyright 2016 Brandon Warner
 
-def test(server, service, event):
-    #raise NotImplementedError();
-    session=Session()
-    se = tables.ScoreEvent()
-    se.serviceid = service.id
-    se.teamserverid = server.id
-    se.scoretime = datetime.now()
-    se.eventid = event
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+import socket
+from ScoringEngine.engine import helper
+
+
+def test(event, service):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        s.connect((server.getIP(), service.port))
-        se.up = True
+        s.connect((service['ip'], service['port']))
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=True,
+            extra_info=None
+        )
     except Exception as e:
-        se.info = e.message
-        se.up = False
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=False,
+            extra_info=str(e.message)
+        )
     finally:
         s.close()
-    session.add(se)
-    session.commit()
-    session.close()
+
 
 def options():
     return {
-        
-        }
+
+    }

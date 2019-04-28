@@ -13,32 +13,33 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
 import ScoringEngine.utils as utils
-import json
-from datetime import datetime
+from ScoringEngine.engine import helper
 
-def test(server, service, event):
-    session=Session()
-    se = tables.ScoreEvent()
-    se.serviceid = service.id;
-    se.teamserverid = server.id;
-    se.scoretime = datetime.now()
-    se.eventid = event
+def test(event, service):
     try:
-        r = utils.Ping(server.getIP(), 5)
+        r = utils.Ping(service['ip'], 5)
         if r:
-            se.up = True
-            se.info = json.dumps({'trip': r})
+            helper.save_new_service_status(
+                event=event,
+                service=service,
+                status=True,
+                extra_info={'trip': r}
+            )
         else:
-            se.up = False
+            helper.save_new_service_status(
+                event=event,
+                service=service,
+                status=False,
+                extra_info=None
+            )
     except Exception as e:
-        se.info = e.message
-        se.up = False
-    session.add(se)
-    session.commit()
-    session.close()
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=False,
+            extra_info=e.message
+        )
 
 def options():
     return {

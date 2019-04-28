@@ -14,44 +14,51 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import imaplib
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
 from ScoringEngine.core import logger
-import ScoringEngine.utils as utils
+from ScoringEngine.engine import helper
 import ScoringEngine.engine.options
-from datetime import datetime
 
-def test(server, service, event):
-    session=Session()
-    se = tables.ScoreEvent()
-    se.serviceid = service.id;
-    se.teamserverid = server.id;
-    se.scoretime = datetime.now()
-    se.eventid = event
-    
+def test(event, service):
+
+    service_config = helper.get_service_config_old(service['team_server_id'], service['service_id'])
+
     try:
-        imap = imaplib.IMAP4(server.getIP)
-        conf = utils.getServiceConfig(session, service, server)
-        if 'passdb' not in conf:
-            logger.warning("Service %i is not configured" % service.id)
-            session.close()
+        imap = imaplib.IMAP4(service['ip'], service['port'])
+        if 'passdb' not in service_config:
+            logger.error(
+                "Service configuration error with service (%i,%i)." % (
+                service['team_server_id'], service['service_id']))
             return
-        user = utils.getRandomUser(session, conf['passdb'])
+
+        user = helper.get_random_user(service_config['passdb'])
+
         r = imap.login(user['user'], user['pass'])
+
         if r[0] == 'OK':
-            se.up = True
+            helper.save_new_service_status(
+                event=event,
+                service=service,
+                status=True,
+                extra_info=r
+            )
         else:
-            se.up = False
+            helper.save_new_service_status(
+                event=event,
+                service=service,
+                status=False,
+                extra_info=r
+            )
         try:
             imap.close()
         except Exception as ep2:
             pass
     except Exception as ep:
-        se.info = ep.message
-        se.up = False
-    session.add(se)
-    session.commit()
-    session.close()
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=False,
+            extra_info=r
+        )
 
 def options():
     return {

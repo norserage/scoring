@@ -1,4 +1,4 @@
-"""
+﻿"""
 Copyright 2016 Brandon Warner
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,6 +42,7 @@ def getRandomEmail(session, passwd_db):
     outuser = random.choice(user)
     return outuser
 
+# This way we don't have to run as root
 def Ping(hostname,timeout):
     if platform.system() == "Windows":
         command="ping "+hostname+" -n 1 -w "+str(timeout*1000)
@@ -54,7 +55,6 @@ def Ping(hostname,timeout):
         return matches.group(1)
     else:
         return False
-
 
 def getServiceConfig(session, service, teamserver):
     # TODO change how this is done to be easier to manage from the web interface

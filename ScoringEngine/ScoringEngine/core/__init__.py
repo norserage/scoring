@@ -16,7 +16,7 @@ limitations under the License.
 from ScoringEngine.core.configreader import configreader
 
 _default_config = {
-    "database": "",
+    "database": "sqlite:///se.db",
     "tests": ['testers'],
     "debug": True,  # TODO this should default to false in production
     "secret": "fakesecret",  # TODO this should not be staticly set,
@@ -30,7 +30,9 @@ _default_config = {
     },
     "engine": {
         "min": 60,
-        "max": 120
+        "max": 120,
+        "id": 0,
+        "psk": "key"
     },
     "logging": {
         "version": 1,
@@ -84,7 +86,8 @@ _default_config = {
         "image/jpeg",
         "image/gif",
         "text/plain"
-    ]
+    ],
+
 }
 
 config = configreader(['config.json', '/etc/ise.json', '/etc/ise/config.json'], _default_config)

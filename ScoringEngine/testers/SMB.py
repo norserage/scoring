@@ -13,61 +13,93 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
-from datetime import datetime
+
 from smb.SMBConnection import SMBConnection
 import ScoringEngine.engine.options
 import ScoringEngine.utils
 from ScoringEngine.core import logger
-import json
+from ScoringEngine.engine import helper
 
-def test(server, service, event):
-    #raise NotImplementedError();
-    session=Session()
-    se = tables.ScoreEvent()
-    se.serviceid = service.id;
-    se.teamserverid = server.id;
-    se.scoretime = datetime.now()
-    se.eventid = event
+
+def _a(a):
+    return a.encode('ascii', 'ignore')
+
+
+def test(event, service):
+
+    service_config = helper.get_service_config_old(service['team_server_id'], service['service_id'])
+
+    if all([key in service_config for key in ['passdb', 'share', 'path', 'file', 'remote_name']]):
+        logger.error("")
+        return
 
     try:
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server)
-        if 'passdb' not in conf or 'share' not in conf or 'path' not in conf or 'file' not in conf or 'remote_name' not in conf:
-            logger.warning("No configuration for service %i", service.id)
-            session.close()
-            return
-        user = ScoringEngine.utils.getRandomUser(session, conf['passdb'])
-        conn = SMBConnection(user['user'].encode('ascii', 'ignore'), user['pass'].encode('ascii', 'ignore'), 'LepusISE'.encode('ascii', 'ignore'), conf['remote_name'].encode('ascii', 'ignore'), user['domain'].encode('ascii', 'ignore'), is_direct_tcp=service.port==445)
-        if conn.connect(server.getIP().encode('ascii', 'ignore'), service.port):
-            if 'regex' not in conf or conf['regex'].strip() == "":
-                files = conn.listPath(conf['share'], conf['path'])
+        user = helper.get_random_user(service_config['passdb'])
+        conn = SMBConnection(
+            username=_a(user['user']),
+            password=_a(user['pass']),
+            my_name=_a("LepusISE"),
+            remote_name=_a(service_config['remote_name']),
+            domain=_a(user['domain']),
+            is_direct_tcp=(service['port'] == 445)
+        )
+        if conn.connect(_a(service['ip']), service['port']):
+            if 'regex' not in service_config or service_config['regex'].strip() == "":
+                files = conn.listPath(service_config['share'], service_config['path'])
                 for file in files:
-                    if file.filename == conf['file']:
-                        se.up = True
-                        se.info = json.dumps([file.filename for file in files])
-                        break
+                    if file.filename == service_config['file']:
+                        helper.save_new_service_status(
+                            event=event,
+                            service=service,
+                            status=True,
+                            extra_info=[f.filename for f in files]
+                        )
+                        conn.close()
+                        return
+                helper.save_new_service_status(
+                    event=event,
+                    service=service,
+                    status=False,
+                    extra_info=[f.filename for f in files]
+                )
             else:
                 import re
                 import tempfile
                 file_obj = tempfile.NamedTemporaryFile()
-                file_attr, filesize = conn.retrieveFile(conf['share'], conf['path'] + "/" + conf['file'], file_obj)
+                file_attr, filesize = conn.retrieveFile(service_config['share'], service_config['path'] + "/" + service_config['file'], file_obj)
                 file_obj.seek(0)
                 content = file_obj.read()
                 file_obj.close()
-                if re.search(conf['regex'], content) is None:
-                    se.up = False
+                if re.search(service_config['regex'], content) is None:
+                    helper.save_new_service_status(
+                        event=event,
+                        service=service,
+                        status=False,
+                        extra_info=content
+                    )
                 else:
-                    se.up = True
+                    helper.save_new_service_status(
+                        event=event,
+                        service=service,
+                        status=True,
+                        extra_info=content
+                    )
         else:
-            se.up = False
+            helper.save_new_service_status(
+                event=event,
+                service=service,
+                status=False,
+                extra_info=None
+            )
         conn.close()
-    except Exception as e:
-        se.up = False
-        se.info = e.message
-    session.add(se)
-    session.commit()
-    session.close()
+    except Exception as ex:
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=False,
+            extra_info=None
+        )
+
 
 def options():
     return {

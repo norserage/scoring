@@ -18,7 +18,6 @@ from flask import render_template, session
 from ScoringEngine.web import app
 from ScoringEngine.core.db import getSession, tables, engine
 import ScoringEngine.utils
-import ScoringEngine.engine
 
 from ScoringEngine.web.flask_utils import db_user, require_group
 from flask_login import current_user, login_required

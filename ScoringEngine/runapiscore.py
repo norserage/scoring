@@ -3,6 +3,6 @@ from ScoringEngine import validate_env
 
 validate_env(engine=True)
 
-setup_helper(db=True)
+setup_helper(db=False)
 
 thread_start()

@@ -37,20 +37,50 @@ function web_start {
     /usr/local/bin/supervisord -n -c /setup/supervisord.conf
 }
 
-function score_start {
+function api_score_start {
+    out $COLOR_YELLOW "SCORE" "Starting in API mode"
+    python /runapiscore.py
+}
+
+function db_score_start {
+    update_db
+    out $COLOR_YELLOW "SCORE" "Starting in DB mode"
     python /runscore.py
+}
+
+function score_start {
+    if [[ -z "${SCORE_MODE}" ]]; then
+        db_score_start
+    else
+        case "${SCORE_MODE}" in
+            api)
+                api_score_start
+                ;;
+            db)
+                db_score_start
+                ;;
+            *)
+                echo "Invalid SCORE_MODE=${SCORE_MODE}"
+                ;;
+        esac
+    fi
 }
 
 setup
 
-update_db
-
 case "$1" in
     web)
+        update_db
         web_start
         ;;
     score)
         score_start
+        ;;
+    db-score)
+        db_score_start
+        ;;
+    api-score)
+        api_score_start
         ;;
     *)
         echo $"Usage: $0 {web|score}"

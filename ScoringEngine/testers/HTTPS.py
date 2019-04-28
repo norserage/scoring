@@ -1,4 +1,4 @@
-"""
+﻿"""
 Copyright 2016 Brandon Warner
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,42 +14,49 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 import requests
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
-import ScoringEngine.engine.options
+from ScoringEngine.engine import helper
 import ScoringEngine.utils
-from datetime import datetime
+import ScoringEngine.engine.options
+import re
 
-def test(server, service, event):
-    session=Session()
-    se = tables.ScoreEvent()
-    se.serviceid = service.id
-    se.teamserverid = server.id
-    se.scoretime = datetime.now()
-    se.eventid = event
+def test(event, service):
+    service_config = helper.get_service_config_old(service['team_server_id'], service['service_id'])
+
     try:
-        url = "https://"+server.getIP()
-        conf = ScoringEngine.utils.getServiceConfig(session, service, server)
-        if "url" in conf:
-            url += conf['url']
-        res = requests.get(url, verify=False)
-        if "regex" in conf and conf['regex'].strip() != "":
-            import re
-            if re.search(conf['regex'], res.content) is None:
-                se.up = False
-            else:
-                se.up = True
-        else:
-            se.up = True
+        url = "https://%s:%d" % (service['ip'], service['port'])
+        if 'url' in service_config:
+            url += service_config['url']
+        verify_ssl = False
+        if 'verify' in service_config and service_config['verify'].lower() == "yes":
+            verify_ssl = True
+        res = requests.get(url, verify=verify_ssl)
+        if 'regex' in service_config and service_config['regex'].strip() != "":
+            if re.search(service_config['regex'], res.content) is None:
+                helper.save_new_service_status(
+                    event=event,
+                    service=service,
+                    status=False,
+                    extra_info=res.content
+                )
+                return
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=True,
+            extra_info=res.content
+
+        )
     except Exception as e:
-        se.info = e.message
-        se.up = False
-    session.add(se)
-    session.commit()
-    session.close()
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=False,
+            extra_info=str(e.message)
+        )
 
 def options():
     return {
         'url': ScoringEngine.engine.options.String(),
-        'regex': ScoringEngine.engine.options.String()
+        'regex': ScoringEngine.engine.options.String(),
+        'verify': ScoringEngine.engine.options.String()
         }
