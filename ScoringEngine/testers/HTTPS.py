@@ -26,7 +26,10 @@ def test(event, service):
         url = "https://%s:%d" % (service['ip'], service['port'])
         if 'url' in service_config:
             url += service_config['url']
-        res = requests.get(url, verify=False)
+        verify_ssl = False
+        if 'verify' in service_config and service_config['verify'].lower() == "yes":
+            verify_ssl = True
+        res = requests.get(url, verify=verify_ssl)
         if 'regex' in service_config and service_config['regex'].strip() != "":
             if re.search(service_config['regex'], res.content) is None:
                 helper.save_new_service_status(
@@ -54,5 +57,6 @@ def test(event, service):
 def options():
     return {
         'url': ScoringEngine.engine.options.String(),
-        'regex': ScoringEngine.engine.options.String()
+        'regex': ScoringEngine.engine.options.String(),
+        'verify': ScoringEngine.engine.options.String()
         }

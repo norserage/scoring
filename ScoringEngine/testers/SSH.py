@@ -13,43 +13,46 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import ScoringEngine.core.db.tables as tables
-from ScoringEngine.core.db import Session
-import ScoringEngine.utils as utils
 import ScoringEngine.engine.options
+from ScoringEngine.engine import helper
 from ScoringEngine.core import logger
-from datetime import datetime
 import paramiko
 
-def test(server, service, event):
-    #raise NotImplementedError();
-    session=Session()
-    se = tables.ScoreEvent()
-    se.serviceid = service.id
-    se.teamserverid = server.id
-    se.scoretime = datetime.now()
-    se.eventid = event
+
+def test(event, service):
+    service_config = helper.get_service_config_old(service['team_server_id'], service['service_id'])
+
+    if 'passdb' not in service_config:
+        logger.error(
+            "Service configuration error with service (%i,%i)." % (service['team_server_id'], service['service_id']))
+        return
+
     ssh = paramiko.SSHClient()
+
     try:
-        conf = utils.getServiceConfig(session, service, server)
-        if 'passdb' not in conf:
-            logger.warning("Service %i is not configured" % service.id)
-            ssh.close()
-            session.close()
-            return
-        user = utils.getRandomUser(session, conf['passdb'])
+        user = helper.get_random_user(service_config['passdb'])
+
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(server.getIP(), username=user['user'], password=user['pass'])
+
+        ssh.connect(service['ip'], service['port'], user['user'], user['pass'])
+
         ssh.exec_command("ping -c 4 8.8.8.8")
-        se.up = True
+
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=True,
+            extra_info=None
+        )
     except Exception as e:
-        se.info = e.message
-        se.up = False
+        helper.save_new_service_status(
+            event=event,
+            service=service,
+            status=False,
+            extra_info=e.message
+        )
     finally:
         ssh.close()
-    session.add(se)
-    session.commit()
-    session.close()
 
 
 def options():
