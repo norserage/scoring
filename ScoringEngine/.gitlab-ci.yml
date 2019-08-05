@@ -186,27 +186,29 @@ dev_prod_deploy:
   variables:
     GIT_STRATEGY: none
 
-bug_deploy:
+branch_deploy:
   stage: deploy
-  only:
-    - /^NS-[0-9]+$/
+  except:
+    - master
+    - dev
   image: thebmw/deployer
   script:
     - sshpass -p "${DEV_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${DEV_SERVER_USER}@${DEV_SERVER_HOST} sudo /opt/deploy_ise.sh "$CI_COMMIT_REF_SLUG" "$CI_ENVIRONMENT_SLUG"
   environment:
     name: $CI_COMMIT_REF_NAME
     url: https://$CI_ENVIRONMENT_SLUG.ise.thebmw.tech
-    on_stop: bug_deploy_stop
+    on_stop: branch_deploy_stop
   tags:
     - linux
     - docker
   variables:
     GIT_STRATEGY: none
 
-bug_deploy_stop:
+branch_deploy_stop:
   stage: deploy
-  only:
-    - /^NS-[0-9]+$/
+  except:
+    - master
+    - dev
   image: thebmw/deployer
   when: manual
   script:
