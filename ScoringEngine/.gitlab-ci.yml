@@ -10,11 +10,11 @@ variables:
   CI_REGISTRY_IMAGE: '$CI_REGISTRY_HOST/norserage/scoring'
   DOCKER_BASE_CMD: 'docker build --pull --build-arg BUILD=$CI_PIPELINE_ID --build-arg BRANCH=$CI_COMMIT_REF_NAME'
 
-
-dev_amd64_docker_build:
+branch_amd64_docker_build:
   stage: build
   except:
     - master
+    - dev
   before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
@@ -22,17 +22,35 @@ dev_amd64_docker_build:
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
-    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64" -f ScoringEngine/Dockerfile-web .
-    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64" -f ScoringEngine/Dockerfile-score .
-    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64"
-    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64"
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG" -f ScoringEngine/Dockerfile-web .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG" -f ScoringEngine/Dockerfile-score .
+    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG"
+    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG"
+  tags:
+    - docker-build-amd64
+
+dev_amd64_docker_build:
+  stage: build
+  only:
+    - dev
+  before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
+  script:
+    - printenv
+    - chmod 775 ScoringEngine/runner.sh
+    - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
+    - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG-amd64" -f ScoringEngine/Dockerfile-web .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG-amd64" -f ScoringEngine/Dockerfile-score .
+    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG-amd64"
+    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG-amd64"
   tags:
     - docker-build-amd64
 
 dev_arm64_docker_build:
   stage: build
-  except:
-    - master
+  only:
+    - dev
   before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
@@ -40,24 +58,24 @@ dev_arm64_docker_build:
     - chmod 775 ScoringEngine/runner.sh
     - find ScoringEngine/ScoringEngine -type f -exec chmod 664 {} \;
     - find ScoringEngine/ScoringEngine -type d -exec chmod 775 {} \;
-    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-web .
-    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64" -f ScoringEngine/Dockerfile-score .
-    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64"
-    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64"
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG-arm64" -f ScoringEngine/Dockerfile-web .
+    - $DOCKER_BASE_CMD -t "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG-arm64" -f ScoringEngine/Dockerfile-score .
+    - docker push "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG-arm64"
+    - docker push "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG-arm64"
   tags:
     - docker-build-arm64
 
 dev_manifest_docker_build:
   stage: build-manifest
-  except:
-    - master
+  only:
+    - dev
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY_HOST
   script:
-    - docker manifest create -a $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME-arm64
-    - docker manifest create -a $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-amd64 $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME-arm64
-    - docker manifest push --purge "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_NAME"
-    - docker manifest push --purge "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME"
+    - docker manifest create -a $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG-amd64 $CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG-arm64
+    - docker manifest create -a $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG-amd64 $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG-arm64
+    - docker manifest push --purge "$CI_REGISTRY_IMAGE/web:$CI_COMMIT_REF_SLUG"
+    - docker manifest push --purge "$CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG"
   tags:
     - docker-build
 
@@ -112,7 +130,7 @@ release_manifest_docker_build:
 
 dev_unit_tests:
   stage: unit-test
-  image: $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_NAME
+  image: $CI_REGISTRY_IMAGE/score:$CI_COMMIT_REF_SLUG
   except:
     - master
   script:
@@ -168,33 +186,35 @@ dev_prod_deploy:
   variables:
     GIT_STRATEGY: none
 
-bug_deploy:
+branch_deploy:
   stage: deploy
-  only:
-    - /^NS-[0-9]+$/
+  except:
+    - master
+    - dev
   image: thebmw/deployer
   script:
-    - sshpass -p "${DEV_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${DEV_SERVER_USER}@${DEV_SERVER_HOST} sudo /opt/deploy_ise.sh "$CI_COMMIT_REF_NAME" "$CI_ENVIRONMENT_SLUG"
+    - sshpass -p "${DEV_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${DEV_SERVER_USER}@${DEV_SERVER_HOST} sudo /opt/deploy_ise.sh "$CI_COMMIT_REF_SLUG" "$CI_ENVIRONMENT_SLUG"
   environment:
-    name: bug/$CI_COMMIT_REF_NAME
+    name: $CI_COMMIT_REF_NAME
     url: https://$CI_ENVIRONMENT_SLUG.ise.thebmw.tech
-    on_stop: bug_deploy_stop
+    on_stop: branch_deploy_stop
   tags:
     - linux
     - docker
   variables:
     GIT_STRATEGY: none
 
-bug_deploy_stop:
+branch_deploy_stop:
   stage: deploy
-  only:
-    - /^NS-[0-9]+$/
+  except:
+    - master
+    - dev
   image: thebmw/deployer
   when: manual
   script:
     - sshpass -p "${DEV_SERVER_PASS}" ssh -o StrictHostKeyChecking=no -o PreferredAuthentications=password -o PubkeyAuthentication=no ${DEV_SERVER_USER}@${DEV_SERVER_HOST} sudo /opt/remove_ise.sh "$CI_ENVIRONMENT_SLUG"
   environment:
-    name: bug/$CI_COMMIT_REF_NAME
+    name: $CI_COMMIT_REF_NAME
     action: stop
   tags:
     - linux
