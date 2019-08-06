@@ -89,6 +89,18 @@ def validate_env(engine=False):
     import os, os.path
     from ScoringEngine.core import logger, config
     from ScoringEngine.core.db import Session, tables
+
+    if config.has_item("sentry/dsn") and 'CI_BUILD' in environ:
+        import sentry_sdk
+        from sentry_sdk.integrations.flask import FlaskIntegration
+
+        sentry_sdk.init(
+            dsn=config.get_item("sentry/dsn"),
+            integrations=[FlaskIntegration()],
+            release="lepus-ise@%s" % VERSION,
+            environment=config.get_item("sentry/env")
+        )
+
     try:
         s = Session()
         logger.debug("Checking if >0 users")

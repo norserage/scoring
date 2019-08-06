@@ -16,3 +16,5 @@ requests
 
 alembic
 requests
+
+sentry-sdk[flask]==0.7.12
