@@ -188,7 +188,7 @@ def score():
     for service in services:
         m = __import__(service['test'])
         func = getattr(m, "test")
-        logger.debug("Score: %s(<%s>, <%s>, <%s>, <%s>)" % (service['test'], service['ip'], service['port'], service['service_name'], event['name'] if 'name' in event else None))
+        logger.debug("Score: %s(<%s>, <%s>, <%s>, <%s>)" % (service['test'], service['ip'], service['port'], service['service_name'], event['name'] if event is not None and 'name' in event else None))
         threading.Thread(target=func, args=[event, service]).start()
 
     # for server in session.query(tables.TeamServer).all():
