@@ -1,5 +1,7 @@
 stages:
+  - aws-start
   - build
+  - aws-stop
   - build-manifest
   - unit-test
   - deploy
@@ -151,6 +153,34 @@ release_unit_tests:
   tags:
     - docker
     - linux
+
+aws_start:
+  stage: aws-start
+  only:
+    - dev
+    - master
+  image: cgswong/aws
+  script:
+    - aws ec2 start-instances --instance-ids i-0eb6807598e172deb
+  tags:
+    - linux
+    - docker
+  variables:
+    GIT_STRATEGY: none
+
+aws_stop:
+  stage: aws-stop
+  only:
+    - dev
+    - master
+  image: cgswong/aws
+  script:
+    - aws ec2 stop-instances --instance-ids i-0eb6807598e172deb
+  tags:
+    - linux
+    - docker
+  variables:
+    GIT_STRATEGY: none
 
 
 dev_deploy:
