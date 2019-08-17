@@ -27,7 +27,8 @@ def upgrade():
     op.create_index(op.f('ix_engines_id'), 'engines', ['id'], unique=True)
     op.add_column(u'scoreevents', sa.Column('engineid', sa.Integer(), nullable=True))
     op.create_index(op.f('ix_scoreevents_engineid'), 'scoreevents', ['engineid'], unique=False)
-    op.create_foreign_key(None, 'scoreevents', 'engines', ['engineid'], ['id'])
+    if 'sqlite' not in op.get_context().connection.engine.url.drivername:
+        op.create_foreign_key(None, 'scoreevents', 'engines', ['engineid'], ['id'])
     # ### end Alembic commands ###
 
 

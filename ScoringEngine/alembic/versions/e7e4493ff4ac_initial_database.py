@@ -221,9 +221,9 @@ def upgrade():
     op.create_table('teaminjectsubmissionattachments',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('teaminjectid', sa.Integer(), nullable=True),
-    sa.Column('filename', sa.String(length=255), nullable=False),
-    sa.Column('size', sa.Integer(), nullable=False),
-    sa.Column('data', sa.LargeBinary(), nullable=False),
+    sa.Column('filename', sa.String(length=255), nullable=True),
+    sa.Column('size', sa.Integer(), nullable=True),
+    sa.Column('data', sa.LargeBinary(), nullable=True),
     sa.ForeignKeyConstraint(['teaminjectid'], ['teaminjectsubmissions.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

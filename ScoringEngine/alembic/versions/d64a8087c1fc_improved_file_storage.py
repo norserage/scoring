@@ -17,7 +17,6 @@ down_revision = '4a07ac822a75'
 branch_labels = None
 depends_on = None
 
-
 def upgrade():
 
     #op.execute(delete('teaminjectsubmissionattachments'))
@@ -33,10 +32,11 @@ def upgrade():
     )
     op.create_index(op.f('ix_attachments_id'), 'attachments', ['id'], unique=True)
     op.add_column(u'teaminjectsubmissionattachments', sa.Column('attachment_id', ScoringEngine.core.db.customTypes.GUID(), nullable=True))
-    op.create_foreign_key(None, 'teaminjectsubmissionattachments', 'attachments', ['attachment_id'], ['id'])
-    op.drop_column(u'teaminjectsubmissionattachments', 'size')
-    op.drop_column(u'teaminjectsubmissionattachments', 'data')
-    op.drop_column(u'teaminjectsubmissionattachments', 'filename')
+    if 'sqlite' not in op.get_context().connection.engine.url.drivername:
+        op.create_foreign_key(None, 'teaminjectsubmissionattachments', 'attachments', ['attachment_id'], ['id'])
+        op.drop_column(u'teaminjectsubmissionattachments', 'size')
+        op.drop_column(u'teaminjectsubmissionattachments', 'data')
+        op.drop_column(u'teaminjectsubmissionattachments', 'filename')
     # ### end Alembic commands ###
 
 
