@@ -200,3 +200,4 @@ venv3/
 /ScoringEngine/config.json
 /ScoringEngine/.idea
 /ScoringEngine/.idea
+ScoringEngine/.vscode/settings.json

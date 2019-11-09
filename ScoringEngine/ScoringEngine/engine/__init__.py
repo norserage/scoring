@@ -130,6 +130,8 @@ class DBEngineHelper(EngineHelperCommon):
         se.scoretime = datetime.datetime.utcnow()
         se.up = status
         se.info = json.dumps(extra_info)
+        session.add(se)
+        session.commit()
         session.close()
 
     def get_service_config_old(self, team_server_id, service_id):
