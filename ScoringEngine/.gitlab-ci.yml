@@ -161,7 +161,7 @@ aws_start:
     - master
   image: cgswong/aws
   script:
-    - aws ec2 start-instances --instance-ids i-0eb6807598e172deb
+    - aws ec2 start-instances --instance-ids $AWS_INSTANCE
   tags:
     - linux
     - docker
@@ -175,7 +175,7 @@ aws_stop:
     - master
   image: cgswong/aws
   script:
-    - aws ec2 stop-instances --instance-ids i-0eb6807598e172deb
+    - aws ec2 stop-instances --instance-ids $AWS_INSTANCE
   tags:
     - linux
     - docker
